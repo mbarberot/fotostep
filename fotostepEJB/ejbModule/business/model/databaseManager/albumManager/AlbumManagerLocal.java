@@ -1,4 +1,4 @@
-package database.albumManager;
+package business.model.databaseManager.albumManager;
 
 import javax.ejb.Local;
 

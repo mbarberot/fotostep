@@ -1,4 +1,4 @@
-package database.userManager;
+package business.model.databaseManager.userManager;
 
 import javax.ejb.Local;
 

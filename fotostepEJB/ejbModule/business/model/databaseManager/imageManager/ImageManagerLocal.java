@@ -1,4 +1,4 @@
-package database.imageManager;
+package business.model.databaseManager.imageManager;
 
 import javax.ejb.Local;
 

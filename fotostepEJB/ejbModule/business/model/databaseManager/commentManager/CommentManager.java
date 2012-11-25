@@ -1,4 +1,4 @@
-package database.commentManager;
+package business.model.databaseManager.commentManager;
 
 import javax.ejb.Stateless;
 
