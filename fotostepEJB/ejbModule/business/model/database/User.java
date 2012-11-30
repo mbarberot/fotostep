@@ -54,10 +54,10 @@ public class User implements Serializable
         this.id = id;
     }
 
-    public User(Integer id, int login, String password, String nickname)
+    public User(Integer id, String login2, String password, String nickname)
     {
         this.id = id;
-        this.login = login;
+        //this.login = login2;
         this.password = password;
         this.nickname = nickname;
     }
