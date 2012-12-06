@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Jeu 06 Décembre 2012 à 12:04
+-- Généré le : Jeu 06 Décembre 2012 à 12:11
 -- Version du serveur: 5.5.8
 -- Version de PHP: 5.3.5
 
@@ -39,6 +39,24 @@ CREATE TABLE IF NOT EXISTS `album` (
 
 --
 -- Contenu de la table `album`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `albumlikes`
+--
+
+CREATE TABLE IF NOT EXISTS `albumlikes` (
+  `idAlbum` int(10) NOT NULL,
+  `idUser` int(10) NOT NULL,
+  PRIMARY KEY (`idAlbum`,`idUser`),
+  KEY `idUser` (`idUser`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `albumlikes`
 --
 
 
@@ -223,6 +241,13 @@ CREATE TABLE IF NOT EXISTS `userfriendships` (
 ALTER TABLE `album`
   ADD CONSTRAINT `album_ibfk_6` FOREIGN KEY (`coverImage`) REFERENCES `image` (`idImage`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `album_ibfk_5` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `albumlikes`
+--
+ALTER TABLE `albumlikes`
+  ADD CONSTRAINT `albumlikes_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `albumlikes_ibfk_1` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `comment`
