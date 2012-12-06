@@ -5,6 +5,7 @@
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
@@ -25,6 +26,14 @@ import javax.persistence.*;
 })
 public class Comment implements Serializable
 {
+    @Basic(optional =     false)
+    @Column(name = "date")
+    @Temporal(TemporalType.DATE)
+    private Date date;
+    @ManyToMany(mappedBy = "commentCollection")
+    private Collection<Image> imageCollection;
+    @ManyToMany(mappedBy = "commentCollection")
+    private Collection<Album> albumCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +43,6 @@ public class Comment implements Serializable
     @Basic(optional = false)
     @Column(name = "title")
     private String title;
-    @Basic(optional = false)
-    @Column(name = "date")
-    @Temporal(TemporalType.DATE)
-    private Date date;
     @Basic(optional = false)
     @Column(name = "body")
     private String body;
@@ -98,16 +103,6 @@ public class Comment implements Serializable
     public void setTitle(String title)
     {
         this.title = title;
-    }
-
-    public Date getDate()
-    {
-        return date;
-    }
-
-    public void setDate(Date date)
-    {
-        this.date = date;
     }
 
     public String getBody()
@@ -178,6 +173,36 @@ public class Comment implements Serializable
     public String toString()
     {
         return "business.model.database.Comment[ idComment=" + idComment + " ]";
+    }
+
+    public Collection<Image> getImageCollection()
+    {
+        return imageCollection;
+    }
+
+    public void setImageCollection(Collection<Image> imageCollection)
+    {
+        this.imageCollection = imageCollection;
+    }
+
+    public Collection<Album> getAlbumCollection()
+    {
+        return albumCollection;
+    }
+
+    public void setAlbumCollection(Collection<Album> albumCollection)
+    {
+        this.albumCollection = albumCollection;
+    }
+
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
     }
     
 }

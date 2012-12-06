@@ -1,16 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 
 /**
- *
- * @author kawa
+ * Entité Album
+ * @author Mathieu Barberot
  */
 @Entity
 @Table(name = "album")
@@ -24,6 +21,29 @@ import javax.persistence.*;
 })
 public class Album implements Serializable
 {
+    @JoinTable(name = "imagealbum", joinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    })
+    @ManyToMany
+    private Collection<Image> imageCollection;
+    @JoinTable(name = "commentalbum", joinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idComment", referencedColumnName = "idComment")
+    })
+    @ManyToMany
+    private Collection<Comment> commentCollection;
+    @ManyToMany(mappedBy = "albumCollection")
+    private Collection<User> userCollection;
+    @JoinColumn(name = "coverImage", referencedColumnName = "idImage")
+    @ManyToOne(optional = false)
+    private Image coverImage;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -151,6 +171,46 @@ public class Album implements Serializable
     public String toString()
     {
         return "business.model.database.Album[ idAlbum=" + idAlbum + " ]";
+    }
+
+    public Image getCoverImage()
+    {
+        return coverImage;
+    }
+
+    public void setCoverImage(Image coverImage)
+    {
+        this.coverImage = coverImage;
+    }
+
+    public Collection<Image> getImageCollection()
+    {
+        return imageCollection;
+    }
+
+    public void setImageCollection(Collection<Image> imageCollection)
+    {
+        this.imageCollection = imageCollection;
+    }
+
+    public Collection<Comment> getCommentCollection()
+    {
+        return commentCollection;
+    }
+
+    public void setCommentCollection(Collection<Comment> commentCollection)
+    {
+        this.commentCollection = commentCollection;
+    }
+
+    public Collection<User> getUserCollection()
+    {
+        return userCollection;
+    }
+
+    public void setUserCollection(Collection<User> userCollection)
+    {
+        this.userCollection = userCollection;
     }
     
 }

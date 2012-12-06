@@ -5,6 +5,7 @@
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 
@@ -26,6 +27,19 @@ import javax.persistence.*;
 })
 public class Image implements Serializable
 {
+    @ManyToMany(mappedBy = "imageCollection")
+    private Collection<User> userCollection;
+    @JoinTable(name = "commentimage", joinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idComment", referencedColumnName = "idComment")
+    })
+    @ManyToMany
+    private Collection<Comment> commentCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coverImage")
+    private List<Album> albumList1;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -205,6 +219,36 @@ public class Image implements Serializable
     public String toString()
     {
         return "business.model.database.Image[ idImage=" + idImage + " ]";
+    }
+
+    public List<Album> getAlbumList1()
+    {
+        return albumList1;
+    }
+
+    public void setAlbumList1(List<Album> albumList1)
+    {
+        this.albumList1 = albumList1;
+    }
+
+    public Collection<User> getUserCollection()
+    {
+        return userCollection;
+    }
+
+    public void setUserCollection(Collection<User> userCollection)
+    {
+        this.userCollection = userCollection;
+    }
+
+    public Collection<Comment> getCommentCollection()
+    {
+        return commentCollection;
+    }
+
+    public void setCommentCollection(Collection<Comment> commentCollection)
+    {
+        this.commentCollection = commentCollection;
     }
     
 }

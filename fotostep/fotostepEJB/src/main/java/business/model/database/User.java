@@ -5,6 +5,7 @@
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.*;
 
@@ -24,6 +25,24 @@ import javax.persistence.*;
 })
 public class User implements Serializable
 {
+    @JoinTable(name = "imagelikes", joinColumns =
+    {
+        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    })
+    @ManyToMany
+    private Collection<Image> imageCollection;
+    @JoinTable(name = "albumlikes", joinColumns =
+    {
+        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    })
+    @ManyToMany
+    private Collection<Album> albumCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -203,6 +222,26 @@ public class User implements Serializable
     public String toString()
     {
         return "business.model.database.User[ idUser=" + idUser + " ]";
+    }
+
+    public Collection<Image> getImageCollection()
+    {
+        return imageCollection;
+    }
+
+    public void setImageCollection(Collection<Image> imageCollection)
+    {
+        this.imageCollection = imageCollection;
+    }
+
+    public Collection<Album> getAlbumCollection()
+    {
+        return albumCollection;
+    }
+
+    public void setAlbumCollection(Collection<Album> albumCollection)
+    {
+        this.albumCollection = albumCollection;
     }
     
 }

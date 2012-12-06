@@ -25,6 +25,10 @@ import javax.persistence.*;
 })
 public class Userdata implements Serializable
 {
+    @Basic(optional =     false)
+    @Column(name = "birthDate")
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,10 +41,6 @@ public class Userdata implements Serializable
     @Basic(optional = false)
     @Column(name = "foreName")
     private String foreName;
-    @Basic(optional = false)
-    @Column(name = "birthDate")
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
     @Basic(optional = false)
     @Column(name = "gender")
     private int gender;
@@ -96,16 +96,6 @@ public class Userdata implements Serializable
         this.foreName = foreName;
     }
 
-    public Date getBirthDate()
-    {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate)
-    {
-        this.birthDate = birthDate;
-    }
-
     public int getGender()
     {
         return gender;
@@ -154,6 +144,16 @@ public class Userdata implements Serializable
     public String toString()
     {
         return "business.model.database.Userdata[ idUser=" + idUser + " ]";
+    }
+
+    public Date getBirthDate()
+    {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate)
+    {
+        this.birthDate = birthDate;
     }
     
 }
