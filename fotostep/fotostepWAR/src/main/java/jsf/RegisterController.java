@@ -1,18 +1,24 @@
 package jsf;
 
+<<<<<<< HEAD
 import java.util.Date;
 
+=======
+import business.model.databaseManager.userManager.UserManagerLocal;
+>>>>>>> refs/remotes/origin/master
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
-
 import org.apache.commons.validator.routines.EmailValidator;
+<<<<<<< HEAD
 
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.model.databaseManager.userManager.UserManagerLocal;
+=======
+>>>>>>> refs/remotes/origin/master
 
 public class RegisterController {
 

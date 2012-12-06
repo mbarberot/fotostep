@@ -1,116 +1,216 @@
 package business.model.database;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
-
+import javax.persistence.*;
 
 /**
- * The persistent class for the album database table.
- * 
+ * Entité Album
+ * @author Mathieu Barberot
  */
 @Entity
-public class Album implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "album")
+@NamedQueries(
+{
+    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a"),
+    @NamedQuery(name = "Album.findByIdAlbum", query = "SELECT a FROM Album a WHERE a.idAlbum = :idAlbum"),
+    @NamedQuery(name = "Album.findByName", query = "SELECT a FROM Album a WHERE a.name = :name"),
+    @NamedQuery(name = "Album.findByDescription", query = "SELECT a FROM Album a WHERE a.description = :description"),
+    @NamedQuery(name = "Album.findByPerm", query = "SELECT a FROM Album a WHERE a.perm = :perm")
+})
+public class Album implements Serializable
+{
+    @JoinTable(name = "imagealbum", joinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    })
+    @ManyToMany
+    private Collection<Image> imageCollection;
+    @JoinTable(name = "commentalbum", joinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idComment", referencedColumnName = "idComment")
+    })
+    @ManyToMany
+    private Collection<Comment> commentCollection;
+    @ManyToMany(mappedBy = "albumCollection")
+    private Collection<User> userCollection;
+    @JoinColumn(name = "coverImage", referencedColumnName = "idImage")
+    @ManyToOne(optional = false)
+    private Image coverImage;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idAlbum")
+    private Integer idAlbum;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "description")
+    private String description;
+    @Column(name = "perm")
+    private Integer perm;
+    @ManyToMany(mappedBy = "albumList")
+    private List<Image> imageList;
+    @ManyToMany(mappedBy = "albumList")
+    private List<Comment> commentList;
+    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    @ManyToOne
+    private User idUser;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idAlbum;
+    public Album()
+    {
+    }
 
-	private String description;
+    public Album(Integer idAlbum)
+    {
+        this.idAlbum = idAlbum;
+    }
 
-	private String name;
+    public Integer getIdAlbum()
+    {
+        return idAlbum;
+    }
 
-	private int perm;
+    public void setIdAlbum(Integer idAlbum)
+    {
+        this.idAlbum = idAlbum;
+    }
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name="idUser")
-	private User user;
+    public String getName()
+    {
+        return name;
+    }
 
-	//uni-directional many-to-many association to Comment
-	@ManyToMany
-	@JoinTable(
-		name="commentalbum"
-		, joinColumns={
-			@JoinColumn(name="idAlbum")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idComment")
-			}
-		)
-	private List<Comment> comments;
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	//uni-directional many-to-many association to Image
-	@ManyToMany
-	@JoinTable(
-		name="imagealbum"
-		, joinColumns={
-			@JoinColumn(name="idAlbum")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idImage")
-			}
-		)
-	private List<Image> images;
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public Album() {
-	}
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	public int getIdAlbum() {
-		return this.idAlbum;
-	}
+    public Integer getPerm()
+    {
+        return perm;
+    }
 
-	public void setIdAlbum(int idAlbum) {
-		this.idAlbum = idAlbum;
-	}
+    public void setPerm(Integer perm)
+    {
+        this.perm = perm;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public List<Image> getImageList()
+    {
+        return imageList;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setImageList(List<Image> imageList)
+    {
+        this.imageList = imageList;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public List<Comment> getCommentList()
+    {
+        return commentList;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setCommentList(List<Comment> commentList)
+    {
+        this.commentList = commentList;
+    }
 
-	public int getPerm() {
-		return this.perm;
-	}
+    public User getIdUser()
+    {
+        return idUser;
+    }
 
-	public void setPerm(int perm) {
-		this.perm = perm;
-	}
+    public void setIdUser(User idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	public User getUser() {
-		return this.user;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idAlbum != null ? idAlbum.hashCode() : 0);
+        return hash;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Album))
+        {
+            return false;
+        }
+        Album other = (Album) object;
+        if ((this.idAlbum == null && other.idAlbum != null) || (this.idAlbum != null && !this.idAlbum.equals(other.idAlbum)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public List<Comment> getComments() {
-		return this.comments;
-	}
+    @Override
+    public String toString()
+    {
+        return "business.model.database.Album[ idAlbum=" + idAlbum + " ]";
+    }
 
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
+    public Image getCoverImage()
+    {
+        return coverImage;
+    }
 
-	public List<Image> getImages() {
-		return this.images;
-	}
+    public void setCoverImage(Image coverImage)
+    {
+        this.coverImage = coverImage;
+    }
 
-	public void setImages(List<Image> images) {
-		this.images = images;
-	}
+    public Collection<Image> getImageCollection()
+    {
+        return imageCollection;
+    }
 
+    public void setImageCollection(Collection<Image> imageCollection)
+    {
+        this.imageCollection = imageCollection;
+    }
+
+    public Collection<Comment> getCommentCollection()
+    {
+        return commentCollection;
+    }
+
+    public void setCommentCollection(Collection<Comment> commentCollection)
+    {
+        this.commentCollection = commentCollection;
+    }
+
+    public Collection<User> getUserCollection()
+    {
+        return userCollection;
+    }
+
+    public void setUserCollection(Collection<User> userCollection)
+    {
+        this.userCollection = userCollection;
+    }
+    
 }
