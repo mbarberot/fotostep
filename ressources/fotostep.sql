@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Lun 03 Décembre 2012 à 19:17
+-- Généré le : Jeu 06 Décembre 2012 à 12:04
 -- Version du serveur: 5.5.8
 -- Version de PHP: 5.3.5
 
@@ -31,8 +31,10 @@ CREATE TABLE IF NOT EXISTS `album` (
   `name` varchar(64) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `perm` int(10) DEFAULT NULL,
+  `coverImage` int(10) DEFAULT NULL,
   PRIMARY KEY (`idAlbum`),
-  KEY `fk_user` (`idUser`)
+  KEY `fk_user` (`idUser`),
+  KEY `coverImage` (`coverImage`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -161,12 +163,12 @@ CREATE TABLE IF NOT EXISTS `imagelikes` (
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
-  `idUser` int(10) NOT NULL,
+  `idUser` int(10) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `nickname` varchar(50) NOT NULL,
   PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Contenu de la table `user`
@@ -219,51 +221,52 @@ CREATE TABLE IF NOT EXISTS `userfriendships` (
 -- Contraintes pour la table `album`
 --
 ALTER TABLE `album`
-  ADD CONSTRAINT `album_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`);
+  ADD CONSTRAINT `album_ibfk_6` FOREIGN KEY (`coverImage`) REFERENCES `image` (`idImage`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `album_ibfk_5` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`);
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `commentalbum`
 --
 ALTER TABLE `commentalbum`
-  ADD CONSTRAINT `commentalbum_ibfk_2` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`),
-  ADD CONSTRAINT `commentalbum_ibfk_1` FOREIGN KEY (`idComment`) REFERENCES `comment` (`idComment`);
+  ADD CONSTRAINT `commentalbum_ibfk_6` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentalbum_ibfk_5` FOREIGN KEY (`idComment`) REFERENCES `comment` (`idComment`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `commentimage`
 --
 ALTER TABLE `commentimage`
-  ADD CONSTRAINT `commentimage_ibfk_2` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`),
-  ADD CONSTRAINT `commentimage_ibfk_1` FOREIGN KEY (`idComment`) REFERENCES `comment` (`idComment`);
+  ADD CONSTRAINT `commentimage_ibfk_6` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentimage_ibfk_5` FOREIGN KEY (`idComment`) REFERENCES `comment` (`idComment`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `imagealbum`
 --
 ALTER TABLE `imagealbum`
-  ADD CONSTRAINT `imagealbum_ibfk_2` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`),
-  ADD CONSTRAINT `imagealbum_ibfk_1` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`);
+  ADD CONSTRAINT `imagealbum_ibfk_4` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `imagealbum_ibfk_3` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `imagelikes`
 --
 ALTER TABLE `imagelikes`
-  ADD CONSTRAINT `imagelikes_ibfk_2` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
-  ADD CONSTRAINT `imagelikes_ibfk_1` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`);
+  ADD CONSTRAINT `imagelikes_ibfk_6` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `imagelikes_ibfk_5` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `userdata`
 --
 ALTER TABLE `userdata`
-  ADD CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`);
+  ADD CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `userfriendships`
 --
 ALTER TABLE `userfriendships`
-  ADD CONSTRAINT `userfriendships_ibfk_2` FOREIGN KEY (`idUser2`) REFERENCES `user` (`idUser`),
-  ADD CONSTRAINT `userfriendships_ibfk_1` FOREIGN KEY (`idUser1`) REFERENCES `user` (`idUser`);
+  ADD CONSTRAINT `userfriendships_ibfk_6` FOREIGN KEY (`idUser2`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `userfriendships_ibfk_5` FOREIGN KEY (`idUser1`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE;
