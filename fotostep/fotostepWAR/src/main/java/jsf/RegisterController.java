@@ -1,24 +1,20 @@
 package jsf;
-
-<<<<<<< HEAD
 import java.util.Date;
+import java.util.Map;
 
-=======
 import business.model.databaseManager.userManager.UserManagerLocal;
->>>>>>> refs/remotes/origin/master
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import org.apache.commons.validator.routines.EmailValidator;
-<<<<<<< HEAD
 
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.model.databaseManager.userManager.UserManagerLocal;
-=======
->>>>>>> refs/remotes/origin/master
+
 
 public class RegisterController {
 
@@ -50,13 +46,14 @@ public class RegisterController {
 	/** Vérifie que le mot de passe a bien été retapé */
 	public void validatePasswordRetype(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
-/*
-		String rePass = (String)value;
+		
+		// TODO : à corriger
+		String rePass = (String) value;
 		if(!rePass.equals(password))
 		{
-			throw new ValidatorException(new FacesMessage("Le mot de passe n'a pas été correctement retapé"));
+			throw new ValidatorException(new FacesMessage("Le mot de passe n'a pas été correctement retapé \n" ));
 		}
-		*/
+
 	}
 	
 	/** Vérifie que le mot de passe est valide (=> plus de 6 caractères) */
