@@ -1,5 +1,7 @@
 package jsf;
 
+import java.util.Date;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -8,6 +10,8 @@ import javax.faces.validator.ValidatorException;
 
 import org.apache.commons.validator.routines.EmailValidator;
 
+import business.model.database.User;
+import business.model.database.Userdata;
 import business.model.databaseManager.userManager.UserManagerLocal;
 
 public class RegisterController {
@@ -40,13 +44,13 @@ public class RegisterController {
 	/** Vérifie que le mot de passe a bien été retapé */
 	public void validatePasswordRetype(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
-
+/*
 		String rePass = (String)value;
 		if(!rePass.equals(password))
 		{
 			throw new ValidatorException(new FacesMessage("Le mot de passe n'a pas été correctement retapé"));
 		}
-		
+		*/
 	}
 	
 	/** Vérifie que le mot de passe est valide (=> plus de 6 caractères) */
@@ -123,9 +127,11 @@ public class RegisterController {
 	 */
 	public String register() throws ValidatorException
 	{
-		System.out.println("Il se passe des trucs ici");
-		//userManager.addUser(eMail, password, nickname);
-		//TODO enregistrement des autres informations (nom / prénom / sexe)
+		
+		int sex = (this.gender.equals("h"))? 0 : 1;
+		User user = userManager.addUser(eMail, password, nickname);	
+		Userdata data = userManager.createUserRegisterData(user, firstName, firstName, sex, new Date());			
+		
 		return "REG_SUCCESS";
 	}
 	/**

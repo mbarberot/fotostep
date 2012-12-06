@@ -19,11 +19,27 @@ public class Album implements Serializable {
 
 	private String description;
 
-	private int idUser;
-
 	private String name;
 
 	private int perm;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="idUser")
+	private User user;
+
+	//uni-directional many-to-many association to Comment
+	@ManyToMany
+	@JoinTable(
+		name="commentalbum"
+		, joinColumns={
+			@JoinColumn(name="idAlbum")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idComment")
+			}
+		)
+	private List<Comment> comments;
 
 	//uni-directional many-to-many association to Image
 	@ManyToMany
@@ -57,14 +73,6 @@ public class Album implements Serializable {
 		this.description = description;
 	}
 
-	public int getIdUser() {
-		return this.idUser;
-	}
-
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
-	}
-
 	public String getName() {
 		return this.name;
 	}
@@ -79,6 +87,22 @@ public class Album implements Serializable {
 
 	public void setPerm(int perm) {
 		this.perm = perm;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<Comment> getComments() {
+		return this.comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	public List<Image> getImages() {

@@ -2,6 +2,7 @@ package business.model.database;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -25,6 +26,19 @@ public class Image implements Serializable {
 	private String name;
 
 	private short width;
+
+	//uni-directional many-to-many association to Comment
+	@ManyToMany
+	@JoinTable(
+		name="commentimage"
+		, joinColumns={
+			@JoinColumn(name="idImage")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idComment")
+			}
+		)
+	private List<Comment> comments;
 
 	public Image() {
 	}
@@ -75,6 +89,14 @@ public class Image implements Serializable {
 
 	public void setWidth(short width) {
 		this.width = width;
+	}
+
+	public List<Comment> getComments() {
+		return this.comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

@@ -14,7 +14,6 @@ public class Userdata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idUser;
 
 	@Temporal(TemporalType.DATE)
@@ -26,7 +25,9 @@ public class Userdata implements Serializable {
 
 	private int gender;
 
+
 	public Userdata() {
+		super();
 	}
 
 	public int getIdUser() {

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="fotostepEAR-1.0">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/application"/>
+        <wb-resource deploy-path="/" source-path="/ejbModule" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/" source-path="/src"/>
+        <dependent-module archiveName="fotostepWAR-1.0.war" deploy-path="/" handle="module:/resource/fotostepWAR/fotostepWAR">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="fotostepEJB-1.0.jar" deploy-path="/" handle="module:/resource/fotostepEJB/fotostepEJB">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="java-output-path" value="/fotostepEAR/build/classes"/>
+    </wb-module>
+</project-modules>
