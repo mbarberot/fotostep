@@ -1,80 +1,210 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
-
 /**
- * The persistent class for the image database table.
- * 
+ *
+ * @author kawa
  */
 @Entity
-public class Image implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "image")
+@NamedQueries(
+{
+    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
+    @NamedQuery(name = "Image.findByIdImage", query = "SELECT i FROM Image i WHERE i.idImage = :idImage"),
+    @NamedQuery(name = "Image.findByName", query = "SELECT i FROM Image i WHERE i.name = :name"),
+    @NamedQuery(name = "Image.findByDescription", query = "SELECT i FROM Image i WHERE i.description = :description"),
+    @NamedQuery(name = "Image.findByFormat", query = "SELECT i FROM Image i WHERE i.format = :format"),
+    @NamedQuery(name = "Image.findByHeight", query = "SELECT i FROM Image i WHERE i.height = :height"),
+    @NamedQuery(name = "Image.findByWidth", query = "SELECT i FROM Image i WHERE i.width = :width")
+})
+public class Image implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idImage")
+    private Integer idImage;
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
+    @Basic(optional = false)
+    @Column(name = "description")
+    private String description;
+    @Basic(optional = false)
+    @Column(name = "format")
+    private String format;
+    @Basic(optional = false)
+    @Column(name = "height")
+    private short height;
+    @Basic(optional = false)
+    @Column(name = "width")
+    private short width;
+    @JoinTable(name = "imagelikes", joinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    })
+    @ManyToMany
+    private List<User> userList;
+    @JoinTable(name = "imagealbum", joinColumns =
+    {
+        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    }, inverseJoinColumns =
+    {
+        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    })
+    @ManyToMany
+    private List<Album> albumList;
+    @ManyToMany(mappedBy = "imageList")
+    private List<Comment> commentList;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idImage;
+    public Image()
+    {
+    }
 
-	private String description;
+    public Image(Integer idImage)
+    {
+        this.idImage = idImage;
+    }
 
-	private String format;
+    public Image(Integer idImage, String name, String description, String format, short height, short width)
+    {
+        this.idImage = idImage;
+        this.name = name;
+        this.description = description;
+        this.format = format;
+        this.height = height;
+        this.width = width;
+    }
 
-	private short height;
+    public Integer getIdImage()
+    {
+        return idImage;
+    }
 
-	private String name;
+    public void setIdImage(Integer idImage)
+    {
+        this.idImage = idImage;
+    }
 
-	private short width;
+    public String getName()
+    {
+        return name;
+    }
 
-	public Image() {
-	}
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	public int getIdImage() {
-		return this.idImage;
-	}
+    public String getDescription()
+    {
+        return description;
+    }
 
-	public void setIdImage(int idImage) {
-		this.idImage = idImage;
-	}
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getFormat()
+    {
+        return format;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setFormat(String format)
+    {
+        this.format = format;
+    }
 
-	public String getFormat() {
-		return this.format;
-	}
+    public short getHeight()
+    {
+        return height;
+    }
 
-	public void setFormat(String format) {
-		this.format = format;
-	}
+    public void setHeight(short height)
+    {
+        this.height = height;
+    }
 
-	public short getHeight() {
-		return this.height;
-	}
+    public short getWidth()
+    {
+        return width;
+    }
 
-	public void setHeight(short height) {
-		this.height = height;
-	}
+    public void setWidth(short width)
+    {
+        this.width = width;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public List<User> getUserList()
+    {
+        return userList;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setUserList(List<User> userList)
+    {
+        this.userList = userList;
+    }
 
-	public short getWidth() {
-		return this.width;
-	}
+    public List<Album> getAlbumList()
+    {
+        return albumList;
+    }
 
-	public void setWidth(short width) {
-		this.width = width;
-	}
+    public void setAlbumList(List<Album> albumList)
+    {
+        this.albumList = albumList;
+    }
 
+    public List<Comment> getCommentList()
+    {
+        return commentList;
+    }
+
+    public void setCommentList(List<Comment> commentList)
+    {
+        this.commentList = commentList;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idImage != null ? idImage.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Image))
+        {
+            return false;
+        }
+        Image other = (Image) object;
+        if ((this.idImage == null && other.idImage != null) || (this.idImage != null && !this.idImage.equals(other.idImage)))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "business.model.database.Image[ idImage=" + idImage + " ]";
+    }
+    
 }
