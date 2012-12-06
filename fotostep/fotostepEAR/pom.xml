@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+        <artifactId>fotostep</artifactId>
+        <groupId>pad</groupId>
+        <version>1.0</version>
+    </parent>
+
+  <groupId>pad</groupId>
+  <artifactId>fotostepEAR</artifactId>
+  <version>1.0</version>
+  <packaging>ear</packaging>
+
+  <name>fotostepEAR</name>
+  <url>http://maven.apache.org</url>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+        <version>2.6</version>
+        <configuration>
+            <version>5</version>
+            <defaultLibBundleDir>lib</defaultLibBundleDir>
+            <modules>
+            	<webModule>
+	            	<groupId>pad</groupId>
+	            	<artifactId>fotostepWAR</artifactId>
+	            	<contextRoot>/fotostep</contextRoot>
+            	</webModule>
+            	<ejbModule>
+            		<groupId>pad</groupId>
+            		<artifactId>fotostepEJB</artifactId>
+            	</ejbModule>
+            </modules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+  	<dependency>
+  		<groupId>pad</groupId>
+  		<artifactId>fotostepWAR</artifactId>
+  		<version>1.0</version>
+  		<type>war</type>
+  	</dependency>
+  	<dependency>
+  		<groupId>pad</groupId>
+  		<artifactId>fotostepEJB</artifactId>
+  		<version>1.0</version>
+  		<type>ejb</type>
+  	</dependency>
+  </dependencies>
+</project>
