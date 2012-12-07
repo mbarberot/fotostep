@@ -33,7 +33,10 @@
 </head>
 <body>
 <f:view>
-		<%@ include file = "header.jsp" %>
+	<%@ include file = "header.jsp" %>
+	<div class="container">
+		<%@ include file = "footer.jsp" %>
+	</div>	
 </f:view>
 </body>
 </html>
