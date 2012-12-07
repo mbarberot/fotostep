@@ -16,7 +16,7 @@
 	<div class="container">
 	
 			<div class="page-header">
-				<h1><img src="assets/img/header-logo.png"/><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
+				<h1><img src="assets/img/header-logo.png"/><br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
 			</div>
 			
 			<div class="register">

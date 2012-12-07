@@ -35,7 +35,11 @@
 	<body>
 		<f:view>		
 			<%@ include file = "header.jsp" %>	
-			<div class="container">		
+			<div class="container">
+			
+				<div class="page-header">
+					<h1><img src="assets/img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
+				</div>		
 				
 				<div class="modify">			
 					<h2>Modifier son profil</h2>
