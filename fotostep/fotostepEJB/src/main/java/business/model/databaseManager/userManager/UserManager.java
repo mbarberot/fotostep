@@ -5,7 +5,9 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import business.model.database.User;
 import business.model.database.Userdata;
@@ -65,18 +67,15 @@ public class UserManager implements UserManagerLocal
 		
 	}	
 	
-	public User searchUserByNickname(String nickame)
-	{
-		//TODO 
-		return null;
+	public User searchUserByNickname(String nickame){
+		Query query = em.createNativeQuery("User.findByNickname", User.class);
+		query.setParameter("nickname", nickame);
+		Object result = query.getSingleResult();
+		return result == null?null:(User)result;
 	}
+	
 	public User getUser(int id) {
 		return em.find(User.class, id);
 	}
-
-
-	
-
-
 
 }
