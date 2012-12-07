@@ -11,13 +11,9 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <managed-bean>
-        <managed-bean-name>myFormChecker</managed-bean-name>
-        <managed-bean-class>jsf.MyFormChecker</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
-    <managed-bean>
         <managed-bean-name>albumController</managed-bean-name>
         <managed-bean-class>jsf.AlbumController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+  
 </faces-config>

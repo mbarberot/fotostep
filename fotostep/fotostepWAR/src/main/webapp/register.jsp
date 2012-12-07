@@ -71,9 +71,9 @@
 						<div class="control-group">
 							<label class="control-label" for="inputRepeatPassword">Répétez votre mot de passe</label>
 							<div class="controls">
+							<!-- TODO / Vérification du MDP -->
 								<h:inputSecret id = "repasswordField" required="true" requiredMessage="Vous devez retaper votre mot de passe" 
-								value = "#{registerController.passwordRetype}" 
-								validator="#{registerController.validatePasswordRetype}"/>
+								value = "#{registerController.passwordRetype}"/>
 							</div>
 						</div>
 						
