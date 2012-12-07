@@ -1,6 +1,11 @@
 package business.model.databaseManager.imageManager;
 
+import java.nio.Buffer;
+
 import javax.ejb.Local;
+
+import business.model.database.Image;
+import business.model.database.User;
 
 /**
  * Interface locale du bean ImageManager
@@ -10,20 +15,7 @@ import javax.ejb.Local;
 @Local
 public interface ImageManagerLocal
 {
-    
-	/*
-	 * Register a image
-	 * return id
-	 */
-	public int registerImage();
+	public Image addImage(User user, String name, Buffer buffer);
 	
-	public String getName(int id);
-	
-	public String getDescription(int id);
-	
-	public String getWidth(int id);
-	
-	public String getHeight(int id);
-	
-	public int getThumb(int id);
+	public void removeImage(Image image);
 }
