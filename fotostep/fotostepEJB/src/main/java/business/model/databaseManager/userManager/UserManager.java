@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -58,14 +57,27 @@ public class UserManager implements UserManagerLocal
 
 	
 	public void enableUser(int id) {
-		// TODO Auto-generated method stub
+		User user = searchUserById(id);
 		
+		//TODO : Ajouter un champ pour l'état de l'user
+		
+		em.persist(user);
 	}
 
 	public void disableUser(int id) {
-		// TODO Auto-generated method stub
+		User user = searchUserById(id);
 		
+		//TODO : Ajouter un champ pour l'état de l'user
+		
+		em.persist(user);
 	}	
+	
+	public User searchUserById(int id){
+		Query query = em.createNativeQuery("User.findByIdUser", User.class);
+		query.setParameter("idUser", id);
+		Object result = query.getSingleResult();
+		return result == null?null:(User)result;
+	}
 	
 	public User searchUserByNickname(String nickame){
 		Query query = em.createNativeQuery("User.findByNickname", User.class);

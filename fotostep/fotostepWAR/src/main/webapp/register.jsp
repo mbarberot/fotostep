@@ -99,11 +99,8 @@
 				</h:form>
 				<!-- Fin formulaire -->
 			</div>
-	</div>					
-
-			<div class="page-footer">
-				<p>&copy; Fotostep 2012</p>
-			</div>
+			<%@ include file = "footer.jsp" %>
+	</div>
 			
 </body>
 </html>
