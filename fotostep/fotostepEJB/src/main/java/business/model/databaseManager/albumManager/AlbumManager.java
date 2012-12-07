@@ -23,33 +23,29 @@ public class AlbumManager implements AlbumManagerLocal
     @PersistenceContext
     EntityManager em;
 
-    public void createAlbum(User user, String name, String description, Permission permission) throws UserNotFoundException
-    {
+    public Album createAlbum(User user, String name, String description, Permission permission) throws UserNotFoundException{
         Album album = new Album();
-        album.setIdUser(user);
+        album.setUser(user);
         album.setName(name);
         album.setDescription(description);
         album.setPerm(permission.getPermission());
-        em.persist(em);
+        em.persist(album);
+        return album;
     }
 
-    public void deleteAlbum(Album album) throws AlbumNotFoundException
-    {
+    public void deleteAlbum(Album album) throws AlbumNotFoundException{
+        em.remove(album);
+    }
+
+    public void updateAlbum(Album album, String name, String description, Permission permission, Image image) throws AlbumNotFoundException, ImageNotFoundException{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void updateAlbum(Album album, String name, String description, Permission permission, Image image) throws AlbumNotFoundException, ImageNotFoundException
-    {
+    public void likeAlbum(Album album, User user) throws AlbumNotFoundException, UserNotFoundException{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void likeAlbum(Album album, User user) throws AlbumNotFoundException, UserNotFoundException
-    {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void commentAlbum(Album album, User user, String title, Date date, String body) throws AlbumNotFoundException, UserNotFoundException
-    {
+    public void commentAlbum(Album album, User user, String title, Date date, String body) throws AlbumNotFoundException, UserNotFoundException{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

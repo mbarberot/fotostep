@@ -1,250 +1,128 @@
 package business.model.database;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import javax.persistence.*;
+import java.util.List;
+
 
 /**
- *
- * @author kawa
+ * The persistent class for the image database table.
+ * 
  */
 @Entity
-@Table(name = "image")
-@NamedQueries(
-{
-    @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
-    @NamedQuery(name = "Image.findByIdImage", query = "SELECT i FROM Image i WHERE i.idImage = :idImage"),
-    @NamedQuery(name = "Image.findByName", query = "SELECT i FROM Image i WHERE i.name = :name"),
-    @NamedQuery(name = "Image.findByDescription", query = "SELECT i FROM Image i WHERE i.description = :description"),
-    @NamedQuery(name = "Image.findByFormat", query = "SELECT i FROM Image i WHERE i.format = :format"),
-    @NamedQuery(name = "Image.findByHeight", query = "SELECT i FROM Image i WHERE i.height = :height"),
-    @NamedQuery(name = "Image.findByWidth", query = "SELECT i FROM Image i WHERE i.width = :width")
-})
-public class Image implements Serializable
-{
-    @ManyToMany(mappedBy = "imageCollection")
-    private Collection<User> userCollection;
-    @JoinTable(name = "commentimage", joinColumns =
-    {
-        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idComment", referencedColumnName = "idComment")
-    })
-    @ManyToMany
-    private Collection<Comment> commentCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "coverImage")
-    private List<Album> albumList1;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idImage")
-    private Integer idImage;
-    @Basic(optional = false)
-    @Column(name = "name")
-    private String name;
-    @Basic(optional = false)
-    @Column(name = "description")
-    private String description;
-    @Basic(optional = false)
-    @Column(name = "format")
-    private String format;
-    @Basic(optional = false)
-    @Column(name = "height")
-    private short height;
-    @Basic(optional = false)
-    @Column(name = "width")
-    private short width;
-    @JoinTable(name = "imagelikes", joinColumns =
-    {
-        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
-    })
-    @ManyToMany
-    private List<User> userList;
-    @JoinTable(name = "imagealbum", joinColumns =
-    {
-        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
-    })
-    @ManyToMany
-    private List<Album> albumList;
-    @ManyToMany(mappedBy = "imageList")
-    private List<Comment> commentList;
+public class Image implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public Image()
-    {
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int idImage;
 
-    public Image(Integer idImage)
-    {
-        this.idImage = idImage;
-    }
+	private String description;
 
-    public Image(Integer idImage, String name, String description, String format, short height, short width)
-    {
-        this.idImage = idImage;
-        this.name = name;
-        this.description = description;
-        this.format = format;
-        this.height = height;
-        this.width = width;
-    }
+	private String format;
 
-    public Integer getIdImage()
-    {
-        return idImage;
-    }
+	private short height;
 
-    public void setIdImage(Integer idImage)
-    {
-        this.idImage = idImage;
-    }
+	private int idAlbum;
 
-    public String getName()
-    {
-        return name;
-    }
+	private String name;
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	private short width;
 
-    public String getDescription()
-    {
-        return description;
-    }
+	//bi-directional many-to-one association to Commentimage
+	@OneToMany(mappedBy="image")
+	private List<Commentimage> commentimages;
 
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="idUser")
+	private User user;
 
-    public String getFormat()
-    {
-        return format;
-    }
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="images2")
+	private List<User> users;
 
-    public void setFormat(String format)
-    {
-        this.format = format;
-    }
+	public Image() {
+	}
 
-    public short getHeight()
-    {
-        return height;
-    }
+	public int getIdImage() {
+		return this.idImage;
+	}
 
-    public void setHeight(short height)
-    {
-        this.height = height;
-    }
+	public void setIdImage(int idImage) {
+		this.idImage = idImage;
+	}
 
-    public short getWidth()
-    {
-        return width;
-    }
+	public String getDescription() {
+		return this.description;
+	}
 
-    public void setWidth(short width)
-    {
-        this.width = width;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public List<User> getUserList()
-    {
-        return userList;
-    }
+	public String getFormat() {
+		return this.format;
+	}
 
-    public void setUserList(List<User> userList)
-    {
-        this.userList = userList;
-    }
+	public void setFormat(String format) {
+		this.format = format;
+	}
 
-    public List<Album> getAlbumList()
-    {
-        return albumList;
-    }
+	public short getHeight() {
+		return this.height;
+	}
 
-    public void setAlbumList(List<Album> albumList)
-    {
-        this.albumList = albumList;
-    }
+	public void setHeight(short height) {
+		this.height = height;
+	}
 
-    public List<Comment> getCommentList()
-    {
-        return commentList;
-    }
+	public int getIdAlbum() {
+		return this.idAlbum;
+	}
 
-    public void setCommentList(List<Comment> commentList)
-    {
-        this.commentList = commentList;
-    }
+	public void setIdAlbum(int idAlbum) {
+		this.idAlbum = idAlbum;
+	}
 
-    @Override
-    public int hashCode()
-    {
-        int hash = 0;
-        hash += (idImage != null ? idImage.hashCode() : 0);
-        return hash;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    @Override
-    public boolean equals(Object object)
-    {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Image))
-        {
-            return false;
-        }
-        Image other = (Image) object;
-        if ((this.idImage == null && other.idImage != null) || (this.idImage != null && !this.idImage.equals(other.idImage)))
-        {
-            return false;
-        }
-        return true;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public String toString()
-    {
-        return "business.model.database.Image[ idImage=" + idImage + " ]";
-    }
+	public short getWidth() {
+		return this.width;
+	}
 
-    public List<Album> getAlbumList1()
-    {
-        return albumList1;
-    }
+	public void setWidth(short width) {
+		this.width = width;
+	}
 
-    public void setAlbumList1(List<Album> albumList1)
-    {
-        this.albumList1 = albumList1;
-    }
+	public List<Commentimage> getCommentimages() {
+		return this.commentimages;
+	}
 
-    public Collection<User> getUserCollection()
-    {
-        return userCollection;
-    }
+	public void setCommentimages(List<Commentimage> commentimages) {
+		this.commentimages = commentimages;
+	}
 
-    public void setUserCollection(Collection<User> userCollection)
-    {
-        this.userCollection = userCollection;
-    }
+	public User getUser() {
+		return this.user;
+	}
 
-    public Collection<Comment> getCommentCollection()
-    {
-        return commentCollection;
-    }
+	public void setUser(User user) {
+		this.user = user;
+	}
 
-    public void setCommentCollection(Collection<Comment> commentCollection)
-    {
-        this.commentCollection = commentCollection;
-    }
-    
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
 }

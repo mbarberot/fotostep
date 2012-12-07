@@ -1,159 +1,85 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package business.model.database;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
+
 
 /**
- *
- * @author kawa
+ * The persistent class for the userdata database table.
+ * 
  */
 @Entity
-@Table(name = "userdata")
-@NamedQueries(
-{
-    @NamedQuery(name = "Userdata.findAll", query = "SELECT u FROM Userdata u"),
-    @NamedQuery(name = "Userdata.findByIdUser", query = "SELECT u FROM Userdata u WHERE u.idUser = :idUser"),
-    @NamedQuery(name = "Userdata.findByFirstname", query = "SELECT u FROM Userdata u WHERE u.firstname = :firstname"),
-    @NamedQuery(name = "Userdata.findByForeName", query = "SELECT u FROM Userdata u WHERE u.foreName = :foreName"),
-    @NamedQuery(name = "Userdata.findByBirthDate", query = "SELECT u FROM Userdata u WHERE u.birthDate = :birthDate"),
-    @NamedQuery(name = "Userdata.findByGender", query = "SELECT u FROM Userdata u WHERE u.gender = :gender")
-})
-public class Userdata implements Serializable
-{
-    @Basic(optional =     false)
-    @Column(name = "birthDate")
-    @Temporal(TemporalType.DATE)
-    private Date birthDate;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idUser")
-    private Integer idUser;
-    @Basic(optional = false)
-    @Column(name = "firstname")
-    private String firstname;
-    @Basic(optional = false)
-    @Column(name = "foreName")
-    private String foreName;
-    @Basic(optional = false)
-    @Column(name = "gender")
-    private int gender;
-    @JoinColumn(name = "idUser", referencedColumnName = "idUser", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private User user;
+public class Userdata implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public Userdata()
-    {
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int idUser;
 
-    public Userdata(Integer idUser)
-    {
-        this.idUser = idUser;
-    }
+	@Temporal(TemporalType.DATE)
+	private Date birthDate;
 
-    public Userdata(Integer idUser, String firstname, String foreName, Date birthDate, int gender)
-    {
-        this.idUser = idUser;
-        this.firstname = firstname;
-        this.foreName = foreName;
-        this.birthDate = birthDate;
-        this.gender = gender;
-    }
+	private String firstname;
 
-    public Integer getIdUser()
-    {
-        return idUser;
-    }
+	private String foreName;
 
-    public void setIdUser(Integer idUser)
-    {
-        this.idUser = idUser;
-    }
+	private int gender;
 
-    public String getFirstname()
-    {
-        return firstname;
-    }
+	//bi-directional one-to-one association to User
+	@OneToOne
+	@JoinColumn(name="idUser")
+	private User user;
 
-    public void setFirstname(String firstname)
-    {
-        this.firstname = firstname;
-    }
+	public Userdata() {
+	}
 
-    public String getForeName()
-    {
-        return foreName;
-    }
+	public int getIdUser() {
+		return this.idUser;
+	}
 
-    public void setForeName(String foreName)
-    {
-        this.foreName = foreName;
-    }
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
 
-    public int getGender()
-    {
-        return gender;
-    }
+	public Date getBirthDate() {
+		return this.birthDate;
+	}
 
-    public void setGender(int gender)
-    {
-        this.gender = gender;
-    }
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
 
-    public User getUser()
-    {
-        return user;
-    }
+	public String getFirstname() {
+		return this.firstname;
+	}
 
-    public void setUser(User user)
-    {
-        this.user = user;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    @Override
-    public int hashCode()
-    {
-        int hash = 0;
-        hash += (idUser != null ? idUser.hashCode() : 0);
-        return hash;
-    }
+	public String getForeName() {
+		return this.foreName;
+	}
 
-    @Override
-    public boolean equals(Object object)
-    {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Userdata))
-        {
-            return false;
-        }
-        Userdata other = (Userdata) object;
-        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser)))
-        {
-            return false;
-        }
-        return true;
-    }
+	public void setForeName(String foreName) {
+		this.foreName = foreName;
+	}
 
-    @Override
-    public String toString()
-    {
-        return "business.model.database.Userdata[ idUser=" + idUser + " ]";
-    }
+	public int getGender() {
+		return this.gender;
+	}
 
-    public Date getBirthDate()
-    {
-        return birthDate;
-    }
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
 
-    public void setBirthDate(Date birthDate)
-    {
-        this.birthDate = birthDate;
-    }
-    
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 }

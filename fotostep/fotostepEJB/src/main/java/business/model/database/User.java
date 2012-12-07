@@ -2,246 +2,171 @@ package business.model.database;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.*;
 
 /**
- *
- * @author kawa
+ * The persistent class for the user database table.
+ * 
  */
 @Entity
-@Table(name = "user")
-@NamedQueries(
-{
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findByIdUser", query = "SELECT u FROM User u WHERE u.idUser = :idUser"),
-    @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByNickname", query = "SELECT u FROM User u WHERE u.nickname = :nickname")
-})
-public class User implements Serializable
-{
-    @JoinTable(name = "imagelikes", joinColumns =
-    {
-        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idImage", referencedColumnName = "idImage")
-    })
-    @ManyToMany
-    private Collection<Image> imageCollection;
-    @JoinTable(name = "albumlikes", joinColumns =
-    {
-        @JoinColumn(name = "idUser", referencedColumnName = "idUser")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
-    })
-    @ManyToMany
-    private Collection<Album> albumCollection;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "idUser")
-    private Integer idUser;
-    @Basic(optional = false)
-    @Column(name = "login")
-    private String login;
-    @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
-    @Basic(optional = false)
-    @Column(name = "nickname")
-    private String nickname;
-    @ManyToMany(mappedBy = "userList")
-    private List<Image> imageList;
-    @JoinTable(name = "userfriendships", joinColumns =
-    {
-        @JoinColumn(name = "idUser1", referencedColumnName = "idUser")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "idUser2", referencedColumnName = "idUser")
-    })
-    @ManyToMany
-    private List<User> userList;
-    @ManyToMany(mappedBy = "userList")
-    private List<User> userList1;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private Userdata userdata;
-    @OneToMany(mappedBy = "idUser")
-    private List<Album> albumList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
-    private List<Comment> commentList;
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    public User()
-    {
-    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int idUser;
 
-    public User(Integer idUser)
-    {
-        this.idUser = idUser;
-    }
+	private String login;
 
-    public User(Integer idUser, String login, String password, String nickname)
-    {
-        this.idUser = idUser;
-        this.login = login;
-        this.password = password;
-        this.nickname = nickname;
-    }
+	private String nickname;
 
-    public Integer getIdUser()
-    {
-        return idUser;
-    }
+	private String password;
 
-    public void setIdUser(Integer idUser)
-    {
-        this.idUser = idUser;
-    }
+	//bi-directional many-to-one association to Album
+	@OneToMany(mappedBy="user")
+	private List<Album> albums;
 
-    public String getLogin()
-    {
-        return login;
-    }
+	//bi-directional many-to-one association to Image
+	@OneToMany(mappedBy="user")
+	private List<Image> images1;
 
-    public void setLogin(String login)
-    {
-        this.login = login;
-    }
+	//uni-directional many-to-many association to User
+	@ManyToMany
+	@JoinTable(
+		name="userfriendships"
+		, joinColumns={
+			@JoinColumn(name="idUser1")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idUser2")
+			}
+		)
+	private List<User> friends;
 
-    public String getPassword()
-    {
-        return password;
-    }
+	//bi-directional many-to-many association to User
+	@ManyToMany
+	@JoinTable(
+		name="userfriendships"
+		, joinColumns={
+			@JoinColumn(name="idUser2")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idUser1")
+			}
+		)
+	private List<User> users2;
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="users2")
+	private List<User> users3;
 
-    public String getNickname()
-    {
-        return nickname;
-    }
+	//bi-directional one-to-one association to Userdata
+	@OneToOne(mappedBy="user")
+	private Userdata userdata;
 
-    public void setNickname(String nickname)
-    {
-        this.nickname = nickname;
-    }
+	//bi-directional many-to-many association to Image
+	@ManyToMany
+	@JoinTable(
+		name="like"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idImage")
+			}
+		)
+	private List<Image> images2;
 
-    public List<Image> getImageList()
-    {
-        return imageList;
-    }
+	public User() {
+	}
 
-    public void setImageList(List<Image> imageList)
-    {
-        this.imageList = imageList;
-    }
+	public int getIdUser() {
+		return this.idUser;
+	}
 
-    public List<User> getUserList()
-    {
-        return userList;
-    }
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
+	}
 
-    public void setUserList(List<User> userList)
-    {
-        this.userList = userList;
-    }
+	public String getLogin() {
+		return this.login;
+	}
 
-    public List<User> getUserList1()
-    {
-        return userList1;
-    }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-    public void setUserList1(List<User> userList1)
-    {
-        this.userList1 = userList1;
-    }
+	public String getNickname() {
+		return this.nickname;
+	}
 
-    public Userdata getUserdata()
-    {
-        return userdata;
-    }
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 
-    public void setUserdata(Userdata userdata)
-    {
-        this.userdata = userdata;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public List<Album> getAlbumList()
-    {
-        return albumList;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setAlbumList(List<Album> albumList)
-    {
-        this.albumList = albumList;
-    }
+	public List<Album> getAlbums() {
+		return this.albums;
+	}
 
-    public List<Comment> getCommentList()
-    {
-        return commentList;
-    }
+	public void setAlbums(List<Album> albums) {
+		this.albums = albums;
+	}
 
-    public void setCommentList(List<Comment> commentList)
-    {
-        this.commentList = commentList;
-    }
+	public List<Image> getImages1() {
+		return this.images1;
+	}
 
-    @Override
-    public int hashCode()
-    {
-        int hash = 0;
-        hash += (idUser != null ? idUser.hashCode() : 0);
-        return hash;
-    }
+	public void setImages1(List<Image> images1) {
+		this.images1 = images1;
+	}
 
-    @Override
-    public boolean equals(Object object)
-    {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User))
-        {
-            return false;
-        }
-        User other = (User) object;
-        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser)))
-        {
-            return false;
-        }
-        return true;
-    }
+	public List<User> getFriends() {
+		return this.friends;
+	}
 
-    @Override
-    public String toString()
-    {
-        return "business.model.database.User[ idUser=" + idUser + " ]";
-    }
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
 
-    public Collection<Image> getImageCollection()
-    {
-        return imageCollection;
-    }
+	public List<User> getUsers2() {
+		return this.users2;
+	}
 
-    public void setImageCollection(Collection<Image> imageCollection)
-    {
-        this.imageCollection = imageCollection;
-    }
+	public void setUsers2(List<User> users2) {
+		this.users2 = users2;
+	}
 
-    public Collection<Album> getAlbumCollection()
-    {
-        return albumCollection;
-    }
+	public List<User> getUsers3() {
+		return this.users3;
+	}
 
-    public void setAlbumCollection(Collection<Album> albumCollection)
-    {
-        this.albumCollection = albumCollection;
-    }
-    
+	public void setUsers3(List<User> users3) {
+		this.users3 = users3;
+	}
+
+	public Userdata getUserdata() {
+		return this.userdata;
+	}
+
+	public void setUserdata(Userdata userdata) {
+		this.userdata = userdata;
+	}
+
+	public List<Image> getImages2() {
+		return this.images2;
+	}
+
+	public void setImages2(List<Image> images2) {
+		this.images2 = images2;
+	}
+
 }

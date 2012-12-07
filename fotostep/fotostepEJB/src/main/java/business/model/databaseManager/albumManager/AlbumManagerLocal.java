@@ -19,7 +19,7 @@ import javax.ejb.Local;
 public interface AlbumManagerLocal
 {
     
-    public void createAlbum(User user, String name, String description, Permission permission) throws UserNotFoundException;
+    public Album createAlbum(User user, String name, String description, Permission permission) throws UserNotFoundException;
 
     public void deleteAlbum(Album album) throws AlbumNotFoundException;
 
