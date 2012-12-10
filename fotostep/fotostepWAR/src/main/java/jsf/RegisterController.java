@@ -33,7 +33,6 @@ public class RegisterController {
 	private String password = "";
 	private String passwordRetype = "";
 	private String gender = "";
-	private String nickname = "";
 
 	/** Constructeur */
 	public RegisterController() {
@@ -117,11 +116,10 @@ public class RegisterController {
 	 * 
 	 */
 	public String register() throws ValidatorException {
-		int sex = (this.gender.equals("h")) ? 0 : 1;
-		User user = userManager.addUser(eMail, password, nickname);
+		byte sex = (byte) ((this.gender.equals("h")) ? 0 : 1);
+		User user = userManager.addUser(eMail, password);
 		Userdata data = userManager.createUserRegisterData(user, firstName,
 				firstName, sex, new Date());
-
 		return "REG_SUCCESS";
 	}
 
@@ -174,14 +172,6 @@ public class RegisterController {
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
 	}
 
 }

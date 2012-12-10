@@ -21,7 +21,7 @@ public class Album implements Serializable {
 
 	private String name;
 
-	private int perm;
+	private byte perm;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -30,7 +30,11 @@ public class Album implements Serializable {
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="album")
-	private List<Commentalbum> commentalbums;
+	private List<Commentalbum> comments;
+
+	//bi-directional many-to-one association to Image
+	@OneToMany(mappedBy="album")
+	private List<Image> images;
 
 	public Album() {
 	}
@@ -59,11 +63,11 @@ public class Album implements Serializable {
 		this.name = name;
 	}
 
-	public int getPerm() {
+	public byte getPerm() {
 		return this.perm;
 	}
 
-	public void setPerm(int perm) {
+	public void setPerm(byte perm) {
 		this.perm = perm;
 	}
 
@@ -75,12 +79,20 @@ public class Album implements Serializable {
 		this.user = user;
 	}
 
-	public List<Commentalbum> getCommentalbums() {
-		return this.commentalbums;
+	public List<Commentalbum> getComments() {
+		return this.comments;
 	}
 
-	public void setCommentalbums(List<Commentalbum> commentalbums) {
-		this.commentalbums = commentalbums;
+	public void setComments(List<Commentalbum> comments) {
+		this.comments = comments;
+	}
+
+	public List<Image> getImages() {
+		return this.images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 }

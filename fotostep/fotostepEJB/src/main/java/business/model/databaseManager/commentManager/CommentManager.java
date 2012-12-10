@@ -24,7 +24,7 @@ public class CommentManager implements CommentManagerLocal
 
 	public Commentalbum addComment(Album album, User user, String title, String text) {
 		Commentalbum comment = new Commentalbum();
-		comment.setIdUser(user.getIdUser());
+		comment.setUser(user);
 		comment.setTitle(title);
 		comment.setBody(text);
 		em.persist(comment);
@@ -42,7 +42,7 @@ public class CommentManager implements CommentManagerLocal
 
 	public Commentimage addComment(Image image, User user, String title, String text) {
 		Commentimage comment = new Commentimage();
-		comment.setIdUser(user.getIdUser());
+		comment.setUser(user);
 		comment.setTitle(title);
 		comment.setBody(text);
 		em.persist(comment);

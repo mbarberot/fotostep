@@ -8,9 +8,9 @@ package business.util;
 public class Permission
 {
     // Liste des droits d'accès
-    public static final int PRIVATE = 0;
-    public static final int FRIENDS = 1;
-    public static final int PUBLIC = 2;
+    public static final byte PRIVATE = 0;
+    public static final byte FRIENDS = 1;
+    public static final byte PUBLIC = 2;
     
     /**
      * Tableau faisant le lien entre les valeurs et le nom des permissions
@@ -20,7 +20,7 @@ public class Permission
     /**
      * Permission actuelle
      */
-    private int permission;
+    private byte permission;
     
     /**
      * Constructeur
@@ -30,13 +30,13 @@ public class Permission
     public Permission(String permission)
     {
         int len = names.length;
-        for(int i = 0; i < len; i++)
+        for(byte i = 0; i < len; i++)
         {
             if(permission.equalsIgnoreCase(names[i])) { this.permission = i; }
         }
     }
     
-    public int getPermission()
+    public byte getPermission()
     {
         return this.permission;
     }

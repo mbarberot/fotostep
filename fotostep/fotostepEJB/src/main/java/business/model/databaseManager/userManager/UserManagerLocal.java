@@ -17,9 +17,9 @@ public interface UserManagerLocal
 {
 	
 	
-	public User addUser(String login, String password, String nickname);	
+	public User addUser(String login, String password);	
 
-	public Userdata createUserRegisterData(User user, String firstName, String lastName, int gender, Date birthDate);
+	public Userdata createUserRegisterData(User user, String firstName, String lastName, byte gender, Date birthDate);
 	
 	public Userdata getUserData(User user);
 	

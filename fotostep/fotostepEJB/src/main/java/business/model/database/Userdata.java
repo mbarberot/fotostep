@@ -14,7 +14,6 @@ public class Userdata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idUser;
 
 	@Temporal(TemporalType.DATE)
@@ -24,7 +23,7 @@ public class Userdata implements Serializable {
 
 	private String foreName;
 
-	private int gender;
+	private byte gender;
 
 	//bi-directional one-to-one association to User
 	@OneToOne
@@ -66,11 +65,11 @@ public class Userdata implements Serializable {
 		this.foreName = foreName;
 	}
 
-	public int getGender() {
+	public byte getGender() {
 		return this.gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(byte gender) {
 		this.gender = gender;
 	}
 

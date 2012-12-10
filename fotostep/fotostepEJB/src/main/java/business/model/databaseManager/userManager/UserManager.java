@@ -26,18 +26,17 @@ public class UserManager implements UserManagerLocal
 	@EJB
 	HashingUtilityLocal hashTool;
 	/** Ajoute un utilisateur dans la base avec ses informations de base */
-	public User addUser(String login, String password, String nickname) {
+	public User addUser(String login, String password) {
 		User user = new User();		
 		user.setLogin(login);
 		user.setPassword(hashTool.md5Hash(password));
-		user.setNickname(nickname);		
 		em.persist(user);
 		
 		return user;
 	}
 
 	public Userdata createUserRegisterData(User user, String firstName, String lastName,
-			int gender, Date birthDate) {
+			byte gender, Date birthDate) {
 		
 		Userdata data = new Userdata();
 		data.setFirstname(firstName);
@@ -81,7 +80,7 @@ public class UserManager implements UserManagerLocal
 	
 	public User searchUserByNickname(String nickame){
 		Query query = em.createNativeQuery("User.findByNickname", User.class);
-		query.setParameter("nickname", nickame);
+		query.setParameter("login", nickame);
 		Object result = query.getSingleResult();
 		return result == null?null:(User)result;
 	}

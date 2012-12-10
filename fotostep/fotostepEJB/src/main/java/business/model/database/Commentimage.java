@@ -21,14 +21,17 @@ public class Commentimage implements Serializable {
 
 	private int date;
 
-	private int idUser;
-
 	private String title;
 
 	//bi-directional many-to-one association to Image
 	@ManyToOne
 	@JoinColumn(name="idImage")
 	private Image image;
+
+	//bi-directional many-to-one association to User
+	@ManyToOne
+	@JoinColumn(name="idUser")
+	private User user;
 
 	public Commentimage() {
 	}
@@ -57,14 +60,6 @@ public class Commentimage implements Serializable {
 		this.date = date;
 	}
 
-	public int getIdUser() {
-		return this.idUser;
-	}
-
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
-	}
-
 	public String getTitle() {
 		return this.title;
 	}
@@ -79,6 +74,14 @@ public class Commentimage implements Serializable {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

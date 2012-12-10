@@ -23,24 +23,20 @@ public class Image implements Serializable {
 
 	private short height;
 
-	private int idAlbum;
-
 	private String name;
+
+	private String path;
 
 	private short width;
 
 	//bi-directional many-to-one association to Commentimage
 	@OneToMany(mappedBy="image")
-	private List<Commentimage> commentimages;
+	private List<Commentimage> comments;
 
-	//bi-directional many-to-one association to User
+	//bi-directional many-to-one association to Album
 	@ManyToOne
-	@JoinColumn(name="idUser")
-	private User user;
-
-	//bi-directional many-to-many association to User
-	@ManyToMany(mappedBy="images2")
-	private List<User> users;
+	@JoinColumn(name="idAlbum")
+	private Album album;
 
 	public Image() {
 	}
@@ -77,20 +73,20 @@ public class Image implements Serializable {
 		this.height = height;
 	}
 
-	public int getIdAlbum() {
-		return this.idAlbum;
-	}
-
-	public void setIdAlbum(int idAlbum) {
-		this.idAlbum = idAlbum;
-	}
-
 	public String getName() {
 		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPath() {
+		return this.path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public short getWidth() {
@@ -101,28 +97,20 @@ public class Image implements Serializable {
 		this.width = width;
 	}
 
-	public List<Commentimage> getCommentimages() {
-		return this.commentimages;
+	public List<Commentimage> getComments() {
+		return this.comments;
 	}
 
-	public void setCommentimages(List<Commentimage> commentimages) {
-		this.commentimages = commentimages;
+	public void setComments(List<Commentimage> comments) {
+		this.comments = comments;
 	}
 
-	public User getUser() {
-		return this.user;
+	public Album getAlbum() {
+		return this.album;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<User> getUsers() {
-		return this.users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setAlbum(Album album) {
+		this.album = album;
 	}
 
 }
