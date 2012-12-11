@@ -23,6 +23,11 @@ public class Album implements Serializable {
 
 	private byte perm;
 
+	//uni-directional many-to-one association to Image
+	@ManyToOne
+	@JoinColumn(name="idMainImage")
+	private Image coverImage;
+
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="idUser")
@@ -35,6 +40,10 @@ public class Album implements Serializable {
 	//bi-directional many-to-one association to Image
 	@OneToMany(mappedBy="album")
 	private List<Image> images;
+
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="albums3")
+	private List<User> users;
 
 	public Album() {
 	}
@@ -71,6 +80,14 @@ public class Album implements Serializable {
 		this.perm = perm;
 	}
 
+	public Image getCoverImage() {
+		return this.coverImage;
+	}
+
+	public void setCoverImage(Image coverImage) {
+		this.coverImage = coverImage;
+	}
+
 	public User getUser() {
 		return this.user;
 	}
@@ -93,6 +110,14 @@ public class Album implements Serializable {
 
 	public void setImages(List<Image> images) {
 		this.images = images;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

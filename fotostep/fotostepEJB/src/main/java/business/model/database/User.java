@@ -25,6 +25,19 @@ public class User implements Serializable {
 	@OneToMany(mappedBy="user")
 	private List<Album> listeAlbums;
 
+	//uni-directional many-to-many association to Album
+	@ManyToMany
+	@JoinTable(
+		name="albumlikes"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idAlbum")
+			}
+		)
+	private List<Album> likesOnAlbums;
+
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="user")
 	private List<Commentalbum> commentsOnAlbums;
@@ -46,6 +59,32 @@ public class User implements Serializable {
 		)
 	private List<Image> likesOnImages;
 
+	//bi-directional many-to-many association to Album
+	@ManyToMany
+	@JoinTable(
+		name="albumlikes"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idAlbum")
+			}
+		)
+	private List<Album> albums3;
+
+	//bi-directional many-to-many association to Image
+	@ManyToMany
+	@JoinTable(
+		name="imagelikes"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idImage")
+			}
+		)
+	private List<Image> images2;
+
 	//uni-directional many-to-many association to User
 	@ManyToMany
 	@JoinTable(
@@ -62,19 +101,6 @@ public class User implements Serializable {
 	//bi-directional one-to-one association to Userdata
 	@OneToOne(mappedBy="user")
 	private Userdata userdata;
-
-	//uni-directional many-to-many association to Album
-	@ManyToMany
-	@JoinTable(
-		name="albumlikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idAlbum")
-			}
-		)
-	private List<Album> likesOnAlbums;
 
 	public User() {
 	}
@@ -111,6 +137,14 @@ public class User implements Serializable {
 		this.listeAlbums = listeAlbums;
 	}
 
+	public List<Album> getLikesOnAlbums() {
+		return this.likesOnAlbums;
+	}
+
+	public void setLikesOnAlbums(List<Album> likesOnAlbums) {
+		this.likesOnAlbums = likesOnAlbums;
+	}
+
 	public List<Commentalbum> getCommentsOnAlbums() {
 		return this.commentsOnAlbums;
 	}
@@ -135,6 +169,22 @@ public class User implements Serializable {
 		this.likesOnImages = likesOnImages;
 	}
 
+	public List<Album> getAlbums3() {
+		return this.albums3;
+	}
+
+	public void setAlbums3(List<Album> albums3) {
+		this.albums3 = albums3;
+	}
+
+	public List<Image> getImages2() {
+		return this.images2;
+	}
+
+	public void setImages2(List<Image> images2) {
+		this.images2 = images2;
+	}
+
 	public List<User> getFriends() {
 		return this.friends;
 	}
@@ -149,14 +199,6 @@ public class User implements Serializable {
 
 	public void setUserdata(Userdata userdata) {
 		this.userdata = userdata;
-	}
-
-	public List<Album> getLikesOnAlbums() {
-		return this.likesOnAlbums;
-	}
-
-	public void setLikesOnAlbums(List<Album> likesOnAlbums) {
-		this.likesOnAlbums = likesOnAlbums;
 	}
 
 }

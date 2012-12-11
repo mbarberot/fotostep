@@ -38,6 +38,10 @@ public class Image implements Serializable {
 	@JoinColumn(name="idAlbum")
 	private Album album;
 
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="images2")
+	private List<User> users;
+
 	public Image() {
 	}
 
@@ -111,6 +115,14 @@ public class Image implements Serializable {
 
 	public void setAlbum(Album album) {
 		this.album = album;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

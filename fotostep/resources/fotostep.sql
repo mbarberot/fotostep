@@ -3,7 +3,7 @@
 -- Server version:               5.5.24-log - MySQL Community Server (GPL)
 -- Server OS:                    Win64
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-12-10 18:46:13
+-- Date/time:                    2012-12-11 11:21:14
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -12,7 +12,7 @@
 
 -- Dumping database structure for fotostep
 DROP DATABASE IF EXISTS `fotostep`;
-CREATE DATABASE IF NOT EXISTS `fotostep` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE IF NOT EXISTS `fotostep` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 USE `fotostep`;
 
 
@@ -24,8 +24,11 @@ CREATE TABLE IF NOT EXISTS `album` (
   `name` varchar(64) NOT NULL,
   `description` varchar(255) NOT NULL,
   `perm` tinyint(10) NOT NULL,
+  `idMainImage` int(10) DEFAULT NULL,
   PRIMARY KEY (`idAlbum`),
   KEY `FK_album_user` (`idUser`),
+  KEY `FK_album_image` (`idMainImage`),
+  CONSTRAINT `FK_album_image` FOREIGN KEY (`idMainImage`) REFERENCES `image` (`idImage`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `FK_album_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -39,8 +42,8 @@ CREATE TABLE IF NOT EXISTS `albumlikes` (
   `idAlbum` int(10) NOT NULL,
   PRIMARY KEY (`idUser`,`idAlbum`),
   KEY `FK__album` (`idAlbum`),
-  CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
-  CONSTRAINT `FK__album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK__album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -110,8 +113,8 @@ CREATE TABLE IF NOT EXISTS `imagelikes` (
   `idImage` int(10) NOT NULL,
   PRIMARY KEY (`idUser`,`idImage`),
   KEY `FK_imagelikes_image` (`idImage`),
-  CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`),
-  CONSTRAINT `FK_imagelikes_image` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_imagelikes_image` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
@@ -123,7 +126,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   `idUser` int(10) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `nickname` varchar(50) NOT NULL,
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -137,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `userdata` (
   `firstname` varchar(50) NOT NULL,
   `foreName` varchar(50) NOT NULL,
   `birthDate` date DEFAULT NULL,
-  `gender` bit(10) NOT NULL DEFAULT b'110001' COMMENT '0 : H / 1 : F',
+  `gender` bit(10) NOT NULL DEFAULT b'0' COMMENT '0 : H / 1 : F',
   PRIMARY KEY (`idUser`),
   CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
