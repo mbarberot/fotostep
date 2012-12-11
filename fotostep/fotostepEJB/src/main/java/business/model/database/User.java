@@ -10,15 +10,19 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="user")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private int idUser;
 
+	@Column(nullable=false, length=50)
 	private String login;
 
+	@Column(nullable=false, length=50)
 	private String password;
 
 	//bi-directional many-to-one association to Album
@@ -30,10 +34,10 @@ public class User implements Serializable {
 	@JoinTable(
 		name="albumlikes"
 		, joinColumns={
-			@JoinColumn(name="idUser")
+			@JoinColumn(name="idUser", nullable=false)
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="idAlbum")
+			@JoinColumn(name="idAlbum", nullable=false)
 			}
 		)
 	private List<Album> likesOnAlbums;
@@ -51,49 +55,24 @@ public class User implements Serializable {
 	@JoinTable(
 		name="imagelikes"
 		, joinColumns={
-			@JoinColumn(name="idUser")
+			@JoinColumn(name="idUser", nullable=false)
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="idImage")
+			@JoinColumn(name="idImage", nullable=false)
 			}
 		)
 	private List<Image> likesOnImages;
 
-	//bi-directional many-to-many association to Album
-	@ManyToMany
-	@JoinTable(
-		name="albumlikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idAlbum")
-			}
-		)
-	private List<Album> albums3;
-
-	//bi-directional many-to-many association to Image
-	@ManyToMany
-	@JoinTable(
-		name="imagelikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idImage")
-			}
-		)
-	private List<Image> images2;
 
 	//uni-directional many-to-many association to User
 	@ManyToMany
 	@JoinTable(
 		name="userfriendships"
 		, joinColumns={
-			@JoinColumn(name="idUser1")
+			@JoinColumn(name="idUser1", nullable=false)
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="idUser2")
+			@JoinColumn(name="idUser2", nullable=false)
 			}
 		)
 	private List<User> friends;
@@ -167,22 +146,6 @@ public class User implements Serializable {
 
 	public void setLikesOnImages(List<Image> likesOnImages) {
 		this.likesOnImages = likesOnImages;
-	}
-
-	public List<Album> getAlbums3() {
-		return this.albums3;
-	}
-
-	public void setAlbums3(List<Album> albums3) {
-		this.albums3 = albums3;
-	}
-
-	public List<Image> getImages2() {
-		return this.images2;
-	}
-
-	public void setImages2(List<Image> images2) {
-		this.images2 = images2;
 	}
 
 	public List<User> getFriends() {

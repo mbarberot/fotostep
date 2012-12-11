@@ -10,17 +10,22 @@ import java.util.List;
  * 
  */
 @Entity
+@Table(name="album")
 public class Album implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(unique=true, nullable=false)
 	private int idAlbum;
 
+	@Column(nullable=false, length=255)
 	private String description;
 
+	@Column(nullable=false, length=64)
 	private String name;
 
+	@Column(nullable=false)
 	private byte perm;
 
 	//uni-directional many-to-one association to Image
@@ -30,7 +35,7 @@ public class Album implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="idUser")
+	@JoinColumn(name="idUser", nullable=false)
 	private User user;
 
 	//bi-directional many-to-one association to Commentalbum
@@ -40,10 +45,6 @@ public class Album implements Serializable {
 	//bi-directional many-to-one association to Image
 	@OneToMany(mappedBy="album")
 	private List<Image> images;
-
-	//bi-directional many-to-many association to User
-	@ManyToMany(mappedBy="albums3")
-	private List<User> users;
 
 	public Album() {
 	}
@@ -110,14 +111,6 @@ public class Album implements Serializable {
 
 	public void setImages(List<Image> images) {
 		this.images = images;
-	}
-
-	public List<User> getUsers() {
-		return this.users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
 	}
 
 }
