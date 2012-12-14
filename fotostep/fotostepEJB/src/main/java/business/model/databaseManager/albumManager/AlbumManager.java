@@ -42,12 +42,4 @@ public class AlbumManager implements AlbumManagerLocal
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void likeAlbum(Album album, User user) throws AlbumNotFoundException, UserNotFoundException{
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public void commentAlbum(Album album, User user, String title, Date date, String body) throws AlbumNotFoundException, UserNotFoundException{
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }

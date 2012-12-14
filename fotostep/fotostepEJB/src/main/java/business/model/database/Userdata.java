@@ -2,7 +2,6 @@ package business.model.database;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 
 
 /**
@@ -17,8 +16,7 @@ public class Userdata implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idUser;
 
-	@Temporal(TemporalType.DATE)
-	private Date birthDate;
+	private long birthDate;
 
 	private String firstname;
 
@@ -42,11 +40,11 @@ public class Userdata implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public Date getBirthDate() {
+	public long getBirthDate() {
 		return this.birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(long birthDate) {
 		this.birthDate = birthDate;
 	}
 

@@ -1,17 +1,11 @@
 package business.model.databaseManager.userManager;
 
-import java.util.Date;
-
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import business.model.database.Album;
-import business.model.database.Albumlike;
-import business.model.database.Image;
-import business.model.database.Imagelike;
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.utilities.HashingUtilityLocal;
@@ -42,7 +36,7 @@ public class UserManager implements UserManagerLocal
 	}
 
 	public Userdata createUserRegisterData(User user, String firstName, String lastName,
-			byte gender, Date birthDate) {
+			byte gender, long birthDate) {
 		
 		Userdata data = new Userdata();
 		data.setFirstname(firstName);
@@ -90,33 +84,5 @@ public class UserManager implements UserManagerLocal
 	public User getUser(int id) {
 		return em.find(User.class, id);
 	}
-
-	public void like(User user, Album album) {
-		Albumlike like = new Albumlike();
-		like.setUser(user);
-		like.setAlbum(album);
-		like.setDate(System.currentTimeMillis());
-		em.persist(like);
-	}
-
-	public void like(User user, Image image) {
-		Imagelike like = new Imagelike();
-		like.setUser(user);
-		like.setImage(image);
-		like.setDate(System.currentTimeMillis());
-		em.persist(like);
-	}
-
-	public void dislike(User user, Album album) {
-		for(Albumlike like : user.getAlbumlikes())
-			if(like.getAlbum().equals(album))
-				em.remove(like);
-	}
-
-	public void dislike(User user, Image image) {
-		for(Imagelike like : user.getImagelikes())
-			if(like.getImage().equals(image))
-				em.remove(like);
-	}
-
+	
 }

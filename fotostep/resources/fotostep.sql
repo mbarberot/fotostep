@@ -3,7 +3,7 @@
 -- Server version:               5.5.28 - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-12-14 10:17:29
+-- Date/time:                    2012-12-14 10:26:50
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `userdata` (
   `idUser` int(10) NOT NULL,
   `firstname` varchar(50) NOT NULL,
   `foreName` varchar(50) NOT NULL,
-  `birthDate` date DEFAULT NULL,
+  `birthDate` int(11) NOT NULL,
   `gender` bit(10) NOT NULL DEFAULT b'0' COMMENT '0 : H / 1 : F',
   PRIMARY KEY (`idUser`),
   CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
