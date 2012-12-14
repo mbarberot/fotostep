@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.ejb.Local;
 
+import business.model.database.Album;
+import business.model.database.Image;
 import business.model.database.User;
 import business.model.database.Userdata;
 
@@ -30,4 +32,12 @@ public interface UserManagerLocal
 	public User getUser(int id);
 	
 	public User searchUserByNickname(String nickame);
+	
+	public void like(User user, Album album);
+	
+	public void like(User user, Image image);
+	
+	public void dislike(User user, Album album);
+	
+	public void dislike(User user, Image image);
 }

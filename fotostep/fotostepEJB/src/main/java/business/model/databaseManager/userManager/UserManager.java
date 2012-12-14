@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import business.model.database.Album;
+import business.model.database.Image;
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.utilities.HashingUtilityLocal;
@@ -83,6 +85,26 @@ public class UserManager implements UserManagerLocal
 	
 	public User getUser(int id) {
 		return em.find(User.class, id);
+	}
+
+	public void like(User user, Album album) {
+		user.getAlbums1().add(album);
+		em.persist(user);
+	}
+
+	public void like(User user, Image image) {
+		user.getImages1().add(image);
+		em.persist(user);
+	}
+
+	public void dislike(User user, Album album) {
+		user.getAlbums1().remove(album);
+		em.persist(user);
+	}
+
+	public void dislike(User user, Image image) {
+		user.getImages1().remove(image);
+		em.persist(user);
 	}
 
 }
