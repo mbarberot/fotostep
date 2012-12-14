@@ -55,68 +55,85 @@
 				<h1><img src="img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
 			</div>
 			
-			<div class="modify">			
-				<h2>Modifier son profil</h2>
-				<ul id="myTab" class="nav nav-tabs">
-					<li class="active">
-						<a href="#infos1" data-toggle="tab">Infos 1</a>
-					</li>
-					<li>
-						<a href="#infos2" data-toggle="tab">Infos 2</a>
-					</li>
-					<li>
-						<a href="#infos3" data-toggle="tab">Infos 3</a>
-					</li>
-					<li>
-						<a href="#infos4" data-toggle="tab">Infos 4</a>
-					</li>
-				</ul>
-				<form class="form-horizontal">	
-					<div id="myTabContent" class="tab-content">
-						<div class="tab-pane fade in active" id="infos1">						
-							<div class="control-group">
-								<label class="control-label" for="inputLastName">Votre nom</label>
-								<div class="controls">
-									<input type="text" id="inputLastName" placeholder="Nom">
+			<div class="index">
+				<div class="row">
+					<div class="span3">					
+						<div class="well sidebar-nav">
+							<ul class="nav nav-list">
+								<li><a href="#">Accueil</a></li>
+								<li class="nav-header">Mon compte</li>
+								<li><a href="#">Ajouter des photos</a></li>
+								<li class="active"><a href="#">Modifier mon compte</a></li>
+								<li><a href="#">Voir mon profil</a></li>
+								<li class="nav-header">Mes contacts</li>
+								<li><a href="#">Voir mes contacts</a></li>
+							</ul>
+						</div>					
+					</div>
+					<div class="span9">			
+						<h2>Modifier son profil</h2>
+						<ul id="myTab" class="nav nav-tabs">
+							<li class="active">
+								<a href="#infos1" data-toggle="tab">Infos 1</a>
+							</li>
+							<li>
+								<a href="#infos2" data-toggle="tab">Infos 2</a>
+							</li>
+							<li>
+								<a href="#infos3" data-toggle="tab">Infos 3</a>
+							</li>
+							<li>
+								<a href="#infos4" data-toggle="tab">Infos 4</a>
+							</li>
+						</ul>
+						<form class="form-horizontal">	
+							<div id="myTabContent" class="tab-content">
+								<div class="tab-pane fade in active" id="infos1">						
+									<div class="control-group">
+										<label class="control-label" for="inputLastName">Votre nom</label>
+										<div class="controls">
+										<input type="text" id="inputLastName" placeholder="Nom">
+										</div>
+									</div>				
+									<div class="control-group">
+										<label class="control-label" for="inputFirstName">Votre prénom</label>
+										<div class="controls">
+										<input type="text" id="inputFirstName" placeholder="Prénom">
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="inputEmail">Votre email</label>
+										<div class="controls">
+										<input type="text" id="inputEmail" placeholder="Email">
+										</div>
+									</div>										
 								</div>
-							</div>				
-							<div class="control-group">
-								<label class="control-label" for="inputFirstName">Votre prénom</label>
-								<div class="controls">
-									<input type="text" id="inputFirstName" placeholder="Prénom">
-								</div>
-							</div>
-							<div class="control-group">
-								<label class="control-label" for="inputEmail">Votre email</label>
-								<div class="controls">
-									<input type="text" id="inputEmail" placeholder="Email">
-								</div>
-							</div>										
-						</div>
-						<div class="tab-pane fade" id="infos2">
-							<div class="control-group">
-								<label class="control-label" for="inputKind">Vous êtes</label>
-								<div class="controls">
-									<select>
+								<div class="tab-pane fade" id="infos2">
+									<div class="control-group">
+										<label class="control-label" for="inputKind">Vous êtes</label>
+										<div class="controls">
+										<select>
 										<option>une Femme</option>
 										<option>un Homme</option>
-									</select>
+										</select>
+										</div>
+									</div>
 								</div>
+								<div class="tab-pane fade" id="infos3">
+								</div>
+								<div class="tab-pane fade" id="infos4">
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<button type="submit" class="btn btn-primary">Modifier</button>
+										<button type="button" class="btn">Annuler</button>								
+									</div>
+								</div>								
 							</div>
-						</div>
-						<div class="tab-pane fade" id="infos3">
-						</div>
-						<div class="tab-pane fade" id="infos4">
-						</div>
-						<div class="control-group">
-							<div class="controls">
-								<button type="submit" class="btn btn-primary">Modifier</button>
-								<button type="button" class="btn">Annuler</button>								
-							</div>
-						</div>								
+						</form>		
 					</div>
-				</form>		
-			</div>
+				</div>
+			</div>			
 			
 			<hr>
 
