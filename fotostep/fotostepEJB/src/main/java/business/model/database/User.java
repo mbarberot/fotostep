@@ -17,6 +17,8 @@ public class User implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idUser;
 
+	private long date;
+
 	private boolean enabled;
 
 	private String login;
@@ -26,6 +28,10 @@ public class User implements Serializable {
 	//bi-directional many-to-one association to Album
 	@OneToMany(mappedBy="user")
 	private List<Album> albums1;
+
+	//bi-directional many-to-one association to Albumlike
+	@OneToMany(mappedBy="user")
+	private List<Albumlike> albumlikes;
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="user")
@@ -47,6 +53,10 @@ public class User implements Serializable {
 			}
 		)
 	private List<Image> images1;
+
+	//bi-directional many-to-one association to Imagelike
+	@OneToMany(mappedBy="user")
+	private List<Imagelike> imagelikes;
 
 	//bi-directional many-to-many association to Album
 	@ManyToMany
@@ -108,6 +118,14 @@ public class User implements Serializable {
 	@OneToOne(mappedBy="user")
 	private Userdata userdata;
 
+	//bi-directional many-to-one association to Userfriendship
+	@OneToMany(mappedBy="user1")
+	private List<Userfriendship> userfriendships1;
+
+	//bi-directional many-to-one association to Userfriendship
+	@OneToMany(mappedBy="user2")
+	private List<Userfriendship> userfriendships2;
+
 	public User() {
 	}
 
@@ -117,6 +135,14 @@ public class User implements Serializable {
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
+	}
+
+	public long getDate() {
+		return this.date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
 	}
 
 	public boolean getEnabled() {
@@ -151,6 +177,14 @@ public class User implements Serializable {
 		this.albums1 = albums1;
 	}
 
+	public List<Albumlike> getAlbumlikes() {
+		return this.albumlikes;
+	}
+
+	public void setAlbumlikes(List<Albumlike> albumlikes) {
+		this.albumlikes = albumlikes;
+	}
+
 	public List<Commentalbum> getCommentalbums() {
 		return this.commentalbums;
 	}
@@ -173,6 +207,14 @@ public class User implements Serializable {
 
 	public void setImages1(List<Image> images1) {
 		this.images1 = images1;
+	}
+
+	public List<Imagelike> getImagelikes() {
+		return this.imagelikes;
+	}
+
+	public void setImagelikes(List<Imagelike> imagelikes) {
+		this.imagelikes = imagelikes;
 	}
 
 	public List<Album> getAlbums2() {
@@ -221,6 +263,22 @@ public class User implements Serializable {
 
 	public void setUserdata(Userdata userdata) {
 		this.userdata = userdata;
+	}
+
+	public List<Userfriendship> getUserfriendships1() {
+		return this.userfriendships1;
+	}
+
+	public void setUserfriendships1(List<Userfriendship> userfriendships1) {
+		this.userfriendships1 = userfriendships1;
+	}
+
+	public List<Userfriendship> getUserfriendships2() {
+		return this.userfriendships2;
+	}
+
+	public void setUserfriendships2(List<Userfriendship> userfriendships2) {
+		this.userfriendships2 = userfriendships2;
 	}
 
 }

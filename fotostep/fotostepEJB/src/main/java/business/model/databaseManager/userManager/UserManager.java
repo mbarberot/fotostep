@@ -9,7 +9,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import business.model.database.Album;
+import business.model.database.Albumlike;
+import business.model.database.AlbumlikePK;
 import business.model.database.Image;
+import business.model.database.Imagelike;
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.utilities.HashingUtilityLocal;
@@ -88,23 +91,31 @@ public class UserManager implements UserManagerLocal
 	}
 
 	public void like(User user, Album album) {
-		user.getAlbums1().add(album);
-		em.persist(user);
+		Albumlike like = new Albumlike();
+		like.setUser(user);
+		like.setAlbum(album);
+		like.setDate(System.currentTimeMillis());
+		em.persist(like);
 	}
 
 	public void like(User user, Image image) {
-		user.getImages1().add(image);
-		em.persist(user);
+		Imagelike like = new Imagelike();
+		like.setUser(user);
+		like.setImage(image);
+		like.setDate(System.currentTimeMillis());
+		em.persist(like);
 	}
 
 	public void dislike(User user, Album album) {
-		user.getAlbums1().remove(album);
-		em.persist(user);
+		for(Albumlike like : user.getAlbumlikes())
+			if(like.getAlbum().equals(album))
+				em.remove(like);
 	}
 
 	public void dislike(User user, Image image) {
-		user.getImages1().remove(image);
-		em.persist(user);
+		for(Imagelike like : user.getImagelikes())
+			if(like.getImage().equals(image))
+				em.remove(like);
 	}
 
 }

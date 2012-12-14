@@ -5,23 +5,18 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the commentalbum database table.
+ * The persistent class for the albumlikes database table.
  * 
  */
 @Entity
-public class Commentalbum implements Serializable {
+@Table(name="albumlikes")
+public class Albumlike implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idComment;
-
-	@Lob
-	private String body;
+	@EmbeddedId
+	private AlbumlikePK id;
 
 	private long date;
-
-	private String title;
 
 	//bi-directional many-to-one association to Album
 	@ManyToOne
@@ -33,23 +28,15 @@ public class Commentalbum implements Serializable {
 	@JoinColumn(name="idUser")
 	private User user;
 
-	public Commentalbum() {
+	public Albumlike() {
 	}
 
-	public int getIdComment() {
-		return this.idComment;
+	public AlbumlikePK getId() {
+		return this.id;
 	}
 
-	public void setIdComment(int idComment) {
-		this.idComment = idComment;
-	}
-
-	public String getBody() {
-		return this.body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
+	public void setId(AlbumlikePK id) {
+		this.id = id;
 	}
 
 	public long getDate() {
@@ -58,14 +45,6 @@ public class Commentalbum implements Serializable {
 
 	public void setDate(long date) {
 		this.date = date;
-	}
-
-	public String getTitle() {
-		return this.title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public Album getAlbum() {

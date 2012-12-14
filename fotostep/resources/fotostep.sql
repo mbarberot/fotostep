@@ -3,7 +3,7 @@
 -- Server version:               5.5.28 - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-12-14 09:54:43
+-- Date/time:                    2012-12-14 10:17:29
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `album` (
   `name` varchar(64) NOT NULL,
   `description` varchar(255) NOT NULL,
   `perm` tinyint(10) NOT NULL,
+  `date` int(10) DEFAULT NULL,
   `idMainImage` int(10) DEFAULT NULL,
   PRIMARY KEY (`idAlbum`),
   KEY `FK_album_user` (`idUser`),
@@ -43,10 +44,11 @@ DROP TABLE IF EXISTS `albumlikes`;
 CREATE TABLE IF NOT EXISTS `albumlikes` (
   `idUser` int(10) NOT NULL,
   `idAlbum` int(10) NOT NULL,
+  `date` int(10) NOT NULL,
   PRIMARY KEY (`idUser`,`idAlbum`),
   KEY `FK__album` (`idAlbum`),
   CONSTRAINT `FK__album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
+  CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table fotostep.albumlikes: ~0 rows (approximately)
@@ -110,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `image` (
   `height` smallint(6) NOT NULL,
   `width` smallint(6) NOT NULL,
   `path` varchar(50) NOT NULL,
+  `date` int(11) NOT NULL,
   PRIMARY KEY (`idImage`),
   KEY `FK_image_album` (`idAlbum`),
   CONSTRAINT `FK_image_album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -126,10 +129,11 @@ DROP TABLE IF EXISTS `imagelikes`;
 CREATE TABLE IF NOT EXISTS `imagelikes` (
   `idUser` int(10) NOT NULL,
   `idImage` int(10) NOT NULL,
+  `date` int(10) NOT NULL,
   PRIMARY KEY (`idUser`,`idImage`),
   KEY `FK_imagelikes_image` (`idImage`),
   CONSTRAINT `FK_imagelikes_image` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
+  CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Dumping data for table fotostep.imagelikes: ~0 rows (approximately)
@@ -145,6 +149,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `login` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '1',
+  `date` int(11) NOT NULL,
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -177,6 +182,7 @@ DROP TABLE IF EXISTS `userfriendships`;
 CREATE TABLE IF NOT EXISTS `userfriendships` (
   `idUser1` int(10) NOT NULL,
   `idUser2` int(10) NOT NULL,
+  `date` int(10) NOT NULL,
   PRIMARY KEY (`idUser1`,`idUser2`),
   KEY `idUser2` (`idUser2`),
   CONSTRAINT `userfriendships_ibfk_1` FOREIGN KEY (`idUser1`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE,

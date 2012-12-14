@@ -17,6 +17,8 @@ public class Image implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idImage;
 
+	private long date;
+
 	private String description;
 
 	private String format;
@@ -42,6 +44,10 @@ public class Image implements Serializable {
 	@JoinColumn(name="idAlbum")
 	private Album album;
 
+	//bi-directional many-to-one association to Imagelike
+	@OneToMany(mappedBy="image")
+	private List<Imagelike> imagelikes;
+
 	//bi-directional many-to-many association to User
 	@ManyToMany(mappedBy="images2")
 	private List<User> users;
@@ -55,6 +61,14 @@ public class Image implements Serializable {
 
 	public void setIdImage(int idImage) {
 		this.idImage = idImage;
+	}
+
+	public long getDate() {
+		return this.date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
 	}
 
 	public String getDescription() {
@@ -127,6 +141,14 @@ public class Image implements Serializable {
 
 	public void setAlbum(Album album) {
 		this.album = album;
+	}
+
+	public List<Imagelike> getImagelikes() {
+		return this.imagelikes;
+	}
+
+	public void setImagelikes(List<Imagelike> imagelikes) {
+		this.imagelikes = imagelikes;
 	}
 
 	public List<User> getUsers() {

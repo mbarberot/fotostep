@@ -17,6 +17,8 @@ public class Album implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idAlbum;
 
+	private long date;
+
 	private String description;
 
 	private String name;
@@ -32,6 +34,10 @@ public class Album implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="idUser")
 	private User user;
+
+	//bi-directional many-to-one association to Albumlike
+	@OneToMany(mappedBy="album")
+	private List<Albumlike> albumlikes;
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="album")
@@ -54,6 +60,14 @@ public class Album implements Serializable {
 
 	public void setIdAlbum(int idAlbum) {
 		this.idAlbum = idAlbum;
+	}
+
+	public long getDate() {
+		return this.date;
+	}
+
+	public void setDate(long date) {
+		this.date = date;
 	}
 
 	public String getDescription() {
@@ -94,6 +108,14 @@ public class Album implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Albumlike> getAlbumlikes() {
+		return this.albumlikes;
+	}
+
+	public void setAlbumlikes(List<Albumlike> albumlikes) {
+		this.albumlikes = albumlikes;
 	}
 
 	public List<Commentalbum> getCommentalbums() {

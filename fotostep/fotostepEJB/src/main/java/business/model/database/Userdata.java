@@ -24,7 +24,7 @@ public class Userdata implements Serializable {
 
 	private String foreName;
 
-	private byte gender;
+	private Object gender;
 
 	//bi-directional one-to-one association to User
 	@OneToOne
@@ -66,11 +66,11 @@ public class Userdata implements Serializable {
 		this.foreName = foreName;
 	}
 
-	public byte getGender() {
+	public Object getGender() {
 		return this.gender;
 	}
 
-	public void setGender(byte gender) {
+	public void setGender(Object gender) {
 		this.gender = gender;
 	}
 
