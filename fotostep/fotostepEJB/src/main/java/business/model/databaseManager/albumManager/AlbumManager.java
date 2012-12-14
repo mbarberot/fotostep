@@ -29,6 +29,7 @@ public class AlbumManager implements AlbumManagerLocal
         album.setName(name);
         album.setDescription(description);
         album.setPerm(permission.getPermission());
+        album.setDate(System.currentTimeMillis());
         em.persist(album);
         return album;
     }

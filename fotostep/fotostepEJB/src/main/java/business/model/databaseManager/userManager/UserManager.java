@@ -10,7 +10,6 @@ import javax.persistence.Query;
 
 import business.model.database.Album;
 import business.model.database.Albumlike;
-import business.model.database.AlbumlikePK;
 import business.model.database.Image;
 import business.model.database.Imagelike;
 import business.model.database.User;
@@ -35,6 +34,8 @@ public class UserManager implements UserManagerLocal
 		User user = new User();		
 		user.setLogin(login);
 		user.setPassword(hashTool.md5Hash(password));
+		user.setDate(System.currentTimeMillis());
+		
 		em.persist(user);
 		
 		return user;

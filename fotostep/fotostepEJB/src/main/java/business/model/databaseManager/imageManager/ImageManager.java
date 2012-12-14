@@ -24,6 +24,7 @@ public class ImageManager implements ImageManagerLocal
 		Image image = new Image();
 		//TODO : Mettre l'auteur de l'image
 		//TODO : Stocker l'image
+		image.setDate(System.currentTimeMillis());
 		em.persist(image);
 		return image;
 	}

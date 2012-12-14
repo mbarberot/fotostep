@@ -27,6 +27,7 @@ public class CommentManager implements CommentManagerLocal
 		comment.setUser(user);
 		comment.setTitle(title);
 		comment.setBody(text);
+		comment.setDate(System.currentTimeMillis());
 		em.persist(comment);
 		return comment;
 	}
@@ -45,6 +46,7 @@ public class CommentManager implements CommentManagerLocal
 		comment.setUser(user);
 		comment.setTitle(title);
 		comment.setBody(text);
+		comment.setDate(System.currentTimeMillis());
 		em.persist(comment);
 		return comment;
 	}
