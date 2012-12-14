@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 	<head>
 		<meta charset="utf-8">
@@ -12,6 +12,11 @@
 		<style>
 			body {
 				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+			
+			.avatars {
+				width: 40px;
+				height: 40px;
 			}
 		</style>
 		<link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -62,7 +67,37 @@
 			</div>
 			
 			<div class="index-user">
-				<img src="img/cartman.png" alt="mon avatar" />
+				<div class="row">
+					<div class="span3">					
+						<div class="well sidebar-nav">
+							<ul class="nav nav-list">
+								<li class="active"><a href="#">Accueil</a></li>
+								<li class="nav-header">Mon profil</li>
+								<li><a href="#">Voir mon profil</a></li>
+								<li><a href="#">Modifier mon compte</a></li>
+								<li class="nav-header">Mes actualités</li>
+								<li>...</li>
+								<li>...</li>
+							</ul>
+						</div>					
+					</div>
+					<div class="span9">
+						<div>						
+							<img src="img/cartman.png" alt="cartman" class="avatars" />
+							<h4>Cartman a ajouté de nouvelles photos à son album South Park</h4>
+							<p>(3 photos)</p>					
+						</div>
+						<hr>
+						
+						<div>						
+							<img src="img/cartman.png" alt="cartman" class="avatars" />
+							<h4>Cartman a ajouté de nouvelles photos à son album South Park</h4>
+							<p>(3 photos)</p>					
+						</div>
+						<hr>
+					</div>
+				</div>
+				<!-- <img src="img/cartman.png" alt="mon avatar" /> -->
 			</div>
 			
 			<hr>
