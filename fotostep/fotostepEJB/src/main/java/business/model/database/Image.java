@@ -10,41 +10,41 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="image")
 public class Image implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
 	private int idImage;
 
-	@Column(length=255)
 	private String description;
 
-	@Column(nullable=false, length=10)
 	private String format;
 
-	@Column(nullable=false)
 	private short height;
 
-	@Column(length=50)
 	private String name;
 
-	@Column(nullable=false, length=50)
 	private String path;
 
-	@Column(nullable=false)
 	private short width;
+
+	//bi-directional many-to-one association to Album
+	@OneToMany(mappedBy="image")
+	private List<Album> albums;
 
 	//bi-directional many-to-one association to Commentimage
 	@OneToMany(mappedBy="image")
-	private List<Commentimage> comments;
+	private List<Commentimage> commentimages;
 
 	//bi-directional many-to-one association to Album
 	@ManyToOne
-	@JoinColumn(name="idAlbum", nullable=false)
+	@JoinColumn(name="idAlbum")
 	private Album album;
+
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="images2")
+	private List<User> users;
 
 	public Image() {
 	}
@@ -105,12 +105,20 @@ public class Image implements Serializable {
 		this.width = width;
 	}
 
-	public List<Commentimage> getComments() {
-		return this.comments;
+	public List<Album> getAlbums() {
+		return this.albums;
 	}
 
-	public void setComments(List<Commentimage> comments) {
-		this.comments = comments;
+	public void setAlbums(List<Album> albums) {
+		this.albums = albums;
+	}
+
+	public List<Commentimage> getCommentimages() {
+		return this.commentimages;
+	}
+
+	public void setCommentimages(List<Commentimage> commentimages) {
+		this.commentimages = commentimages;
 	}
 
 	public Album getAlbum() {
@@ -119,6 +127,14 @@ public class Image implements Serializable {
 
 	public void setAlbum(Album album) {
 		this.album = album;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

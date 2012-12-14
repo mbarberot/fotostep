@@ -1,9 +1,9 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               5.5.24-log - MySQL Community Server (GPL)
--- Server OS:                    Win64
+-- Server version:               5.5.28 - MySQL Community Server (GPL)
+-- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-12-11 11:21:14
+-- Date/time:                    2012-12-14 09:54:43
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,7 +32,10 @@ CREATE TABLE IF NOT EXISTS `album` (
   CONSTRAINT `FK_album_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.album: ~0 rows (approximately)
+DELETE FROM `album`;
+/*!40000 ALTER TABLE `album` DISABLE KEYS */;
+/*!40000 ALTER TABLE `album` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.albumlikes
@@ -46,7 +49,10 @@ CREATE TABLE IF NOT EXISTS `albumlikes` (
   CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.albumlikes: ~0 rows (approximately)
+DELETE FROM `albumlikes`;
+/*!40000 ALTER TABLE `albumlikes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `albumlikes` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.commentalbum
@@ -65,7 +71,10 @@ CREATE TABLE IF NOT EXISTS `commentalbum` (
   CONSTRAINT `FK_commentalbum_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.commentalbum: ~0 rows (approximately)
+DELETE FROM `commentalbum`;
+/*!40000 ALTER TABLE `commentalbum` DISABLE KEYS */;
+/*!40000 ALTER TABLE `commentalbum` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.commentimage
@@ -84,7 +93,10 @@ CREATE TABLE IF NOT EXISTS `commentimage` (
   CONSTRAINT `FK_commentimage_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.commentimage: ~0 rows (approximately)
+DELETE FROM `commentimage`;
+/*!40000 ALTER TABLE `commentimage` DISABLE KEYS */;
+/*!40000 ALTER TABLE `commentimage` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.image
@@ -103,7 +115,10 @@ CREATE TABLE IF NOT EXISTS `image` (
   CONSTRAINT `FK_image_album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.image: ~0 rows (approximately)
+DELETE FROM `image`;
+/*!40000 ALTER TABLE `image` DISABLE KEYS */;
+/*!40000 ALTER TABLE `image` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.imagelikes
@@ -117,7 +132,10 @@ CREATE TABLE IF NOT EXISTS `imagelikes` (
   CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.imagelikes: ~0 rows (approximately)
+DELETE FROM `imagelikes`;
+/*!40000 ALTER TABLE `imagelikes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `imagelikes` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.user
@@ -126,10 +144,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `idUser` int(10) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`idUser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.user: ~0 rows (approximately)
+DELETE FROM `user`;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.userdata
@@ -144,7 +166,10 @@ CREATE TABLE IF NOT EXISTS `userdata` (
   CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.userdata: ~0 rows (approximately)
+DELETE FROM `userdata`;
+/*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
 
 
 -- Dumping structure for table fotostep.userfriendships
@@ -158,6 +183,9 @@ CREATE TABLE IF NOT EXISTS `userfriendships` (
   CONSTRAINT `userfriendships_ibfk_2` FOREIGN KEY (`idUser2`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
+-- Dumping data for table fotostep.userfriendships: ~0 rows (approximately)
+DELETE FROM `userfriendships`;
+/*!40000 ALTER TABLE `userfriendships` DISABLE KEYS */;
+/*!40000 ALTER TABLE `userfriendships` ENABLE KEYS */;
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

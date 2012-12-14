@@ -10,72 +10,99 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="user")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
 	private int idUser;
 
-	@Column(nullable=false, length=50)
+	private boolean enabled;
+
 	private String login;
 
-	@Column(nullable=false, length=50)
 	private String password;
 
 	//bi-directional many-to-one association to Album
 	@OneToMany(mappedBy="user")
-	private List<Album> listeAlbums;
-
-	//uni-directional many-to-many association to Album
-	@ManyToMany
-	@JoinTable(
-		name="albumlikes"
-		, joinColumns={
-			@JoinColumn(name="idUser", nullable=false)
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idAlbum", nullable=false)
-			}
-		)
-	private List<Album> likesOnAlbums;
+	private List<Album> albums1;
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="user")
-	private List<Commentalbum> commentsOnAlbums;
+	private List<Commentalbum> commentalbums;
 
 	//bi-directional many-to-one association to Commentimage
 	@OneToMany(mappedBy="user")
-	private List<Commentimage> commentsOnImages;
+	private List<Commentimage> commentimages;
 
 	//uni-directional many-to-many association to Image
 	@ManyToMany
 	@JoinTable(
 		name="imagelikes"
 		, joinColumns={
-			@JoinColumn(name="idUser", nullable=false)
+			@JoinColumn(name="idUser")
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="idImage", nullable=false)
+			@JoinColumn(name="idImage")
 			}
 		)
-	private List<Image> likesOnImages;
+	private List<Image> images1;
 
+	//bi-directional many-to-many association to Album
+	@ManyToMany
+	@JoinTable(
+		name="albumlikes"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idAlbum")
+			}
+		)
+	private List<Album> albums2;
+
+	//bi-directional many-to-many association to Image
+	@ManyToMany
+	@JoinTable(
+		name="imagelikes"
+		, joinColumns={
+			@JoinColumn(name="idUser")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idImage")
+			}
+		)
+	private List<Image> images2;
 
 	//uni-directional many-to-many association to User
 	@ManyToMany
 	@JoinTable(
 		name="userfriendships"
 		, joinColumns={
-			@JoinColumn(name="idUser1", nullable=false)
+			@JoinColumn(name="idUser1")
 			}
 		, inverseJoinColumns={
-			@JoinColumn(name="idUser2", nullable=false)
+			@JoinColumn(name="idUser2")
 			}
 		)
 	private List<User> friends;
+
+	//bi-directional many-to-many association to User
+	@ManyToMany
+	@JoinTable(
+		name="userfriendships"
+		, joinColumns={
+			@JoinColumn(name="idUser2")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="idUser1")
+			}
+		)
+	private List<User> users2;
+
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="users2")
+	private List<User> users3;
 
 	//bi-directional one-to-one association to Userdata
 	@OneToOne(mappedBy="user")
@@ -90,6 +117,14 @@ public class User implements Serializable {
 
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
+	}
+
+	public boolean getEnabled() {
+		return this.enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getLogin() {
@@ -108,44 +143,52 @@ public class User implements Serializable {
 		this.password = password;
 	}
 
-	public List<Album> getListeAlbums() {
-		return this.listeAlbums;
+	public List<Album> getAlbums1() {
+		return this.albums1;
 	}
 
-	public void setListeAlbums(List<Album> listeAlbums) {
-		this.listeAlbums = listeAlbums;
+	public void setAlbums1(List<Album> albums1) {
+		this.albums1 = albums1;
 	}
 
-	public List<Album> getLikesOnAlbums() {
-		return this.likesOnAlbums;
+	public List<Commentalbum> getCommentalbums() {
+		return this.commentalbums;
 	}
 
-	public void setLikesOnAlbums(List<Album> likesOnAlbums) {
-		this.likesOnAlbums = likesOnAlbums;
+	public void setCommentalbums(List<Commentalbum> commentalbums) {
+		this.commentalbums = commentalbums;
 	}
 
-	public List<Commentalbum> getCommentsOnAlbums() {
-		return this.commentsOnAlbums;
+	public List<Commentimage> getCommentimages() {
+		return this.commentimages;
 	}
 
-	public void setCommentsOnAlbums(List<Commentalbum> commentsOnAlbums) {
-		this.commentsOnAlbums = commentsOnAlbums;
+	public void setCommentimages(List<Commentimage> commentimages) {
+		this.commentimages = commentimages;
 	}
 
-	public List<Commentimage> getCommentsOnImages() {
-		return this.commentsOnImages;
+	public List<Image> getImages1() {
+		return this.images1;
 	}
 
-	public void setCommentsOnImages(List<Commentimage> commentsOnImages) {
-		this.commentsOnImages = commentsOnImages;
+	public void setImages1(List<Image> images1) {
+		this.images1 = images1;
 	}
 
-	public List<Image> getLikesOnImages() {
-		return this.likesOnImages;
+	public List<Album> getAlbums2() {
+		return this.albums2;
 	}
 
-	public void setLikesOnImages(List<Image> likesOnImages) {
-		this.likesOnImages = likesOnImages;
+	public void setAlbums2(List<Album> albums2) {
+		this.albums2 = albums2;
+	}
+
+	public List<Image> getImages2() {
+		return this.images2;
+	}
+
+	public void setImages2(List<Image> images2) {
+		this.images2 = images2;
 	}
 
 	public List<User> getFriends() {
@@ -154,6 +197,22 @@ public class User implements Serializable {
 
 	public void setFriends(List<User> friends) {
 		this.friends = friends;
+	}
+
+	public List<User> getUsers2() {
+		return this.users2;
+	}
+
+	public void setUsers2(List<User> users2) {
+		this.users2 = users2;
+	}
+
+	public List<User> getUsers3() {
+		return this.users3;
+	}
+
+	public void setUsers3(List<User> users3) {
+		this.users3 = users3;
 	}
 
 	public Userdata getUserdata() {

@@ -9,33 +9,28 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="commentimage")
 public class Commentimage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
 	private int idComment;
 
 	@Lob
-	@Column(nullable=false)
 	private String body;
 
-	@Column(nullable=false)
 	private int date;
 
-	@Column(nullable=false, length=50)
 	private String title;
 
 	//bi-directional many-to-one association to Image
 	@ManyToOne
-	@JoinColumn(name="idImage", nullable=false)
+	@JoinColumn(name="idImage")
 	private Image image;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="idUser", nullable=false)
+	@JoinColumn(name="idUser")
 	private User user;
 
 	public Commentimage() {

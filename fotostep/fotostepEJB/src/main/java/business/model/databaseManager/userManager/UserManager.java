@@ -57,17 +57,13 @@ public class UserManager implements UserManagerLocal
 	
 	public void enableUser(int id) {
 		User user = searchUserById(id);
-		
-		//TODO : Ajouter un champ pour l'état de l'user
-		
+		user.setEnabled(true);
 		em.persist(user);
 	}
 
 	public void disableUser(int id) {
 		User user = searchUserById(id);
-		
-		//TODO : Ajouter un champ pour l'état de l'user
-		
+		user.setEnabled(false);
 		em.persist(user);
 	}	
 	

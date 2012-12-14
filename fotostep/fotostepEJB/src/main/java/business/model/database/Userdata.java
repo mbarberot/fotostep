@@ -10,29 +10,25 @@ import java.util.Date;
  * 
  */
 @Entity
-@Table(name="userdata")
 public class Userdata implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idUser;
 
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 
-	@Column(nullable=false, length=50)
 	private String firstname;
 
-	@Column(nullable=false, length=50)
 	private String foreName;
 
-	@Column(nullable=false)
 	private byte gender;
 
 	//bi-directional one-to-one association to User
 	@OneToOne
-	@JoinColumn(name="idUser", nullable=false, insertable=false, updatable=false)
+	@JoinColumn(name="idUser")
 	private User user;
 
 	public Userdata() {

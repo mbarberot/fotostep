@@ -10,41 +10,40 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="album")
 public class Album implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
 	private int idAlbum;
 
-	@Column(nullable=false, length=255)
 	private String description;
 
-	@Column(nullable=false, length=64)
 	private String name;
 
-	@Column(nullable=false)
 	private byte perm;
 
-	//uni-directional many-to-one association to Image
+	//bi-directional many-to-one association to Image
 	@ManyToOne
 	@JoinColumn(name="idMainImage")
-	private Image coverImage;
+	private Image image;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="idUser", nullable=false)
+	@JoinColumn(name="idUser")
 	private User user;
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="album")
-	private List<Commentalbum> comments;
+	private List<Commentalbum> commentalbums;
 
 	//bi-directional many-to-one association to Image
 	@OneToMany(mappedBy="album")
 	private List<Image> images;
+
+	//bi-directional many-to-many association to User
+	@ManyToMany(mappedBy="albums2")
+	private List<User> users;
 
 	public Album() {
 	}
@@ -81,12 +80,12 @@ public class Album implements Serializable {
 		this.perm = perm;
 	}
 
-	public Image getCoverImage() {
-		return this.coverImage;
+	public Image getImage() {
+		return this.image;
 	}
 
-	public void setCoverImage(Image coverImage) {
-		this.coverImage = coverImage;
+	public void setImage(Image image) {
+		this.image = image;
 	}
 
 	public User getUser() {
@@ -97,12 +96,12 @@ public class Album implements Serializable {
 		this.user = user;
 	}
 
-	public List<Commentalbum> getComments() {
-		return this.comments;
+	public List<Commentalbum> getCommentalbums() {
+		return this.commentalbums;
 	}
 
-	public void setComments(List<Commentalbum> comments) {
-		this.comments = comments;
+	public void setCommentalbums(List<Commentalbum> commentalbums) {
+		this.commentalbums = commentalbums;
 	}
 
 	public List<Image> getImages() {
@@ -111,6 +110,14 @@ public class Album implements Serializable {
 
 	public void setImages(List<Image> images) {
 		this.images = images;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

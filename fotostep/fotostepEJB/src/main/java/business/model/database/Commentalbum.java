@@ -9,33 +9,28 @@ import javax.persistence.*;
  * 
  */
 @Entity
-@Table(name="commentalbum")
 public class Commentalbum implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(unique=true, nullable=false)
 	private int idComment;
 
 	@Lob
-	@Column(nullable=false)
 	private String body;
 
-	@Column(nullable=false)
 	private int date;
 
-	@Column(nullable=false, length=255)
 	private String title;
 
 	//bi-directional many-to-one association to Album
 	@ManyToOne
-	@JoinColumn(name="idAlbum", nullable=false)
+	@JoinColumn(name="idAlbum")
 	private Album album;
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name="idUser", nullable=false)
+	@JoinColumn(name="idUser")
 	private User user;
 
 	public Commentalbum() {
