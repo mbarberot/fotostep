@@ -1,20 +1,15 @@
 package jsf;
 
-import java.util.Date;
-import java.util.Map;
-
-import business.model.databaseManager.userManager.UserManagerLocal;
-import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
-import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import org.apache.commons.validator.routines.EmailValidator;
-
 import business.model.database.User;
 import business.model.database.Userdata;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import java.util.Date;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import org.apache.commons.validator.routines.EmailValidator;
 
 public class RegisterController {
 
@@ -116,10 +111,10 @@ public class RegisterController {
 	 * 
 	 */
 	public String register() throws ValidatorException {
-		byte sex = (byte) ((this.gender.equals("h")) ? 0 : 1);
+		boolean sex = this.gender.equals("h");
 		User user = userManager.addUser(eMail, password);
 		Userdata data = userManager.createUserRegisterData(user, firstName,
-				firstName, sex, new Date());
+				firstName, sex, new Date().getTime());
 		return "REG_SUCCESS";
 	}
 

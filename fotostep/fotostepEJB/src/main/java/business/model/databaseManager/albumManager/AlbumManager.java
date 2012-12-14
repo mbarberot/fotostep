@@ -7,7 +7,6 @@ import business.util.Permission;
 import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.ImageNotFoundException;
 import business.util.exceptions.UserNotFoundException;
-import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -25,7 +24,7 @@ public class AlbumManager implements AlbumManagerLocal
 
     public Album createAlbum(User user, String name, String description, Permission permission) throws UserNotFoundException{
         Album album = new Album();
-        album.setUser(user);
+        album.setIdUser(user);
         album.setName(name);
         album.setDescription(description);
         album.setPerm(permission.getPermission());

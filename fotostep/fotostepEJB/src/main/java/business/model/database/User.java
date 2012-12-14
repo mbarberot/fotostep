@@ -1,284 +1,241 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package business.model.database;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
-
+import javax.persistence.*;
 
 /**
- * The persistent class for the user database table.
- * 
+ *
+ * @author kawa
  */
 @Entity
-public class User implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "user")
+@NamedQueries(
+{
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+    @NamedQuery(name = "User.findByIdUser", query = "SELECT u FROM User u WHERE u.idUser = :idUser"),
+    @NamedQuery(name = "User.findByLogin", query = "SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
+    @NamedQuery(name = "User.findByEnabled", query = "SELECT u FROM User u WHERE u.enabled = :enabled"),
+    @NamedQuery(name = "User.findByDate", query = "SELECT u FROM User u WHERE u.date = :date")
+})
+public class User implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idUser")
+    private Integer idUser;
+    @Basic(optional = false)
+    @Column(name = "login")
+    private String login;
+    @Basic(optional = false)
+    @Column(name = "password")
+    private String password;
+    @Basic(optional = false)
+    @Column(name = "enabled")
+    private boolean enabled;
+    @Basic(optional = false)
+    @Column(name = "date")
+    private Long date;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Imagelikes> imagelikesList;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private Userdata userdata;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Userfriendships> userfriendshipsList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user1")
+    private List<Userfriendships> userfriendshipsList1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<Commentimage> commentimageList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<Album> albumList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Albumlikes> albumlikesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUser")
+    private List<Commentalbum> commentalbumList;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idUser;
+    public User()
+    {
+    }
 
-	private long date;
+    public User(Integer idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	private boolean enabled;
+    public User(Integer idUser, String login, String password, boolean enabled, Long date)
+    {
+        this.idUser = idUser;
+        this.login = login;
+        this.password = password;
+        this.enabled = enabled;
+        this.date = date;
+    }
 
-	private String login;
+    public Integer getIdUser()
+    {
+        return idUser;
+    }
 
-	private String password;
+    public void setIdUser(Integer idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	//bi-directional many-to-one association to Album
-	@OneToMany(mappedBy="user")
-	private List<Album> albums1;
+    public String getLogin()
+    {
+        return login;
+    }
 
-	//bi-directional many-to-one association to Albumlike
-	@OneToMany(mappedBy="user")
-	private List<Albumlike> albumlikes;
+    public void setLogin(String login)
+    {
+        this.login = login;
+    }
 
-	//bi-directional many-to-one association to Commentalbum
-	@OneToMany(mappedBy="user")
-	private List<Commentalbum> commentalbums;
+    public String getPassword()
+    {
+        return password;
+    }
 
-	//bi-directional many-to-one association to Commentimage
-	@OneToMany(mappedBy="user")
-	private List<Commentimage> commentimages;
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
 
-	//uni-directional many-to-many association to Image
-	@ManyToMany
-	@JoinTable(
-		name="imagelikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idImage")
-			}
-		)
-	private List<Image> images1;
+    public boolean getEnabled()
+    {
+        return enabled;
+    }
 
-	//bi-directional many-to-one association to Imagelike
-	@OneToMany(mappedBy="user")
-	private List<Imagelike> imagelikes;
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
 
-	//bi-directional many-to-many association to Album
-	@ManyToMany
-	@JoinTable(
-		name="albumlikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idAlbum")
-			}
-		)
-	private List<Album> albums2;
+    public Long getDate()
+    {
+        return date;
+    }
 
-	//bi-directional many-to-many association to Image
-	@ManyToMany
-	@JoinTable(
-		name="imagelikes"
-		, joinColumns={
-			@JoinColumn(name="idUser")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idImage")
-			}
-		)
-	private List<Image> images2;
+    public void setDate(Long date)
+    {
+        this.date = date;
+    }
 
-	//uni-directional many-to-many association to User
-	@ManyToMany
-	@JoinTable(
-		name="userfriendships"
-		, joinColumns={
-			@JoinColumn(name="idUser1")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idUser2")
-			}
-		)
-	private List<User> friends;
+    public List<Imagelikes> getImagelikes()
+    {
+        return imagelikesList;
+    }
 
-	//bi-directional many-to-many association to User
-	@ManyToMany
-	@JoinTable(
-		name="userfriendships"
-		, joinColumns={
-			@JoinColumn(name="idUser2")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idUser1")
-			}
-		)
-	private List<User> users2;
+    public void setImagelikes(List<Imagelikes> imagelikesList)
+    {
+        this.imagelikesList = imagelikesList;
+    }
 
-	//bi-directional many-to-many association to User
-	@ManyToMany(mappedBy="users2")
-	private List<User> users3;
+    public Userdata getUserdata()
+    {
+        return userdata;
+    }
 
-	//bi-directional one-to-one association to Userdata
-	@OneToOne(mappedBy="user")
-	private Userdata userdata;
+    public void setUserdata(Userdata userdata)
+    {
+        this.userdata = userdata;
+    }
 
-	//bi-directional many-to-one association to Userfriendship
-	@OneToMany(mappedBy="user1")
-	private List<Userfriendship> userfriendships1;
+    public List<Userfriendships> getUserfriendships()
+    {
+        return userfriendshipsList;
+    }
 
-	//bi-directional many-to-one association to Userfriendship
-	@OneToMany(mappedBy="user2")
-	private List<Userfriendship> userfriendships2;
+    public void setUserfriendships(List<Userfriendships> userfriendshipsList)
+    {
+        this.userfriendshipsList = userfriendshipsList;
+    }
 
-	public User() {
-	}
+    public List<Userfriendships> getUserfriendships1()
+    {
+        return userfriendshipsList1;
+    }
 
-	public int getIdUser() {
-		return this.idUser;
-	}
+    public void setUserfriendships1(List<Userfriendships> userfriendshipsList1)
+    {
+        this.userfriendshipsList1 = userfriendshipsList1;
+    }
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
-	}
+    public List<Commentimage> getCommentimageList()
+    {
+        return commentimageList;
+    }
 
-	public long getDate() {
-		return this.date;
-	}
+    public void setCommentimageList(List<Commentimage> commentimageList)
+    {
+        this.commentimageList = commentimageList;
+    }
 
-	public void setDate(long date) {
-		this.date = date;
-	}
+    public List<Album> getAlbumList()
+    {
+        return albumList;
+    }
 
-	public boolean getEnabled() {
-		return this.enabled;
-	}
+    public void setAlbum(List<Album> albumList)
+    {
+        this.albumList = albumList;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public List<Albumlikes> getAlbumlikes()
+    {
+        return albumlikesList;
+    }
 
-	public String getLogin() {
-		return this.login;
-	}
+    public void setAlbumlikes(List<Albumlikes> albumlikesList)
+    {
+        this.albumlikesList = albumlikesList;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public List<Commentalbum> getCommentalbum()
+    {
+        return commentalbumList;
+    }
 
-	public String getPassword() {
-		return this.password;
-	}
+    public void setCommentalbum(List<Commentalbum> commentalbumList)
+    {
+        this.commentalbumList = commentalbumList;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idUser != null ? idUser.hashCode() : 0);
+        return hash;
+    }
 
-	public List<Album> getAlbums1() {
-		return this.albums1;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof User))
+        {
+            return false;
+        }
+        User other = (User) object;
+        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public void setAlbums1(List<Album> albums1) {
-		this.albums1 = albums1;
-	}
-
-	public List<Albumlike> getAlbumlikes() {
-		return this.albumlikes;
-	}
-
-	public void setAlbumlikes(List<Albumlike> albumlikes) {
-		this.albumlikes = albumlikes;
-	}
-
-	public List<Commentalbum> getCommentalbums() {
-		return this.commentalbums;
-	}
-
-	public void setCommentalbums(List<Commentalbum> commentalbums) {
-		this.commentalbums = commentalbums;
-	}
-
-	public List<Commentimage> getCommentimages() {
-		return this.commentimages;
-	}
-
-	public void setCommentimages(List<Commentimage> commentimages) {
-		this.commentimages = commentimages;
-	}
-
-	public List<Image> getImages1() {
-		return this.images1;
-	}
-
-	public void setImages1(List<Image> images1) {
-		this.images1 = images1;
-	}
-
-	public List<Imagelike> getImagelikes() {
-		return this.imagelikes;
-	}
-
-	public void setImagelikes(List<Imagelike> imagelikes) {
-		this.imagelikes = imagelikes;
-	}
-
-	public List<Album> getAlbums2() {
-		return this.albums2;
-	}
-
-	public void setAlbums2(List<Album> albums2) {
-		this.albums2 = albums2;
-	}
-
-	public List<Image> getImages2() {
-		return this.images2;
-	}
-
-	public void setImages2(List<Image> images2) {
-		this.images2 = images2;
-	}
-
-	public List<User> getFriends() {
-		return this.friends;
-	}
-
-	public void setFriends(List<User> friends) {
-		this.friends = friends;
-	}
-
-	public List<User> getUsers2() {
-		return this.users2;
-	}
-
-	public void setUsers2(List<User> users2) {
-		this.users2 = users2;
-	}
-
-	public List<User> getUsers3() {
-		return this.users3;
-	}
-
-	public void setUsers3(List<User> users3) {
-		this.users3 = users3;
-	}
-
-	public Userdata getUserdata() {
-		return this.userdata;
-	}
-
-	public void setUserdata(Userdata userdata) {
-		this.userdata = userdata;
-	}
-
-	public List<Userfriendship> getUserfriendships1() {
-		return this.userfriendships1;
-	}
-
-	public void setUserfriendships1(List<Userfriendship> userfriendships1) {
-		this.userfriendships1 = userfriendships1;
-	}
-
-	public List<Userfriendship> getUserfriendships2() {
-		return this.userfriendships2;
-	}
-
-	public void setUserfriendships2(List<Userfriendship> userfriendships2) {
-		this.userfriendships2 = userfriendships2;
-	}
-
+    @Override
+    public String toString()
+    {
+        return "business.model.database.User[ idUser=" + idUser + " ]";
+    }
+    
 }

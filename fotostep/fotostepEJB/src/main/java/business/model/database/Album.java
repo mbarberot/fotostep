@@ -1,145 +1,205 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package business.model.database;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
-
+import javax.persistence.*;
 
 /**
- * The persistent class for the album database table.
- * 
+ *
+ * @author kawa
  */
 @Entity
-public class Album implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "album")
+@NamedQueries(
+{
+    @NamedQuery(name = "Album.findAll", query = "SELECT a FROM Album a"),
+    @NamedQuery(name = "Album.findByIdAlbum", query = "SELECT a FROM Album a WHERE a.idAlbum = :idAlbum"),
+    @NamedQuery(name = "Album.findByName", query = "SELECT a FROM Album a WHERE a.name = :name"),
+    @NamedQuery(name = "Album.findByDescription", query = "SELECT a FROM Album a WHERE a.description = :description"),
+    @NamedQuery(name = "Album.findByPerm", query = "SELECT a FROM Album a WHERE a.perm = :perm"),
+    @NamedQuery(name = "Album.findByDate", query = "SELECT a FROM Album a WHERE a.date = :date")
+})
+public class Album implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idAlbum")
+    private Integer idAlbum;
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
+    @Basic(optional = false)
+    @Column(name = "description")
+    private String description;
+    @Basic(optional = false)
+    @Column(name = "perm")
+    private short perm;
+    @Column(name = "date")
+    private Long date;
+    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    @ManyToOne(optional = false)
+    private User idUser;
+    @JoinColumn(name = "idMainImage", referencedColumnName = "idImage")
+    @ManyToOne
+    private Image idMainImage;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAlbum")
+    private List<Image> imageList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    private List<Albumlikes> albumlikesList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAlbum")
+    private List<Commentalbum> commentalbumList;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idAlbum;
+    public Album()
+    {
+    }
 
-	private long date;
+    public Album(Integer idAlbum)
+    {
+        this.idAlbum = idAlbum;
+    }
 
-	private String description;
+    public Album(Integer idAlbum, String name, String description, short perm)
+    {
+        this.idAlbum = idAlbum;
+        this.name = name;
+        this.description = description;
+        this.perm = perm;
+    }
 
-	private String name;
+    public Integer getIdAlbum()
+    {
+        return idAlbum;
+    }
 
-	private byte perm;
+    public void setIdAlbum(Integer idAlbum)
+    {
+        this.idAlbum = idAlbum;
+    }
 
-	//bi-directional many-to-one association to Image
-	@ManyToOne
-	@JoinColumn(name="idMainImage")
-	private Image image;
+    public String getName()
+    {
+        return name;
+    }
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name="idUser")
-	private User user;
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	//bi-directional many-to-one association to Albumlike
-	@OneToMany(mappedBy="album")
-	private List<Albumlike> albumlikes;
+    public String getDescription()
+    {
+        return description;
+    }
 
-	//bi-directional many-to-one association to Commentalbum
-	@OneToMany(mappedBy="album")
-	private List<Commentalbum> commentalbums;
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
-	//bi-directional many-to-one association to Image
-	@OneToMany(mappedBy="album")
-	private List<Image> images;
+    public short getPerm()
+    {
+        return perm;
+    }
 
-	//bi-directional many-to-many association to User
-	@ManyToMany(mappedBy="albums2")
-	private List<User> users;
+    public void setPerm(short perm)
+    {
+        this.perm = perm;
+    }
 
-	public Album() {
-	}
+    public Long getDate()
+    {
+        return date;
+    }
 
-	public int getIdAlbum() {
-		return this.idAlbum;
-	}
+    public void setDate(Long date)
+    {
+        this.date = date;
+    }
 
-	public void setIdAlbum(int idAlbum) {
-		this.idAlbum = idAlbum;
-	}
+    public User getIdUser()
+    {
+        return idUser;
+    }
 
-	public long getDate() {
-		return this.date;
-	}
+    public void setIdUser(User idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	public void setDate(long date) {
-		this.date = date;
-	}
+    public Image getIdMainImage()
+    {
+        return idMainImage;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setIdMainImage(Image idMainImage)
+    {
+        this.idMainImage = idMainImage;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public List<Image> getImageList()
+    {
+        return imageList;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setImageList(List<Image> imageList)
+    {
+        this.imageList = imageList;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<Albumlikes> getAlbumlikesList()
+    {
+        return albumlikesList;
+    }
 
-	public byte getPerm() {
-		return this.perm;
-	}
+    public void setAlbumlikesList(List<Albumlikes> albumlikesList)
+    {
+        this.albumlikesList = albumlikesList;
+    }
 
-	public void setPerm(byte perm) {
-		this.perm = perm;
-	}
+    public List<Commentalbum> getCommentalbumList()
+    {
+        return commentalbumList;
+    }
 
-	public Image getImage() {
-		return this.image;
-	}
+    public void setCommentalbumList(List<Commentalbum> commentalbumList)
+    {
+        this.commentalbumList = commentalbumList;
+    }
 
-	public void setImage(Image image) {
-		this.image = image;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idAlbum != null ? idAlbum.hashCode() : 0);
+        return hash;
+    }
 
-	public User getUser() {
-		return this.user;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Album))
+        {
+            return false;
+        }
+        Album other = (Album) object;
+        if ((this.idAlbum == null && other.idAlbum != null) || (this.idAlbum != null && !this.idAlbum.equals(other.idAlbum)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public List<Albumlike> getAlbumlikes() {
-		return this.albumlikes;
-	}
-
-	public void setAlbumlikes(List<Albumlike> albumlikes) {
-		this.albumlikes = albumlikes;
-	}
-
-	public List<Commentalbum> getCommentalbums() {
-		return this.commentalbums;
-	}
-
-	public void setCommentalbums(List<Commentalbum> commentalbums) {
-		this.commentalbums = commentalbums;
-	}
-
-	public List<Image> getImages() {
-		return this.images;
-	}
-
-	public void setImages(List<Image> images) {
-		this.images = images;
-	}
-
-	public List<User> getUsers() {
-		return this.users;
-	}
-
-	public void setUsers(List<User> users) {
-		this.users = users;
-	}
-
+    @Override
+    public String toString()
+    {
+        return "business.model.database.Album[ idAlbum=" + idAlbum + " ]";
+    }
+    
 }

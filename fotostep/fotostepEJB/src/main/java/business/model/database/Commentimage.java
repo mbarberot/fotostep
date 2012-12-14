@@ -1,87 +1,155 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package business.model.database;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
- * The persistent class for the commentimage database table.
- * 
+ *
+ * @author kawa
  */
 @Entity
-public class Commentimage implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "commentimage")
+@NamedQueries(
+{
+    @NamedQuery(name = "Commentimage.findAll", query = "SELECT c FROM Commentimage c"),
+    @NamedQuery(name = "Commentimage.findByIdComment", query = "SELECT c FROM Commentimage c WHERE c.idComment = :idComment"),
+    @NamedQuery(name = "Commentimage.findByTitle", query = "SELECT c FROM Commentimage c WHERE c.title = :title"),
+    @NamedQuery(name = "Commentimage.findByBody", query = "SELECT c FROM Commentimage c WHERE c.body = :body"),
+    @NamedQuery(name = "Commentimage.findByDate", query = "SELECT c FROM Commentimage c WHERE c.date = :date")
+})
+public class Commentimage implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idComment")
+    private Integer idComment;
+    @Basic(optional = false)
+    @Column(name = "title")
+    private String title;
+    @Basic(optional = false)
+    @Column(name = "body")
+    private String body;
+    @Basic(optional = false)
+    @Column(name = "date")
+    private Long date;
+    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    @ManyToOne(optional = false)
+    private User idUser;
+    @JoinColumn(name = "idImage", referencedColumnName = "idImage")
+    @ManyToOne(optional = false)
+    private Image idImage;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idComment;
+    public Commentimage()
+    {
+    }
 
-	@Lob
-	private String body;
+    public Commentimage(Integer idComment)
+    {
+        this.idComment = idComment;
+    }
 
-	private long date;
+    public Commentimage(Integer idComment, String title, String body, Long date)
+    {
+        this.idComment = idComment;
+        this.title = title;
+        this.body = body;
+        this.date = date;
+    }
 
-	private String title;
+    public Integer getIdComment()
+    {
+        return idComment;
+    }
 
-	//bi-directional many-to-one association to Image
-	@ManyToOne
-	@JoinColumn(name="idImage")
-	private Image image;
+    public void setIdComment(Integer idComment)
+    {
+        this.idComment = idComment;
+    }
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name="idUser")
-	private User user;
+    public String getTitle()
+    {
+        return title;
+    }
 
-	public Commentimage() {
-	}
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
 
-	public int getIdComment() {
-		return this.idComment;
-	}
+    public String getBody()
+    {
+        return body;
+    }
 
-	public void setIdComment(int idComment) {
-		this.idComment = idComment;
-	}
+    public void setBody(String body)
+    {
+        this.body = body;
+    }
 
-	public String getBody() {
-		return this.body;
-	}
+    public Long getDate()
+    {
+        return date;
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public void setDate(Long date)
+    {
+        this.date = date;
+    }
 
-	public long getDate() {
-		return this.date;
-	}
+    public User getIdUser()
+    {
+        return idUser;
+    }
 
-	public void setDate(long date) {
-		this.date = date;
-	}
+    public void setIdUser(User idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	public String getTitle() {
-		return this.title;
-	}
+    public Image getIdImage()
+    {
+        return idImage;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setIdImage(Image idImage)
+    {
+        this.idImage = idImage;
+    }
 
-	public Image getImage() {
-		return this.image;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idComment != null ? idComment.hashCode() : 0);
+        return hash;
+    }
 
-	public void setImage(Image image) {
-		this.image = image;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Commentimage))
+        {
+            return false;
+        }
+        Commentimage other = (Commentimage) object;
+        if ((this.idComment == null && other.idComment != null) || (this.idComment != null && !this.idComment.equals(other.idComment)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+    @Override
+    public String toString()
+    {
+        return "business.model.database.Commentimage[ idComment=" + idComment + " ]";
+    }
+    
 }

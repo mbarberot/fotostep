@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-
   <persistence-unit name="fotostepEJB" transaction-type="JTA">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>FOTOSTEP_JNDI</jta-data-source>
@@ -16,6 +15,14 @@
     <class>business.model.database.Userdata</class>
     <class>business.model.database.Userfriendship</class>
     <class>business.model.database.UserfriendshipPK</class>
+    <class>business.model.database.Album_1</class>
+    <class>business.model.database.Comment</class>
+    <class>business.model.database.Image_1</class>
+    <class>business.model.database.Userdata_1</class>
+    <class>business.model.database.User_1</class>
+    <class>business.model.database.Userfriendships</class>
+    <class>business.model.database.Albumlikes</class>
+    <class>business.model.database.Imagelikes</class>
     <properties/>
   </persistence-unit>
 </persistence>

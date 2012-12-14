@@ -1,87 +1,155 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package business.model.database;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
-
 /**
- * The persistent class for the commentalbum database table.
- * 
+ *
+ * @author kawa
  */
 @Entity
-public class Commentalbum implements Serializable {
-	private static final long serialVersionUID = 1L;
+@Table(name = "commentalbum")
+@NamedQueries(
+{
+    @NamedQuery(name = "Commentalbum.findAll", query = "SELECT c FROM Commentalbum c"),
+    @NamedQuery(name = "Commentalbum.findByIdComment", query = "SELECT c FROM Commentalbum c WHERE c.idComment = :idComment"),
+    @NamedQuery(name = "Commentalbum.findByTitle", query = "SELECT c FROM Commentalbum c WHERE c.title = :title"),
+    @NamedQuery(name = "Commentalbum.findByBody", query = "SELECT c FROM Commentalbum c WHERE c.body = :body"),
+    @NamedQuery(name = "Commentalbum.findByDate", query = "SELECT c FROM Commentalbum c WHERE c.date = :date")
+})
+public class Commentalbum implements Serializable
+{
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idComment")
+    private Integer idComment;
+    @Basic(optional = false)
+    @Column(name = "title")
+    private String title;
+    @Basic(optional = false)
+    @Column(name = "body")
+    private String body;
+    @Basic(optional = false)
+    @Column(name = "date")
+    private Long date;
+    @JoinColumn(name = "idUser", referencedColumnName = "idUser")
+    @ManyToOne(optional = false)
+    private User idUser;
+    @JoinColumn(name = "idAlbum", referencedColumnName = "idAlbum")
+    @ManyToOne(optional = false)
+    private Album idAlbum;
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int idComment;
+    public Commentalbum()
+    {
+    }
 
-	@Lob
-	private String body;
+    public Commentalbum(Integer idComment)
+    {
+        this.idComment = idComment;
+    }
 
-	private long date;
+    public Commentalbum(Integer idComment, String title, String body, Long date)
+    {
+        this.idComment = idComment;
+        this.title = title;
+        this.body = body;
+        this.date = date;
+    }
 
-	private String title;
+    public Integer getIdComment()
+    {
+        return idComment;
+    }
 
-	//bi-directional many-to-one association to Album
-	@ManyToOne
-	@JoinColumn(name="idAlbum")
-	private Album album;
+    public void setIdComment(Integer idComment)
+    {
+        this.idComment = idComment;
+    }
 
-	//bi-directional many-to-one association to User
-	@ManyToOne
-	@JoinColumn(name="idUser")
-	private User user;
+    public String getTitle()
+    {
+        return title;
+    }
 
-	public Commentalbum() {
-	}
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
 
-	public int getIdComment() {
-		return this.idComment;
-	}
+    public String getBody()
+    {
+        return body;
+    }
 
-	public void setIdComment(int idComment) {
-		this.idComment = idComment;
-	}
+    public void setBody(String body)
+    {
+        this.body = body;
+    }
 
-	public String getBody() {
-		return this.body;
-	}
+    public Long getDate()
+    {
+        return date;
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public void setDate(Long date)
+    {
+        this.date = date;
+    }
 
-	public long getDate() {
-		return this.date;
-	}
+    public User getIdUser()
+    {
+        return idUser;
+    }
 
-	public void setDate(long date) {
-		this.date = date;
-	}
+    public void setIdUser(User idUser)
+    {
+        this.idUser = idUser;
+    }
 
-	public String getTitle() {
-		return this.title;
-	}
+    public Album getIdAlbum()
+    {
+        return idAlbum;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setIdAlbum(Album idAlbum)
+    {
+        this.idAlbum = idAlbum;
+    }
 
-	public Album getAlbum() {
-		return this.album;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (idComment != null ? idComment.hashCode() : 0);
+        return hash;
+    }
 
-	public void setAlbum(Album album) {
-		this.album = album;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Commentalbum))
+        {
+            return false;
+        }
+        Commentalbum other = (Commentalbum) object;
+        if ((this.idComment == null && other.idComment != null) || (this.idComment != null && !this.idComment.equals(other.idComment)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public User getUser() {
-		return this.user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
+    @Override
+    public String toString()
+    {
+        return "business.model.database.Commentalbum[ idComment=" + idComment + " ]";
+    }
+    
 }

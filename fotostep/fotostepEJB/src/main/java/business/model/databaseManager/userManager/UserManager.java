@@ -36,7 +36,7 @@ public class UserManager implements UserManagerLocal
 	}
 
 	public Userdata createUserRegisterData(User user, String firstName, String lastName,
-			byte gender, long birthDate) {
+			boolean gender, long birthDate) {
 		
 		Userdata data = new Userdata();
 		data.setFirstname(firstName);
