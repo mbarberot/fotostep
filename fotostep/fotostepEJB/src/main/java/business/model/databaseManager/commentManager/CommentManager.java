@@ -3,12 +3,13 @@ package business.model.databaseManager.commentManager;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import business.model.database.Album;
 import business.model.database.Commentalbum;
-import business.model.database.Commentimage;
-import business.model.database.Image;
+import business.model.database.Commentpicture;
+import business.model.database.Picture;
 import business.model.database.User;
+import java.awt.Image;
+import java.util.Date;
 
 /**
  * Bean de manipulation de l'entité Comment dans la base de données.
@@ -22,12 +23,12 @@ public class CommentManager implements CommentManagerLocal
 	EntityManager em;
 
 
-	public Commentalbum addComment(Album album, User user, String title, String text) {
+	public Commentalbum addComment(Album album, User user, String text) {
 		Commentalbum comment = new Commentalbum();
-		comment.setIdUser(user);
-		comment.setTitle(title);
+		comment.setAuthor(user);
+                comment.setAlbum(album);
 		comment.setBody(text);
-		comment.setDate(System.currentTimeMillis());
+		comment.setDate(new Date());
 		em.persist(comment);
 		return comment;
 	}
@@ -41,22 +42,22 @@ public class CommentManager implements CommentManagerLocal
 		em.remove(comment);
 	}
 
-	public Commentimage addComment(Image image, User user, String title, String text) {
-		Commentimage comment = new Commentimage();
-		comment.setIdUser(user);
-		comment.setTitle(title);
-		comment.setBody(text);
-		comment.setDate(System.currentTimeMillis());
+	public Commentpicture addComment(Picture picture, User user, String text) {
+		Commentpicture comment = new Commentpicture();
+                comment.setPicture(picture);
+                comment.setAuthor(user);
+                comment.setDate(new Date());
+                comment.setBody(text);
 		em.persist(comment);
 		return comment;
 	}
 
-	public void editComment(Commentimage comment, String text) {
+	public void editComment(Commentpicture comment, String text) {
 		comment.setBody(text);
 		em.persist(comment);
 	}
 
-	public void deleteComment(Commentimage comment) {
+	public void deleteComment(Commentpicture comment) {
 		em.remove(comment);
 	}
 
