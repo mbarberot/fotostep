@@ -1,7 +1,6 @@
 package jsf;
 
 import business.model.database.User;
-import business.model.database.Userdata;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import java.util.Date;
 import javax.ejb.EJB;
@@ -74,25 +73,6 @@ public class RegisterController {
 
 	}
 
-	/**
-	 * Le pseudo est valide => plus de deux caractères + commence par une lettre
-	 * + composé que de lettres et de chiffres + pas déjà réservé
-	 */
-	public void validateNickname(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
-
-		String nname = (String) value;
-		if (nname.length() <= 2 || !nname.matches("[a-z|A-Z]+[a-z|A-Z|_|0-9]*")) {
-			throw new ValidatorException(new FacesMessage(
-					"Le pseudonyme entré est invalide"));
-		}
-
-		if (userManager.searchUserByNickname(nname) != null) {
-			throw new ValidatorException(new FacesMessage(
-					"Le pseudonyme est déjà utilisé"));
-		}
-	}
-
 	/** L'e-mail est bien formé => xxx@yyy.zzz */
 	public void validateEmail(FacesContext context, UIComponent component,
 			Object value) throws ValidatorException {
@@ -111,10 +91,9 @@ public class RegisterController {
 	 * 
 	 */
 	public String register() throws ValidatorException {
-		boolean sex = this.gender.equals("h");
-		User user = userManager.addUser(eMail, password);
-		Userdata data = userManager.createUserRegisterData(user, firstName,
-				firstName, sex, new Date().getTime());
+		
+		User user = userManager.registerNewUser(eMail, password, firstName, lastName, gender);
+		
 		return "REG_SUCCESS";
 	}
 
