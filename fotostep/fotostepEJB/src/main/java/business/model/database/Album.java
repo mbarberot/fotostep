@@ -1,6 +1,7 @@
 package business.model.database;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,6 +24,10 @@ public class Album implements Serializable {
 	private String description;
 
 	private String name;
+        
+        @Temporal(TemporalType.DATE)
+	private Date date;
+
 
 	//bi-directional many-to-one association to User
 	@ManyToOne
@@ -89,6 +94,16 @@ public class Album implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+        
+        public Date getDate()
+        {
+            return this.date;
+        }
+        
+        public void setDate(Date date)
+        {
+            this.date = date;
+        }
 
 	public User getUser() {
 		return this.user;
