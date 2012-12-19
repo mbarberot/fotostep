@@ -11,7 +11,6 @@
     <class>business.model.database.Image</class>
     <class>business.model.database.Imagelike</class>
     <class>business.model.database.ImagelikePK</class>
-    <class>business.model.database.User</class>
     <class>business.model.database.Userdata</class>
     <class>business.model.database.Userfriendship</class>
     <class>business.model.database.UserfriendshipPK</class>
@@ -23,6 +22,9 @@
     <class>business.model.database.Userfriendships</class>
     <class>business.model.database.Albumlikes</class>
     <class>business.model.database.Imagelikes</class>
+    <class>business.model.database.Commentpicture</class>
+    <class>business.model.database.Picture</class>
+    <class>business.model.database.User</class>
     <properties/>
   </persistence-unit>
 </persistence>

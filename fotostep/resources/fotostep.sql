@@ -1,197 +1,211 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               5.5.28 - MySQL Community Server (GPL)
--- Server OS:                    Win32
--- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2012-12-14 10:26:50
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 3.5.1
+-- http://www.phpmyadmin.net
+--
+-- Client: localhost
+-- Généré le: Mer 19 Décembre 2012 à 15:35
+-- Version du serveur: 5.5.24-log
+-- Version de PHP: 5.3.13
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!40014 SET FOREIGN_KEY_CHECKS=0 */;
 
--- Dumping database structure for fotostep
-DROP DATABASE IF EXISTS `fotostep`;
-CREATE DATABASE IF NOT EXISTS `fotostep` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
-USE `fotostep`;
+--
+-- Base de données: `fotostep`
+--
 
+-- --------------------------------------------------------
 
--- Dumping structure for table fotostep.album
-DROP TABLE IF EXISTS `album`;
+--
+-- Structure de la table `album`
+--
+
 CREATE TABLE IF NOT EXISTS `album` (
-  `idAlbum` int(10) NOT NULL AUTO_INCREMENT,
-  `idUser` int(10) NOT NULL,
-  `name` varchar(64) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `perm` tinyint(10) NOT NULL,
-  `date` int(10) DEFAULT NULL,
-  `idMainImage` int(10) DEFAULT NULL,
-  PRIMARY KEY (`idAlbum`),
-  KEY `FK_album_user` (`idUser`),
-  KEY `FK_album_image` (`idMainImage`),
-  CONSTRAINT `FK_album_image` FOREIGN KEY (`idMainImage`) REFERENCES `image` (`idImage`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `FK_album_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `idalbum` int(11) NOT NULL AUTO_INCREMENT,
+  `iduser` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `description` text,
+  `authorization` enum('PUBLIC','FRIENDS','PRIVATE') NOT NULL DEFAULT 'PRIVATE',
+  `coverimage` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idalbum`),
+  KEY `fk_user_idx` (`iduser`),
+  KEY `fk_cover_image_idx` (`coverimage`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- Dumping data for table fotostep.album: ~0 rows (approximately)
-DELETE FROM `album`;
-/*!40000 ALTER TABLE `album` DISABLE KEYS */;
-/*!40000 ALTER TABLE `album` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `commentalbum`
+--
 
--- Dumping structure for table fotostep.albumlikes
-DROP TABLE IF EXISTS `albumlikes`;
-CREATE TABLE IF NOT EXISTS `albumlikes` (
-  `idUser` int(10) NOT NULL,
-  `idAlbum` int(10) NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`idUser`,`idAlbum`),
-  KEY `FK__album` (`idAlbum`),
-  CONSTRAINT `FK__album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK__user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table fotostep.albumlikes: ~0 rows (approximately)
-DELETE FROM `albumlikes`;
-/*!40000 ALTER TABLE `albumlikes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `albumlikes` ENABLE KEYS */;
-
-
--- Dumping structure for table fotostep.commentalbum
-DROP TABLE IF EXISTS `commentalbum`;
 CREATE TABLE IF NOT EXISTS `commentalbum` (
-  `idComment` int(10) NOT NULL AUTO_INCREMENT,
-  `idAlbum` int(10) NOT NULL,
-  `idUser` int(10) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `body` tinytext NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`idComment`),
-  KEY `idAlbum` (`idAlbum`),
-  KEY `FK_commentalbum_user` (`idUser`),
-  CONSTRAINT `commentalbum_ibfk_2` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_commentalbum_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `idcommentalbum` int(11) NOT NULL AUTO_INCREMENT,
+  `idalbum` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `body` text NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`idcommentalbum`),
+  KEY `fk_user_idx` (`iduser`),
+  KEY `fk_album_idx` (`idalbum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- Dumping data for table fotostep.commentalbum: ~0 rows (approximately)
-DELETE FROM `commentalbum`;
-/*!40000 ALTER TABLE `commentalbum` DISABLE KEYS */;
-/*!40000 ALTER TABLE `commentalbum` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `commentpicture`
+--
 
--- Dumping structure for table fotostep.commentimage
-DROP TABLE IF EXISTS `commentimage`;
-CREATE TABLE IF NOT EXISTS `commentimage` (
-  `idComment` int(10) NOT NULL AUTO_INCREMENT,
-  `idImage` int(10) NOT NULL,
-  `idUser` int(10) NOT NULL,
-  `title` varchar(50) NOT NULL,
-  `body` tinytext NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`idComment`),
-  KEY `idImage` (`idImage`),
-  KEY `FK_commentimage_user` (`idUser`),
-  CONSTRAINT `commentimage_ibfk_2` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_commentimage_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `commentpicture` (
+  `idcommentpicture` int(11) NOT NULL AUTO_INCREMENT,
+  `idpicture` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL,
+  `body` text NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`idcommentpicture`),
+  KEY `fk_user_idx` (`iduser`),
+  KEY `fk_picture_idx` (`idpicture`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- Dumping data for table fotostep.commentimage: ~0 rows (approximately)
-DELETE FROM `commentimage`;
-/*!40000 ALTER TABLE `commentimage` DISABLE KEYS */;
-/*!40000 ALTER TABLE `commentimage` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `likealbum`
+--
 
--- Dumping structure for table fotostep.image
-DROP TABLE IF EXISTS `image`;
-CREATE TABLE IF NOT EXISTS `image` (
-  `idImage` int(10) NOT NULL AUTO_INCREMENT,
-  `idAlbum` int(10) NOT NULL DEFAULT '0',
-  `name` varchar(50) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `format` varchar(10) NOT NULL,
-  `height` smallint(6) NOT NULL,
-  `width` smallint(6) NOT NULL,
-  `path` varchar(50) NOT NULL,
-  `date` int(11) NOT NULL,
-  PRIMARY KEY (`idImage`),
-  KEY `FK_image_album` (`idAlbum`),
-  CONSTRAINT `FK_image_album` FOREIGN KEY (`idAlbum`) REFERENCES `album` (`idAlbum`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `likealbum` (
+  `iduser` int(11) NOT NULL,
+  `idalbum` int(11) NOT NULL,
+  PRIMARY KEY (`iduser`,`idalbum`),
+  KEY `fk_user_idx` (`iduser`),
+  KEY `fk_album_idx` (`idalbum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table fotostep.image: ~0 rows (approximately)
-DELETE FROM `image`;
-/*!40000 ALTER TABLE `image` DISABLE KEYS */;
-/*!40000 ALTER TABLE `image` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `likepicture`
+--
 
--- Dumping structure for table fotostep.imagelikes
-DROP TABLE IF EXISTS `imagelikes`;
-CREATE TABLE IF NOT EXISTS `imagelikes` (
-  `idUser` int(10) NOT NULL,
-  `idImage` int(10) NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`idUser`,`idImage`),
-  KEY `FK_imagelikes_image` (`idImage`),
-  CONSTRAINT `FK_imagelikes_image` FOREIGN KEY (`idImage`) REFERENCES `image` (`idImage`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_imagelikes_user` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `likepicture` (
+  `iduser` int(11) NOT NULL,
+  `idpicture` int(11) NOT NULL,
+  PRIMARY KEY (`iduser`,`idpicture`),
+  KEY `fk_user_idx` (`iduser`),
+  KEY `fk_picture_idx` (`idpicture`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table fotostep.imagelikes: ~0 rows (approximately)
-DELETE FROM `imagelikes`;
-/*!40000 ALTER TABLE `imagelikes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `imagelikes` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `picture`
+--
 
--- Dumping structure for table fotostep.user
-DROP TABLE IF EXISTS `user`;
+CREATE TABLE IF NOT EXISTS `picture` (
+  `idpicture` int(11) NOT NULL AUTO_INCREMENT,
+  `idalbum` int(11) NOT NULL,
+  `path` varchar(100) NOT NULL,
+  `description` text,
+  `width` int(11) NOT NULL,
+  `height` int(11) NOT NULL,
+  `format` enum('jpg','png') NOT NULL,
+  `coord` point DEFAULT NULL,
+  PRIMARY KEY (`idpicture`),
+  UNIQUE KEY `path_UNIQUE` (`path`),
+  KEY `fk_album_idx` (`idalbum`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
 CREATE TABLE IF NOT EXISTS `user` (
-  `idUser` int(10) NOT NULL AUTO_INCREMENT,
-  `login` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `enabled` tinyint(1) NOT NULL DEFAULT '1',
-  `date` int(11) NOT NULL,
-  PRIMARY KEY (`idUser`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `iduser` int(11) NOT NULL AUTO_INCREMENT,
+  `login` varchar(45) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `enabled` enum('pending','accepted','deleted','banned') NOT NULL DEFAULT 'accepted',
+  `registerdate` date NOT NULL,
+  `firstname` varchar(45) NOT NULL,
+  `lastname` varchar(45) NOT NULL,
+  `birthdate` date DEFAULT NULL,
+  `gender` enum('m','f') NOT NULL,
+  PRIMARY KEY (`iduser`),
+  UNIQUE KEY `login_UNIQUE` (`login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- Dumping data for table fotostep.user: ~0 rows (approximately)
-DELETE FROM `user`;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `userfriendship`
+--
 
--- Dumping structure for table fotostep.userdata
-DROP TABLE IF EXISTS `userdata`;
-CREATE TABLE IF NOT EXISTS `userdata` (
-  `idUser` int(10) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `foreName` varchar(50) NOT NULL,
-  `birthDate` int(11) NOT NULL,
-  `gender` bit(10) NOT NULL DEFAULT b'0' COMMENT '0 : H / 1 : F',
-  PRIMARY KEY (`idUser`),
-  CONSTRAINT `userdata_ibfk_1` FOREIGN KEY (`idUser`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `userfriendship` (
+  `iduser1` int(11) NOT NULL,
+  `iduser2` int(11) NOT NULL,
+  PRIMARY KEY (`iduser1`,`iduser2`),
+  KEY `fk_user1_idx` (`iduser1`),
+  KEY `fk_user2_idx` (`iduser2`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table fotostep.userdata: ~0 rows (approximately)
-DELETE FROM `userdata`;
-/*!40000 ALTER TABLE `userdata` DISABLE KEYS */;
-/*!40000 ALTER TABLE `userdata` ENABLE KEYS */;
+--
+-- Contraintes pour les tables exportées
+--
 
+--
+-- Contraintes pour la table `album`
+--
+ALTER TABLE `album`
+  ADD CONSTRAINT `fk_album_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_album_cover_picture` FOREIGN KEY (`coverimage`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE NO ACTION;
 
--- Dumping structure for table fotostep.userfriendships
-DROP TABLE IF EXISTS `userfriendships`;
-CREATE TABLE IF NOT EXISTS `userfriendships` (
-  `idUser1` int(10) NOT NULL,
-  `idUser2` int(10) NOT NULL,
-  `date` int(10) NOT NULL,
-  PRIMARY KEY (`idUser1`,`idUser2`),
-  KEY `idUser2` (`idUser2`),
-  CONSTRAINT `userfriendships_ibfk_1` FOREIGN KEY (`idUser1`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `userfriendships_ibfk_2` FOREIGN KEY (`idUser2`) REFERENCES `user` (`idUser`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+--
+-- Contraintes pour la table `commentalbum`
+--
+ALTER TABLE `commentalbum`
+  ADD CONSTRAINT `fk_commentalbum_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_commentalbum_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
--- Dumping data for table fotostep.userfriendships: ~0 rows (approximately)
-DELETE FROM `userfriendships`;
-/*!40000 ALTER TABLE `userfriendships` DISABLE KEYS */;
-/*!40000 ALTER TABLE `userfriendships` ENABLE KEYS */;
-/*!40014 SET FOREIGN_KEY_CHECKS=1 */;
+--
+-- Contraintes pour la table `commentpicture`
+--
+ALTER TABLE `commentpicture`
+  ADD CONSTRAINT `fk_commentpicture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_commentpicture_picture` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `likealbum`
+--
+ALTER TABLE `likealbum`
+  ADD CONSTRAINT `fk_likealbum_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_likealbum_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `likepicture`
+--
+ALTER TABLE `likepicture`
+  ADD CONSTRAINT `fk_like_picture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_like_picture_picture` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `picture`
+--
+ALTER TABLE `picture`
+  ADD CONSTRAINT `fk_picture_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `userfriendship`
+--
+ALTER TABLE `userfriendship`
+  ADD CONSTRAINT `fk_friendships_user1` FOREIGN KEY (`iduser1`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_friendships_user2` FOREIGN KEY (`iduser2`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
