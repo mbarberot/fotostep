@@ -3,9 +3,10 @@ package business.model.databaseManager.pictureManager;
 import business.model.database.Album;
 import business.model.database.FormatEnum;
 import business.model.database.Picture;
-import java.awt.Point;
 import java.nio.Buffer;
 import javax.ejb.Local;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Interface locale du bean ImageManager

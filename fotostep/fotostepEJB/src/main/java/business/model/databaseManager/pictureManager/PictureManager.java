@@ -8,9 +8,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.vividsolutions.jts.geom.Point;
+
 import business.model.database.Picture;
 import business.model.database.User;
-import java.awt.Point;
 
 /**
  * Bean de manipulation de l'entité Image dans la base de données.
@@ -42,7 +43,8 @@ public class PictureManager implements PictureManagerLocal
 
     }
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format, Point point)
+    public Picture addImage(Buffer buffer, Album album, String path, String description, 
+    		int width, int height, FormatEnum format, Point point)
     {
         Picture picture = new Picture();
 

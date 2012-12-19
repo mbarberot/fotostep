@@ -1,8 +1,23 @@
 package business.model.database;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Point;
 
 
 /**
@@ -17,7 +32,10 @@ public class Picture implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idpicture;
 
-	private Object coord;
+	
+	@Type(type="org.hibernate.spatial.dialect.mysql.MySQLGeometryTypeDescriptor") 
+	@Column(columnDefinition="Point") 
+	private Point coord;
 
 	@Lob
 	private String description;
@@ -67,7 +85,7 @@ public class Picture implements Serializable {
 		return this.coord;
 	}
 
-	public void setCoord(Object coord) {
+	public void setCoord(Point coord) {
 		this.coord = coord;
 	}
 
