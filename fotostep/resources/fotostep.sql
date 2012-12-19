@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `album` (
   `idalbum` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
+  `date` date NOT NULL,
   `description` text,
   `authorization` enum('PUBLIC','FRIENDS','PRIVATE') NOT NULL DEFAULT 'PRIVATE',
   `coverimage` int(11) DEFAULT NULL,
