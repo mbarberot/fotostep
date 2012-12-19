@@ -4,24 +4,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>FOTOSTEP_JNDI</jta-data-source>
     <class>business.model.database.Album</class>
-    <class>business.model.database.Albumlike</class>
-    <class>business.model.database.AlbumlikePK</class>
     <class>business.model.database.Commentalbum</class>
-    <class>business.model.database.Commentimage</class>
-    <class>business.model.database.Image</class>
-    <class>business.model.database.Imagelike</class>
-    <class>business.model.database.ImagelikePK</class>
-    <class>business.model.database.Userdata</class>
-    <class>business.model.database.Userfriendship</class>
-    <class>business.model.database.UserfriendshipPK</class>
-    <class>business.model.database.Album_1</class>
-    <class>business.model.database.Comment</class>
-    <class>business.model.database.Image_1</class>
-    <class>business.model.database.Userdata_1</class>
-    <class>business.model.database.User_1</class>
-    <class>business.model.database.Userfriendships</class>
-    <class>business.model.database.Albumlikes</class>
-    <class>business.model.database.Imagelikes</class>
     <class>business.model.database.Commentpicture</class>
     <class>business.model.database.Picture</class>
     <class>business.model.database.User</class>
