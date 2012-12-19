@@ -126,6 +126,14 @@ public class Picture implements Serializable {
 	public void setLikers(List<User> likers) {
 		this.likers = likers;
 	}
+        
+        public void addLiker(User user) {
+                this.likers.add(user);
+        }
+        
+        public void removeLiker(User user) {
+                this.likers.remove(user);
+        }
 
 	public Album getAlbum() {
 		return this.album;

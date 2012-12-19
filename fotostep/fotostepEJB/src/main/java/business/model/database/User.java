@@ -175,6 +175,14 @@ public class User implements Serializable {
 	public void setLikedAlbums(List<Album> likedAlbums) {
 		this.likedAlbums = likedAlbums;
 	}
+        
+        public void addLikedAlbum(Album album) {
+		this.likedAlbums.add(album);
+	}
+        
+        public void removeLikedAlbum(Album album) {
+		this.likedAlbums.remove(album);
+	}
 
 	public List<Picture> getLikedPictures() {
 		return this.likedPictures;
@@ -182,6 +190,14 @@ public class User implements Serializable {
 
 	public void setLikedPictures(List<Picture> likedPictures) {
 		this.likedPictures = likedPictures;
+	}
+        
+        public void addLikedPicture(Picture picture) {
+		this.likedPictures.add(picture);
+	}
+        
+        public void removeLikedPicture(Picture picture) {
+		this.likedPictures.remove(picture);
 	}
 
 	public List<User> getFriends() {

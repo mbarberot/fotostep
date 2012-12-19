@@ -1,6 +1,8 @@
 package business.model.databaseManager.likeManager;
 
-import business.model.database.*;
+import business.model.database.Album;
+import business.model.database.Picture;
+import business.model.database.User;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,35 +15,31 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class LikeManager implements LikeManagerLocal
 {
-	@PersistenceContext
-	EntityManager em;
 
-	public void like(User user, Album album) {
-		Albumlikes like = new Albumlikes();
-		like.setUser(user);
-		like.setAlbum(album);
-		like.setDate(System.currentTimeMillis());
-		em.persist(like);
-	}
+    @PersistenceContext
+    EntityManager em;
 
-	public void like(User user, Image image) {
-		Imagelikes like = new Imagelikes();
-		like.setUser(user);
-		like.setImage(image);
-		like.setDate(System.currentTimeMillis());
-		em.persist(like);
-	}
+    public void like(User user, Album album)
+    {
+        user.addLikedAlbum(album);
+        album.addLiker(user);
+    }
 
-	public void dislike(User user, Album album) {
-		for(Albumlikes like : user.getAlbumlikes())
-			if(like.getAlbum().equals(album))
-				em.remove(like);
-	}
+    public void like(User user, Picture picture)
+    {
+        user.addLikedPicture(picture);
+        picture.addLiker(user);
+    }
 
-	public void dislike(User user, Image image) {
-		for(Imagelikes like : user.getImagelikes())
-			if(like.getImage().equals(image))
-				em.remove(like);
-	}
+    public void dislike(User user, Album album)
+    {
+        user.removeLikedAlbum(album);
+        album.removeLiker(user);
+    }
 
+    public void dislike(User user, Picture picture)
+    {
+        user.removeLikedPicture(picture);
+        user.removeLikedAlbum(null);
+    }
 }
