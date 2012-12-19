@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Mer 19 Décembre 2012 à 15:35
+-- Généré le: Mer 19 Décembre 2012 à 17:48
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.3.13
 
@@ -30,10 +30,10 @@ CREATE TABLE IF NOT EXISTS `album` (
   `idalbum` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
   `name` varchar(45) NOT NULL,
-  `date` date NOT NULL,
   `description` text,
   `authorization` enum('PUBLIC','FRIENDS','PRIVATE') NOT NULL DEFAULT 'PRIVATE',
   `coverimage` int(11) DEFAULT NULL,
+  `date` date DEFAULT NULL,
   PRIMARY KEY (`idalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_cover_image_idx` (`coverimage`)
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(45) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `enabled` enum('pending','accepted','deleted','banned') NOT NULL DEFAULT 'accepted',
+  `enabled` enum('pending','accepted','deleted','banned') DEFAULT 'accepted',
   `registerdate` date NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `gender` enum('m','f') NOT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `login_UNIQUE` (`login`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -163,8 +163,8 @@ CREATE TABLE IF NOT EXISTS `userfriendship` (
 -- Contraintes pour la table `album`
 --
 ALTER TABLE `album`
-  ADD CONSTRAINT `fk_album_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_album_cover_picture` FOREIGN KEY (`coverimage`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_album_cover_picture` FOREIGN KEY (`coverimage`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_album_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Contraintes pour la table `commentalbum`
