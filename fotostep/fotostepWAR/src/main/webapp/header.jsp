@@ -17,8 +17,8 @@
                           style="display: inline; margin-bottom: 0; margin-left: 15px"
                           method="post">
                         
-                        <h:inputText id="login" value="#{loginController.login}" styleClass="input-small" />
-                        <h:inputSecret id="password" value="#{loginController.password}" styleClass="input-small" />
+                        <h:inputText id="login" value="#{loginController.login}" styleClass="input-small" style="margin:5px" />
+                        <h:inputSecret id="password" value="#{loginController.password}" styleClass="input-small" style="margin:5px" />
                         <h:commandButton id="login-btn" value="S'identifier" action="#{loginController.doLogin}" styleClass="btn" style="margin:5px" />
                         
                         <!--

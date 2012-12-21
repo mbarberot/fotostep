@@ -1,7 +1,12 @@
 package jsf;
 
+import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import business.util.exceptions.UserNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.validator.ValidatorException;
 
 /**
@@ -27,6 +32,15 @@ public class LoginController
     
     public String doLogin() throws ValidatorException
     {
+            try
+            {
+                User u = userManager.getUserByLoginAndPassword(login, password);
+            }
+            catch (UserNotFoundException ex)
+            {
+                throw new ValidatorException(new FacesMessage("User not found : " + login));
+            }
+        
         return "login.success";
     }
     

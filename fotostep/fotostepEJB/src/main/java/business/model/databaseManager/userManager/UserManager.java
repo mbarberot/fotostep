@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 import business.model.database.GenderEnum;
 import business.model.database.User;
+import business.util.exceptions.UserNotFoundException;
 
 @Stateless
 public class UserManager implements UserManagerLocal{
@@ -55,5 +56,26 @@ public class UserManager implements UserManagerLocal{
 			return null;
 		}
 	}
+
+    public User getUserByLoginAndPassword(String mail, String password) throws UserNotFoundException
+    {
+        Query query = em.createQuery("SELECT user FROM user WHERE login = :mail AND password = :password");
+        query.setParameter("mail", mail);
+        query.setParameter("password", password);
+        
+        
+        User user = null;
+        try
+        {
+            user = (User) query.getSingleResult();
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+            throw new UserNotFoundException("User not found : " + mail);
+        }
+        
+        return user;
+    }
 	
 }
