@@ -2,6 +2,8 @@ package jsf;
 
 import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import business.utilities.HashingUtilityLocal;
+
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,6 +20,8 @@ public class RegisterController {
 	@EJB
 	private UserManagerLocal userManager;
 
+	@EJB
+	private HashingUtilityLocal hashTool;
 	/**
 	 * Attributs mappés depuis le formulaire
 	 */
@@ -92,9 +96,26 @@ public class RegisterController {
 	 */
 	public String register() throws ValidatorException {
 		
-		User user = userManager.registerNewUser(eMail, password, firstName, lastName, gender);
+		if(!password.equals(passwordRetype))
+		{
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage("Erreur confirmation password", new FacesMessage("Le mot de passe retapé n'est pas identique"));
+		}
 		
-		return "REG_SUCCESS";
+		if(userManager.getUserByLogin(eMail) != null)
+		{
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage("Erreur adresse mail", new FacesMessage("L'adresse e-mail est déjà associée à un compte"));
+
+		}
+		else
+		{
+			String hashPass = hashTool.md5Hash(eMail);
+			User user = userManager.registerNewUser(hashPass, password, firstName, lastName, gender);
+			return "REG_SUCCESS";
+		}
+		
+		return "REG_FAIL";
 	}
 
 	/**
