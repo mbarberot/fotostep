@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import business.model.database.GenderEnum;
 import business.model.database.User;
@@ -37,6 +39,21 @@ public class UserManager implements UserManagerLocal{
 		
 		em.persist(newUser);
 		return newUser;
+	}
+
+	public User getUserByLogin(String mail) {
+		Query query = em.createQuery("SELECT u FROM User u WHERE login = :mail");
+		query.setParameter("mail", mail);
+		
+		try
+		{
+			User res = (User) query.getSingleResult();
+			return res;
+		}
+		catch(NoResultException e)
+		{
+			return null;
+		}
 	}
 	
 }
