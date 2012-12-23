@@ -14,9 +14,8 @@
                         <li><a href="#about">Rechercher des photos</a></li>
                         <li class="active"><a href="register.jsf">Inscription</a></li>
                     </ul>
-                    <form class="form-inline pull-right"
-                          style="display: inline; margin-bottom: 0; margin-left: 15px"
-                          method="post">
+                    <h:form styleClass="form-inline pull-right"
+                          style="display: inline; margin-bottom: 0; margin-left: 15px">
                         
                         <c:choose>
                             <c:when test="${empty sessionScope.loginController}">
@@ -37,7 +36,7 @@
                                placeholder="Mot de passe" class="input-small" name="passwd">
                         <button class="btn" type="submit" style="margin: 5px">S'identifier</button>
                         -->
-                    </form>
+                    </h:form>
                 </div>
                 <!--/.nav-collapse -->
             </div>
