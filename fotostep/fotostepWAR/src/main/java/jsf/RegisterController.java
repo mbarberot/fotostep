@@ -19,7 +19,6 @@ public class RegisterController {
 	 */
 	@EJB
 	private UserManagerLocal userManager;
-
 	@EJB
 	private HashingUtilityLocal hashTool;
 	/**

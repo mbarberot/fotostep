@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
+
 <f:subview id = "header-component">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
@@ -13,9 +14,8 @@
                         <li><a href="#about">Rechercher des photos</a></li>
                         <li class="active"><a href="register.jsf">Inscription</a></li>
                     </ul>
-                    <form class="form-inline pull-right"
-                          style="display: inline; margin-bottom: 0; margin-left: 15px"
-                          method="post">
+                    <h:form styleClass="form-inline pull-right"
+                          style="display: inline; margin-bottom: 0; margin-left: 15px">
                         
                         <h:inputText id="login" value="#{loginController.login}" styleClass="input-small" style="margin:5px" />
                         <h:inputSecret id="password" value="#{loginController.password}" styleClass="input-small" style="margin:5px" />
@@ -28,7 +28,7 @@
                                placeholder="Mot de passe" class="input-small" name="passwd">
                         <button class="btn" type="submit" style="margin: 5px">S'identifier</button>
                         -->
-                    </form>
+                    </h:form>
                 </div>
                 <!--/.nav-collapse -->
             </div>
