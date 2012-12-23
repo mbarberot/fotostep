@@ -3,11 +3,12 @@ package jsf;
 import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.UserNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -15,13 +16,11 @@ import javax.faces.validator.ValidatorException;
  */
 public class LoginController
 {
+
     private String login = "E-mail";
     private String password = "password";
-    
     @EJB
     UserManagerLocal userManager;
-    
-    
 
     /**
      * Creates a new instance of LoginController
@@ -29,27 +28,31 @@ public class LoginController
     public LoginController()
     {
     }
-    
+
     public String doLogin() throws ValidatorException
     {
-            try
-            {
-                User u = userManager.getUserByLoginAndPassword(login, password);
-            }
-            catch (UserNotFoundException ex)
-            {
-                throw new ValidatorException(new FacesMessage("User not found : " + login));
-            }
-        
+        try
+        {
+            User u = userManager.authenticate(login, password);
+        }
+        catch (UserNotFoundException ex)
+        {
+            throw new ValidatorException(new FacesMessage("User not found : " + login));
+        }
+
         return "login.success";
     }
-    
+
     public String doLogout() throws ValidatorException
     {
-        return "logout.success";
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        HttpSession session = ((HttpSession) ec.getSession(false));
+        session.invalidate();
         
+        return "logout.success";
     }
-    
+
     public boolean isConnected()
     {
         return false;
@@ -74,6 +77,4 @@ public class LoginController
     {
         this.password = password;
     }
-    
-    
 }

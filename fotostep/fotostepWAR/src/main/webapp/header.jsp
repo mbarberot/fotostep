@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <f:subview id = "header-component">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
@@ -17,9 +18,17 @@
                           style="display: inline; margin-bottom: 0; margin-left: 15px"
                           method="post">
                         
-                        <h:inputText id="login" value="#{loginController.login}" styleClass="input-small" style="margin:5px" />
-                        <h:inputSecret id="password" value="#{loginController.password}" styleClass="input-small" style="margin:5px" />
-                        <h:commandButton id="login-btn" value="S'identifier" action="#{loginController.doLogin}" styleClass="btn" style="margin:5px" />
+                        <c:choose>
+                            <c:when test="${empty sessionScope.loginController}">
+                                <h:inputText id="login" value="#{loginController.login}" styleClass="input-small" style="margin:5px" />
+                                <h:inputSecret id="password" value="#{loginController.password}" styleClass="input-small" style="margin:5px" />
+                                <h:commandButton id="login-btn" value="S'identifier" action="#{loginController.doLogin}" styleClass="btn" style="margin:5px" />
+                            </c:when>
+                            
+                            <c:otherwise>
+                                <h:commandButton id="logout-btn" value="Se déconnecter" action="#{loginController.doLogout}" styleClass="btn" style="margin:5px" />
+                            </c:otherwise>
+                        </c:choose>
                         
                         <!--
                         <input type="text" placeholder="Email" class="input-small"
