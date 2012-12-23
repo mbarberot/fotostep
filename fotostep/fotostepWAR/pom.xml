@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
-			<version>1.2</version>
+			<version>1.2_09</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

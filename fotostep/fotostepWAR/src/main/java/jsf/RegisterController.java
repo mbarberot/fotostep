@@ -109,8 +109,8 @@ public class RegisterController {
 		}
 		else
 		{
-			String hashPass = hashTool.md5Hash(eMail);
-			User user = userManager.registerNewUser(hashPass, password, firstName, lastName, gender);
+			String hashPass = hashTool.md5Hash(password);
+			User user = userManager.registerNewUser(eMail, hashPass, firstName, lastName, gender);
 			return "REG_SUCCESS";
 		}
 		
