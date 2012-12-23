@@ -3,6 +3,8 @@ package jsf;
 import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.UserNotFoundException;
+import business.utilities.HashingUtilityLocal;
+
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -22,6 +24,8 @@ public class LoginController
     @EJB
     UserManagerLocal userManager;
 
+    @EJB
+    HashingUtilityLocal hashTool;
     /**
      * Creates a new instance of LoginController
      */
