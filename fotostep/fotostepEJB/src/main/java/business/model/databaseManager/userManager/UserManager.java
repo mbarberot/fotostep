@@ -59,7 +59,7 @@ public class UserManager implements UserManagerLocal{
 
     public User authenticate(String mail, String password) throws UserNotFoundException
     {
-        Query query = em.createQuery("SELECT user FROM user WHERE login = :mail AND password = :password");
+        Query query = em.createQuery("SELECT u FROM User u WHERE u.login = :mail AND u.password = :password");
         query.setParameter("mail", mail);
         query.setParameter("password", password);
         

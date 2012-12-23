@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -21,9 +22,9 @@ public class LoginController
 
     private String login = "E-mail";
     private String password = "password";
+
     @EJB
     UserManagerLocal userManager;
-
     @EJB
     HashingUtilityLocal hashTool;
     /**
@@ -37,14 +38,23 @@ public class LoginController
     {
         try
         {
-            User u = userManager.authenticate(login, password);
+            String hashPass = hashTool.md5Hash(password);
+            User u = userManager.authenticate(login, hashPass);
+
+            // Création de la session HTTP
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
+            HttpSession session=req.getSession();
+            session.setAttribute("userId", u.getIduser());
+            return "login.success";
         }
         catch (UserNotFoundException ex)
         {
-            throw new ValidatorException(new FacesMessage("User not found : " + login));
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("Echec de l'identification", new FacesMessage("Le mail ou le mot de passe est incorrect"));
         }
 
-        return "login.success";
+        return "login.fail";
     }
 
     public String doLogout() throws ValidatorException
@@ -55,11 +65,6 @@ public class LoginController
         session.invalidate();
         
         return "logout.success";
-    }
-
-    public boolean isConnected()
-    {
-        return false;
     }
 
     public String getLogin()

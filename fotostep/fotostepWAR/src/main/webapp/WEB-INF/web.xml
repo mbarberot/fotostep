@@ -5,7 +5,7 @@
     <session-timeout>30</session-timeout>
   </session-config>
   <welcome-file-list>
-    <welcome-file>/faces/index.jsf</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   <context-param>
     <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
@@ -32,12 +32,13 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
-  <filter>
-    <filter-name>Extensions Filter</filter-name>
-    <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
-</filter>
-<filter-mapping>
-    <filter-name>Extensions Filter</filter-name>
-    <servlet-name>Faces Servlet</servlet-name>
-</filter-mapping>
+
+    <filter>
+        <filter-name>userFilter</filter-name>
+        <filter-class>filters.UserFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>userFilter</filter-name>
+        <url-pattern>/user-pages/*</url-pattern>
+    </filter-mapping>
 </web-app>
