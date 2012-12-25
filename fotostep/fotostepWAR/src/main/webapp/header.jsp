@@ -6,7 +6,7 @@
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" href="main.jsp"> <img
+                <a class="brand" href="main.jsf"> <img
                         src="assets/img/logo.png"></a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
