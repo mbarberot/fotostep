@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  *
@@ -63,7 +64,10 @@ public class LoginController
         ExternalContext ec = fc.getExternalContext();
         HttpSession session = ((HttpSession) ec.getSession(false));
         session.invalidate();
-        
+        try {
+            ec.redirect("fotostep/index.jsp ");
+        } catch (IOException e) {
+        }
         return "logout.success";
     }
 

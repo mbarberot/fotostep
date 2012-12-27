@@ -16,7 +16,7 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         if (((HttpServletRequest) servletRequest).getSession().getAttribute("userId") == null) {
             // Not logged in, so redirect request to login page.
-            ((HttpServletResponse) servletResponse).sendRedirect("/fotostep/register.jsf");
+            ((HttpServletResponse) servletResponse).sendRedirect("/fotostep/index.jsp");
         } else {
             // Logged in, so just continue request.
             filterChain.doFilter(servletRequest, servletResponse);

@@ -6,7 +6,7 @@
     <html>
         <head>
             <title>Fotostep - Test sur les albums</title>
-            <%@ include file = "pageheader.jsp" %>
+            <%@ include file = "../templates/pageheader.jsp" %>
         </head>
         <body>
             
