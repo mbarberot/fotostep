@@ -8,7 +8,7 @@
     <managed-bean>
         <managed-bean-name>registerController</managed-bean-name>
         <managed-bean-class>jsf.RegisterController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>albumController</managed-bean-name>
@@ -38,5 +38,15 @@
         <managed-bean-class>jsf.LoginController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-        
+    <managed-bean>
+        <managed-bean-name>userSessionController</managed-bean-name>
+        <managed-bean-class>jsf.UserSessionController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>webUpload</managed-bean-name>
+        <managed-bean-class>jsf.WebUploadBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+
 </faces-config>

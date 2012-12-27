@@ -12,6 +12,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import org.apache.commons.validator.routines.EmailValidator;
 
+/**
+ * @author Joan Racenet
+ */
 public class RegisterController {
 
 	/**

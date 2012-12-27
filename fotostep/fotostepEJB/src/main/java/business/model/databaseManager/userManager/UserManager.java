@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import business.model.database.EnabledEnum;
 import business.model.database.GenderEnum;
 import business.model.database.User;
 import business.util.exceptions.UserNotFoundException;
@@ -37,7 +38,7 @@ public class UserManager implements UserManagerLocal{
 		}
 		
 		newUser.setRegisterdate(new Date());
-		
+		newUser.setEnabled(EnabledEnum.accepted);
 		em.persist(newUser);
 		return newUser;
 	}

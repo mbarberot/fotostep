@@ -16,10 +16,10 @@
                         <li><a href="register.jsf">Inscrivez-vous</a></li>
                     </ul>
 
-                    <h:form title="Déjà inscrit ?" styleClass="form-inline pull-right"
+                    <h:form id="loginform" title="Déjà inscrit ?" styleClass="form-inline pull-right"
                             style="display: inline; margin-bottom: 0; margin-left: 15px">
 
-                        <h:messages styleClass="label label-important"/>
+                        <h:message for="loginform" styleClass="label label-important"/>
 
 
                         <h:inputText id="login" value="#{loginController.login}" styleClass="input-small"

@@ -27,6 +27,7 @@
             </div>
 
             <div id="map">
+                <h:outputText value="#{userSessionController.userFirstName}" />
                 <!-- La map publique -->
             </div>
         </div>

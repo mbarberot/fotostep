@@ -6,9 +6,14 @@ import business.util.exceptions.UserNotFoundException;
 import business.utilities.HashingUtilityLocal;
 
 import javax.ejb.EJB;
+import javax.el.ELContext;
+import javax.el.ExpressionFactory;
+import javax.el.ValueExpression;
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.el.ValueBinding;
 import javax.faces.validator.ValidatorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,6 +52,19 @@ public class LoginController
             HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
             HttpSession session=req.getSession();
             session.setAttribute("userId", u.getIduser());
+
+
+            // Création du bean de gestion de session
+            Application application = ctx.getApplication();
+
+            ExpressionFactory exf = application.getExpressionFactory();
+            ELContext elc = ctx.getELContext();
+            ValueExpression expr = exf.createValueExpression(elc,"#{userSessionController}",UserSessionController.class);
+            UserSessionController usc = (UserSessionController)expr.getValue(elc);
+
+            usc.createUserSession(u);
+
+
             return "login.success";
         }
         catch (UserNotFoundException ex)

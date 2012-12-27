@@ -1,5 +1,7 @@
 package business;
 
+import business.model.database.User;
+
 import javax.ejb.Local;
 
 /**
@@ -10,4 +12,8 @@ import javax.ejb.Local;
 @Local
 public interface UserSessionLocal
 {
+    public void setUser(User u);
+    public String getUserFirstName();
+    public String getUserLastName();
+    public boolean uploadPhoto(byte[] pic, int idAlbum);
 }

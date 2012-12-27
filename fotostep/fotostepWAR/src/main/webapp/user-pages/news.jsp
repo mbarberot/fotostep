@@ -10,7 +10,7 @@
 
     <!-- HEAD -->
     <head>
-        <title>Fotostep - Bienvenue John Doe !</title>
+        <title>Fotostep - Bienvenue <h:outputText value = "#{userSessionController.userFirstName}"/> <h:outputText value = "#{userSessionController.userLastName}"/> !</title>
         <%@include file="templates/pageheader.jsp" %>
     </head>
     <!-- /HEAD -->
