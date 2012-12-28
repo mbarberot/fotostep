@@ -10,7 +10,8 @@
 
     <!-- HEAD -->
     <head>
-        <title>Fotostep - Bienvenue <h:outputText value = "#{userSessionController.userFirstName}"/> <h:outputText value = "#{userSessionController.userLastName}"/> !</title>
+        <title>Fotostep - Bienvenue <h:outputText value="#{userSessionController.userFirstName}"/> <h:outputText
+                value="#{userSessionController.userLastName}"/> !</title>
         <%@include file="templates/pageheader.jsp" %>
     </head>
     <!-- /HEAD -->
@@ -23,7 +24,19 @@
         <!-- /Menu -->
 
         <div class="container">
+            <div class="page-header">
+                <h1><img src="../assets/img/header-logo.png"/></br>
+                    <small>Quelles sont les nouvelles ?</small>
+                </h1>
+            </div>
 
+            <div class="index">
+                <div class="row">
+                    <!-- Menu de navigation -->
+                    <%@include file="templates/nav-menu.jsp" %>
+                    <!-- /Menu de navigation -->
+                </div>
+            </div>
         </div>
 
         <%@ include file="templates/footer.jsp" %>
