@@ -21,18 +21,18 @@
         <!-- Menu -->
         <%@include file="templates/header.jsp"%>
         <!-- /Menu -->
-        <div class="container">
-            <div class="page-header">
-                <h1><img src="assets/img/header-logo.png"/></br><small>Partagez votre vision du monde</small></h1>
-            </div>
 
+        <div class="page-header">
+            <h1><img src="assets/img/header-logo.png"/></br><small>Partagez votre vision du monde</small></h1>
+        </div>
+        <div class="row">
             <div id="map">
                 <h:outputText value="#{userSessionController.userFirstName}" />
                 <!-- La map publique -->
             </div>
         </div>
 
-     <%@ include file = "templates/footer.jsp" %>
+        <%@ include file = "templates/footer.jsp" %>
     </t:documentBody>
     <!-- /BODY -->
 </f:view>

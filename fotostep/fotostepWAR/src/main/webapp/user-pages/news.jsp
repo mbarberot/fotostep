@@ -23,7 +23,7 @@
         <%@include file="templates/header.jsp" %>
         <!-- /Menu -->
 
-        <div class="container">
+
             <div class="page-header">
                 <h1><img src="../assets/img/header-logo.png"/></br>
                     <small>Quelles sont les nouvelles ?</small>
@@ -32,12 +32,15 @@
 
             <div class="index">
                 <div class="row">
-                    <!-- Menu de navigation -->
-                    <%@include file="templates/nav-menu.jsp" %>
+
                     <!-- /Menu de navigation -->
+                    <%@include file="templates/nav-menu.jsp" %>
+
+                    <!-- Contenu -->
+
                 </div>
             </div>
-        </div>
+
 
         <%@ include file="templates/footer.jsp" %>
     </t:documentBody>

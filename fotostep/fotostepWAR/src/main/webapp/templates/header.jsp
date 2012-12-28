@@ -3,7 +3,8 @@
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<f:subview id="header-component">
+<div class="container">
+    <f:subview id="header-component">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
@@ -22,10 +23,10 @@
                         <h:message for="loginform" styleClass="label label-important"/>
 
 
-                        <h:inputText id="login" value="#{loginController.login}" styleClass="input-small"
+                        <h:inputText id="login" value="#{loginController.login}" styleClass="input-medium"
                                      style="margin:5px"/>
                         <h:inputSecret redisplay="true" id="password" value="#{loginController.password}"
-                                       styleClass="input-small" style="margin:5px"/>
+                                       styleClass="input-medium" style="margin:5px"/>
                         <h:commandButton id="login-btn" value="Connectez vous" action="#{loginController.doLogin}"
                                          styleClass="btn-inverse" style="margin:5px"/>
 
@@ -35,4 +36,4 @@
             </div>
         </div>
     </div>
-</f:subview>
+    </f:subview>

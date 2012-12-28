@@ -1,12 +1,13 @@
 <%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <f:subview id="nav-menu">
+
 <div class="span3">
     <div class="well sidebar-nav">
         <ul class="nav nav-list">
-
-            <li><h:outputLink value="news.jsf">Accueil</h:outputLink></li>
+            <li><h:outputLink value="news.jsf" > Accueil</h:outputLink></li>
             <li><h:outputLink value="#">Rechercher des photos</h:outputLink></li>
             <li class="nav-header">Mon compte</li>
             <li><h:outputLink value="#">Visualiser mon profil</h:outputLink></li>
