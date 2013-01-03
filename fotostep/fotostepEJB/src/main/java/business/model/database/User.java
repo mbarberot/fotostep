@@ -1,5 +1,8 @@
 package business.model.database;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
@@ -38,6 +41,7 @@ public class User implements Serializable {
 
 	//bi-directional many-to-one association to Album
 	@OneToMany(mappedBy="user")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Album> albums;
 
 	//bi-directional many-to-one association to Commentalbum
@@ -57,7 +61,7 @@ public class User implements Serializable {
 	private List<Picture> likedPictures;
 
 	//uni-directional many-to-many association to User
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name="userfriendship"
 		, joinColumns={

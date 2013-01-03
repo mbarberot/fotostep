@@ -11,9 +11,9 @@
     <!-- HEAD -->
     <head>
         <title>
-            <h:outputFormat value="Fotostep - Bienvenue {0} {1}">
-                <f:param value="#{userSessionController.userFirstName}" />
-                <f:param value="#{userSessionController.userLastName}" />
+            <h:outputFormat value="Fotostep - Profil de {0} {1}">
+                <f:param value="#{userProfileData.firstName}" />
+                <f:param value="#{userProfileData.lastName}" />
             </h:outputFormat>
         </title>
         <%@include file="templates/pageheader.jsp" %>
@@ -27,23 +27,16 @@
         <%@include file="templates/header.jsp" %>
         <!-- /Menu -->
 
+        <div class="index">
+            <div class="row">
 
+                <!-- /Menu de navigation -->
+                <%@include file="templates/nav-menu.jsp" %>
 
-
-            <div class="index">
-                <div class="row">
-
-                    <!-- /Menu de navigation -->
-                    <%@include file="templates/nav-menu.jsp" %>
-
-                    <!-- Contenu -->
-                    <div class = "span9">
-                        <div class="page-header">
-                        <h2>Actualit&eacute;s</h2>
-                        </div>
-                    </div>
-                </div>
+                <!-- Contenu -->
+                <%@include file = "../common/view-profile-content.jsp"%>
             </div>
+        </div>
 
 
         <%@ include file="templates/footer.jsp" %>

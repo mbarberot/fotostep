@@ -43,6 +43,18 @@ public class UserManager implements UserManagerLocal{
 		return newUser;
 	}
 
+    public User getUserById(int id)
+    {
+        try
+        {
+            User res = em.find(User.class, id);
+            return res;
+        }
+        catch(NoResultException e)
+        {
+            return null;
+        }
+    }
 	public User getUserByLogin(String mail) {
 		Query query = em.createQuery("SELECT u FROM User u WHERE login = :mail");
 		query.setParameter("mail", mail);

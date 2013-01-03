@@ -4923,11 +4923,18 @@ input[type="submit"].btn.btn-mini {
   display: inline;
 }
 
+.pager li a img{
+  margin: 0px;
+}
 .pager li > a,
 .pager li > span {
   display: inline-block;
-  padding: 5px 14px;
+  padding: 5px 5px;
   background-color: #fff;
+  
+}
+.pager .bordered > a,
+.pager .bordered > span{
   border: 1px solid #ddd;
   -webkit-border-radius: 15px;
      -moz-border-radius: 15px;

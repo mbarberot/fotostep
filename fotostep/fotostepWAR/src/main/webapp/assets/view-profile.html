@@ -14,7 +14,7 @@
 	}
 	</style>
 	<link href="css/bootstrap-responsive.css" rel="stylesheet">
-
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,43 +67,191 @@
 				</div>
 
 				<div class = "span9">
-					<div class = "span9">
-						<h2>John Doe</h2>
-						<a href="#" class = "btn pull-right">Ajouter aux contacts </i></a>
+					<div class = "span9" id="profile-title" style="margin-bottom:25px;">
+						<div class="media">
+							<a class="pull-left" href="#">
+									<img class="media-object" src="holder.js/100x100">
+							</a>
+							<div class="media-body">
+								<h2>John Doe</h2>
+								<a href="#" class = "btn btn-primary"><i class="icon-user icon-white"></i>  Ajouter aux contacts </a>
+							</div>
+						</div>						
 					</div>
 					<div class = "span9">
-						<ul id="myTab" class="nav nav-tabs">
+						<ul id="profileTab" class="nav nav-pills">
 							<li class="active">
-								<a href="#map">Carte</a>
+								<a href="#mapView">Carte</a>
 							</li>
 							<li>
-								<a href="#albums" data-toggle="tab">Albums</a>
+								<a href="#albums">Albums</a>
 							</li>
 							<li>
-								<a href="#infos" data-toggle="tab">Infos</a>
+								<a href="#infos">Infos</a>
 							</li>
 							<li>
-								<a href="#friends" data-toggle="tab">Amis</a>
+								<a href="#friends">Amis</a>
 							</li>
 						</ul>
-					</div>
-					<div class = "span9">
-					</div>
+
+						<div id="myTabContent" class="tab-content">
+
+							<!-- Map view -->
+							<div class="tab-pane fade in active" id="mapView">
+
+								<div id  = "map" style= "width: 100%; height: 400px"></div>
+								<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>	
+								<script>
+
+								var map = L.map('map').setView([51.505, -0.09], 13);
+
+								L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+									maxZoom: 18,
+									attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+								}).addTo(map);
 
 
+								L.marker([51.5, -0.09]).addTo(map);
+
+
+								var popup = L.popup();
+
+								function onMapClick(e) {
+									popup
+									.setLatLng(e.latlng)
+									.setContent("You clicked the map at " + e.latlng.toString())
+									.openOn(map);
+								}
+
+								map.on('click', onMapClick);
+
+								</script>
+								<ul class="pager">
+								  <li class="bordered"><a href="#" ><</a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+								  <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
+
+								  <li class="bordered"><a href="#">></a></li>
+								</ul>
+
+							</div>
+
+							<!-- Albums view -->
+							<div class="tab-pane fade" id="albums">
+								<ul class="thumbnails">
+									<li class="span3">
+										<div class = "thumbnail">
+											<img src="holder.js/250x200" alt="">
+											<h3>Title</h3>
+											<p>Description de l'album</p>
+											<a href="#">Voir l'album</a>
+										</div>
+									</li>
+									<li class="span3">
+										<div class = "thumbnail">
+											<img src="holder.js/250x200" alt="">
+											<h3>Title</h3>
+											<p>Description de l'album</p>
+											<a href="#">Voir l'album</a>
+										</div>
+									</li>
+									<li class="span3">
+										<div class = "thumbnail">
+											<img src="holder.js/250x200" alt="">
+											<h3>Title</h3>
+											<p>Description de l'album</p>
+											<a href="#">Voir l'album</a>
+										</div>
+									</li>
+
+								</ul>
+
+							</div>
+
+							<!-- Info view -->
+							<div class="tab-pane fade" id="infos">
+								<h3>Général</h3>
+								<dl class="dl-horizontal">
+									<dt>Nom</dt>
+									<dd>Doe</dd>  										
+									<dt>Pr&eacute;nom</dt>
+									<dd>John</dd>
+									<dt>N&eacute; le</dt>
+									<dd>28/12/1990</dd>
+									<dt>Habite &agrave;</dt>
+									<dd>Besan&ccedil;on</dd>
+									<dt>Sexe</dt>
+									<dd>Homme</dd>
+									<dt>Inscrit le </dt>
+									<dd>3/3/2013</dd>
+								</dl>
+								<h3>Contact</h3>
+								<dl class="dl-horizontal">
+									<dt>Mail</dt>
+									<dd>john.doe@unknown.com</dd>  										
+									<dt>Twitter</dt>
+									<dd>@johnDoe</dd>
+
+								</dl>
+							</div>
+
+							<!-- Friends view -->
+							<div class="tab-pane fade" id="friends">
+								<div class="media">
+									<a class="pull-left" href="#">
+										<img class="media-object" data-src="holder.js/64x64">
+									</a>
+									<div class="media-body">
+										<h4>Jane Doe</h4>
+									</div>
+								</div>
+								<div class="media">
+									<a class="pull-left" href="#">
+										<img class="media-object" data-src="holder.js/64x64">
+									</a>
+									<div class="media-body">
+										<h4>Le Poussin Piou</h4>
+									</div>
+								</div>		
+							</div>
+							
+						</div>
+					</form>	
 				</div>
-				
+
+
+
+
 			</div>
 
-			<footer>
-				<p>&copy; Fotostep 2012</p>
-			</footer>
+		</div>
 
-		</div><!-- Container-->
+		<footer>
+			<p>&copy; Fotostep 2012</p>
+		</footer>
 
-		
+	</div><!-- Container-->
 
 
-	</body>
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-tabs.js"></script>
+	<script src="js/holder.js"></script>
+	
+	<script>
+	$('#profileTab a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	})
+	</script>
 
-	</html>
+
+</body>
+
+</html>

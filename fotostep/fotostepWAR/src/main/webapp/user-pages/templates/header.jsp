@@ -15,7 +15,10 @@
                     <li> <a href="#">Explorer</a> </li>
                     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mon profil<b class="caret"></b> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Visualiser mon profil</a></li>
+                            <li><h:outputLink id="view-my-profile" value="view-profile.jsf">
+                                <f:param name="UserId" value="#{sessionScope['userId']}" />
+                                <h:outputText value="Voir mon profil" />
+                            </h:outputLink></li>
                             <li class="divider"></li>
                             <li><a href="#">Modifier mes informations</a></li>
                             <li><a href="#">Gérer mes photos</a></li>

@@ -10,7 +10,10 @@
             <li><h:outputLink value="news.jsf" > Accueil</h:outputLink></li>
             <li><h:outputLink value="#">Rechercher des photos</h:outputLink></li>
             <li class="nav-header">Mon compte</li>
-            <li><h:outputLink value="#">Visualiser mon profil</h:outputLink></li>
+            <li><h:outputLink id="view-my-profile" value="view-profile.jsf">
+                <f:param name="UserId" value="#{sessionScope['userId']}" />
+                <h:outputText value="Voir mon profil" />
+            </h:outputLink></li>
             <li><h:outputLink value="#">Modifier mon compte</h:outputLink></li>
 
             <li class="nav-header">Mes photos</li>
