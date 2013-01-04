@@ -3,17 +3,7 @@ package business.model.database;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
@@ -40,6 +30,10 @@ public class Picture implements Serializable {
 	@Lob
 	private String description;
 
+    @Lob
+    private String tags;
+
+    @Enumerated(EnumType.STRING)
 	private FormatEnum format;
 
 	private int height;
@@ -97,7 +91,15 @@ public class Picture implements Serializable {
 		this.description = description;
 	}
 
-	public FormatEnum getFormat() {
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public FormatEnum getFormat() {
 		return this.format;
 	}
 

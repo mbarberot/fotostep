@@ -8,9 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import business.model.database.EnabledEnum;
-import business.model.database.GenderEnum;
-import business.model.database.User;
+import business.model.database.*;
 import business.util.exceptions.UserNotFoundException;
 
 @Stateless
@@ -28,7 +26,7 @@ public class UserManager implements UserManagerLocal{
 		newUser.setFirstname(firstName);
 		newUser.setLastname(lastName);
 		
-		if(gender.equals("h"))
+		if(gender.equals("m"))
 		{
 			newUser.setGender(GenderEnum.m);
 		}
@@ -40,6 +38,17 @@ public class UserManager implements UserManagerLocal{
 		newUser.setRegisterdate(new Date());
 		newUser.setEnabled(EnabledEnum.accepted);
 		em.persist(newUser);
+
+        // Création de l'album par défaut
+        Album defaultA = new Album();
+        defaultA.setUser(newUser);
+        defaultA.setAuthorization(AuthorizationEnum.PRIVATE);
+        defaultA.setIsdefault(1);
+        defaultA.setName("Album par défaut");
+        defaultA.setDate(new Date());
+        defaultA.setDescription("Album par défaut où sont stockées vos photos");
+        em.persist(defaultA);
+
 		return newUser;
 	}
 

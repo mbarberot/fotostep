@@ -2,6 +2,7 @@ package jsf;
 
 import business.model.database.Album;
 import business.model.database.GenderEnum;
+import business.model.database.Picture;
 import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
 
@@ -26,9 +27,12 @@ public class UserProfileDataController {
     private String registerDate;
     private String mail  = "Non renseigné";
     private String idTwitter  = "Non renseigné";
-    private String avatarPath  = "Non renseigné";
+    private String idFb = "Non renseigné";
+    private String avatarPath  = "";
     private List<Album> albums = new ArrayList<Album>();
     private List<User> friends = new ArrayList<User>();
+
+    private List<Album> localizedAlbums = new ArrayList<Album>();
     private boolean isAFriend;
 
 
@@ -50,21 +54,53 @@ public class UserProfileDataController {
         User myUser = um.getUserById(idUser);
         firstName = myUser.getFirstname();
         lastName = myUser.getLastname();
-        //birthDate = new Date();
-        //userPlace = "Non renseigné";
+
+        Date uBirthdate = myUser.getBirthdate();
+        if(uBirthdate != null)
+        {
+          birthDate = uBirthdate.toString();
+        }
+
+        String place = myUser.getPlace();
+        if(place != null)
+        {
+            userPlace = place;
+        }
+
         gender = (myUser.getGender().equals(GenderEnum.m))? "Homme" : "Femme";
         registerDate = myUser.getRegisterdate().toString();
         mail = myUser.getLogin();
-        //idTwitter = "Non renseigné";
+
+        String userTwitter = myUser.getTwitterid();
+        if(userTwitter != null)
+        {
+            idTwitter = "#"+userTwitter;
+        }
+
+        String userFb = myUser.getFbid();
+        if(userFb != null)
+        {
+            idFb = "facebook.com/"+userFb;
+        }
         albums = myUser.getAlbums();
         friends = myUser.getFriends();
 
+        // Récupère les albums géolocalisés pour la map view
+        for(Album alb : albums)
+        {
+            Picture cover = alb.getCoverPicture();
+            if(cover != null && cover.getCoord() != null)
+            {
+                localizedAlbums.add(alb);
+            }
+        }
         // IsAFriend => permet d'afficher ou non le bouton d'ajout
         isAFriend = false;
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
         HttpSession httpSession = request.getSession(false);
         Integer myId = (Integer)httpSession.getAttribute("userId");
+
 
         if(myId == idUser)
         {
@@ -150,7 +186,13 @@ public class UserProfileDataController {
         this.idTwitter = idTwitter;
     }
 
+    public String getIdFb() {
+        return idFb;
+    }
 
+    public void setIdFb(String idFb) {
+        this.idFb = idFb;
+    }
 
     public List<Album> getAlbums() {
         return albums;
@@ -182,5 +224,13 @@ public class UserProfileDataController {
 
     public void setIsAFriend(boolean AFriend) {
         isAFriend = AFriend;
+    }
+
+    public List<Album> getLocalizedAlbums() {
+        return localizedAlbums;
+    }
+
+    public void setLocalizedAlbums(List<Album> localizedAlbums) {
+        this.localizedAlbums = localizedAlbums;
     }
 }

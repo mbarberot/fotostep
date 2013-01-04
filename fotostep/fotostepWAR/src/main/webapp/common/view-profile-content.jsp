@@ -8,9 +8,9 @@
     <div class = "span9">
         <div class="page-header">
             <div class="media">
-                <a class="pull-left" href="#">
-                    <img class="media-object" src="holder.js/100x100">
-                </a>
+
+                 <img class="media-object pull-left" src="holder.js/100x100">
+
                 <div class="media-body">
                     <h2><h:outputFormat value="{0} {1}">
                         <f:param value="#{userProfileData.firstName}" />
@@ -71,19 +71,22 @@
                         map.on('click', onMapClick);
 
                     </script>
-                    <ul class="pager">
-                        <li class="bordered"><a href="#" ><</a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
-                        <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"/></a></li>
 
-                        <li class="bordered"><a href="#">></a></li>
-                    </ul>
+                    <c:choose>
+
+                        <c:when test="${fn:length(userProfileData.localizedAlbums) gt 0}">
+                            <ul class="pager">
+                                <li class="bordered"><a href="#" ><</a></li>
+                                <c:forEach items="#{userProfileData.localizedAlbums}" var="alb">
+                                    <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"></a></li>
+                                 </c:forEach>
+                                <li class="bordered"><a href="#">></a></li>
+                            </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <h3>Cette personne n'a pas d'albums localisés</h3>
+                        </c:otherwise>
+                    </c:choose>
 
                 </div>
 
@@ -131,6 +134,8 @@
                         <dd><h:outputText value="#{userProfileData.mail}"/></dd>
                         <dt>Twitter</dt>
                         <dd><h:outputText value="#{userProfileData.idTwitter}"/></dd>
+                        <dt>Facebook</dt>
+                        <dd><h:outputText value = "#{userProfileData.idFb}"/></dd>
 
                     </dl>
                 </div>

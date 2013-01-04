@@ -26,10 +26,6 @@
         <!-- Menu -->
         <%@include file="templates/header.jsp" %>
         <!-- /Menu -->
-
-
-
-
             <div class="index">
                 <div class="row">
 

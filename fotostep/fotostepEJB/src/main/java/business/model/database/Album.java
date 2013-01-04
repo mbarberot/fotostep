@@ -1,5 +1,8 @@
 package business.model.database;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -18,10 +21,14 @@ public class Album implements Serializable {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int idalbum;
 
+    @Enumerated(EnumType.STRING)
 	private AuthorizationEnum authorization;
+
+    private int isdefault;
 
 	@Lob
 	private String description;
+
 
 	private String name;
         
@@ -36,6 +43,7 @@ public class Album implements Serializable {
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="album")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Commentalbum> comments;
 
 	//uni-directional many-to-one association to Picture
@@ -45,6 +53,7 @@ public class Album implements Serializable {
 
 	//bi-directional many-to-many association to User
 	@ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(
 		name="likealbum"
 		, joinColumns={
@@ -58,6 +67,7 @@ public class Album implements Serializable {
 
 	//bi-directional many-to-one association to Picture
 	@OneToMany(mappedBy="album")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Picture> pictures;
 
 	public Album() {
@@ -79,7 +89,15 @@ public class Album implements Serializable {
 		this.authorization = authorization;
 	}
 
-	public String getDescription() {
+    public int getIsdefault() {
+        return isdefault;
+    }
+
+    public void setIsdefault(int isdefault) {
+        this.isdefault = isdefault;
+    }
+
+    public String getDescription() {
 		return this.description;
 	}
 

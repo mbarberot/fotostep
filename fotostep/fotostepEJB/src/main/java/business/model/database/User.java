@@ -24,10 +24,14 @@ public class User implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date birthdate;
 
+    @Enumerated(EnumType.STRING)
 	private EnabledEnum enabled;
+
+    private String avatar;
 
 	private String firstname;
 
+    @Enumerated(EnumType.STRING)
 	private GenderEnum gender;
 
 	private String lastname;
@@ -35,6 +39,14 @@ public class User implements Serializable {
 	private String login;
 
 	private String password;
+
+    private String place;
+
+    private String twitterid;
+
+    private String fbid;
+
+
 
 	@Temporal(TemporalType.DATE)
 	private Date registerdate;
@@ -46,18 +58,22 @@ public class User implements Serializable {
 
 	//bi-directional many-to-one association to Commentalbum
 	@OneToMany(mappedBy="author")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Commentalbum> commentsOnAlbums;
 
 	//bi-directional many-to-one association to Commentpicture
 	@OneToMany(mappedBy="author")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Commentpicture> commentsOnPictures;
 
 	//bi-directional many-to-many association to Album
 	@ManyToMany(mappedBy="likers")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Album> likedAlbums;
 
 	//bi-directional many-to-many association to Picture
 	@ManyToMany(mappedBy="likers")
+    @LazyCollection(LazyCollectionOption.FALSE)
 	private List<Picture> likedPictures;
 
 	//uni-directional many-to-many association to User
@@ -148,7 +164,39 @@ public class User implements Serializable {
 		this.registerdate = registerdate;
 	}
 
-	public List<Album> getAlbums() {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getTwitterid() {
+        return twitterid;
+    }
+
+    public void setTwitterid(String twitterid) {
+        this.twitterid = twitterid;
+    }
+
+    public String getFbid() {
+        return fbid;
+    }
+
+    public void setFbid(String fbid) {
+        this.fbid = fbid;
+    }
+
+    public List<Album> getAlbums() {
 		return this.albums;
 	}
 
