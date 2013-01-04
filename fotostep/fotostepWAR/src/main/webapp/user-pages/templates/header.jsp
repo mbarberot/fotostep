@@ -21,7 +21,7 @@
                             </h:outputLink></li>
                             <li class="divider"></li>
                             <li><a href="#">Modifier mes informations</a></li>
-                            <li><a href="#">Gérer mes photos</a></li>
+                            <li><a href="view-albums.jsf">Gérer mes photos</a></li>
                         </ul>
                     </li>
                     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mes contacts<b class="caret"></b> </a>

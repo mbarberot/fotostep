@@ -53,5 +53,10 @@
         <managed-bean-class>jsf.UserProfileDataController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>viewAlbums</managed-bean-name>
+        <managed-bean-class>jsf.ViewAlbumsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
 </faces-config>

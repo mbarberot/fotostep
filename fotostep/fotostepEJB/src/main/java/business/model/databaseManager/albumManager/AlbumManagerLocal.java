@@ -8,6 +8,7 @@ import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
 import javax.ejb.Local;
+import java.util.List;
 
 /**
  * Interface locale du bean AlbumManager
@@ -23,4 +24,5 @@ public interface AlbumManagerLocal
     public void deleteAlbum(Album album) throws AlbumNotFoundException;
 
     public void updateAlbum(Album album, String name, String description, AuthorizationEnum authorization, Picture picture) throws AlbumNotFoundException, PictureNotFoundException;
+
 }

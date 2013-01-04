@@ -8,9 +8,12 @@ import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * Bean de manipulation de l'entité Album dans la base de données.
@@ -43,5 +46,6 @@ public class AlbumManager implements AlbumManagerLocal
     public void updateAlbum(Album album, String name, String description, AuthorizationEnum authorization, Picture picture) throws AlbumNotFoundException, PictureNotFoundException{
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 
 }
