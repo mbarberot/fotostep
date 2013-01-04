@@ -8,9 +8,7 @@
     <div class = "span9">
         <div class="page-header">
             <div class="media">
-
-                 <img class="media-object pull-left" src="holder.js/100x100">
-
+                <h:graphicImage value="#{userProfileData.avatarPath}" styleClass="media-object pull-left" />
                 <div class="media-body">
                     <h2><h:outputFormat value="{0} {1}">
                         <f:param value="#{userProfileData.firstName}" />
@@ -148,7 +146,7 @@
                                 <div class="media">
                                     <h:outputLink styleClass="pull-left" id="view-my-profile" value="view-profile.jsf">
                                         <f:param name="UserId" value="#{friend.iduser}" />
-                                        <img class="media-object" data-src="holder.js/64x64">
+                                        <h:graphicImage value="../assets/img/avsmall.png" styleClass="media-object"/>
                                     </h:outputLink>
                                     <div class="media-body">
                                         <h4>${friend.firstname} ${friend.lastname}</h4>

@@ -28,7 +28,7 @@ public class UserProfileDataController {
     private String mail  = "Non renseigné";
     private String idTwitter  = "Non renseigné";
     private String idFb = "Non renseigné";
-    private String avatarPath  = "";
+    private String avatarPath  = "../assets/img/avnormal.png";
     private List<Album> albums = new ArrayList<Album>();
     private List<User> friends = new ArrayList<User>();
 
