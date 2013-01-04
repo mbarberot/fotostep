@@ -1,0 +1,235 @@
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<title>Fotostep - Profil de John Doe</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Le styles -->
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+	body {
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	}
+	</style>
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4/leaflet.css" />
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+
+	</head>
+
+
+	<body>
+		<div class="container">	
+			<div class="navbar navbar-inverse navbar-fixed-top">
+				<div class="navbar-inner">
+					<div class="container">
+						<a class="brand" href="index.html"> <img src="img/logo.png"></a>
+						<div class="nav-collapse collapse">
+							<ul class="nav">
+								<li><a href="#">Accueil</a></li>
+								<li><a href="#about">Rechercher des photos</a></li>
+								<li class="active"><a href="#">Inscription</a></li>
+							</ul>
+							<form class="form-inline pull-right" style="display: inline; margin-bottom: 0; margin-left: 15px" method="post">
+								<input type="text" placeholder="Email" class="input-small" name="login">
+								<input type="password" placeholder="Mot de passe" class="input-small" name = "passwd">
+								<button class="btn" type="submit" style="margin: 5px">S'identifier</button>
+							</form>
+						</div><!--/.nav-collapse -->
+					</div>
+				</div>
+			</div> <!-- nav-bar-->
+
+			
+			<div class="page-header">
+				<h1><img src="img/header-logo.png"/></h1>
+			</div>
+
+			<div class = "row">
+				<div class="span3">					
+					<div class="well sidebar-nav">
+						<ul class="nav nav-list">
+							<li><a href="#">Accueil</a></li>
+							<li class="nav-header">Mon compte</li>
+							<li><a href="#">Ajouter des photos</a></li>
+							<li><a href="#">Modifier mon compte</a></li>
+							<li class="active"><a href="#">Voir mon profil</a></li>
+							<li class="nav-header">Mes contacts</li>
+							<li><a href="#">Voir mes contacts</a></li>
+						</ul>
+					</div>					
+				</div>
+
+				<div class = "span9">
+					<div class = "page-header">
+						<h2>Titre de l'album <button class = "btn btn-primary pull-right"><i class = "icon-plus-sign icon-white" ></i> Nouvelle photo</button></h2>
+						
+						<div class="btn-group">
+							<a href="#" class="btn btn-info" id="btn-like"><i class="icon-heart icon-white"></i> 42</a>
+							<a href="#" class="btn btn-success" id="btn-unlike"><i class="icon-minus icon-white"></i> 43</a>
+							<a href="#" class="btn btn-inverse" id = "btn-comment"><i class="icon-comment icon-white"></i> 42</a>
+						</div>
+					</div>							
+
+					<div class = "span9" id = "albums-container">
+						<ul id="profileTab" class="nav nav-pills">
+							<li class="active">
+								<a href="#mapView">Carte</a>
+							</li>
+							<li>
+								<a href="#pictures">Photos</a>
+							</li>
+							<li>
+								<a href="#infos">Infos</a>
+							</li>
+							<li>
+								<a href="#comments">Commentaires</a>
+							</li>
+						</ul>
+
+						<div id="myTabContent" class="tab-content">
+						<!-- Map view -->
+							<div class="tab-pane fade in active" id="mapView">
+								<div id  = "map" style= "width: 100%; height: 400px"></div>
+								<script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>	
+								<script>
+
+								var map = L.map('map').setView([51.505, -0.09], 13);
+
+								L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+									maxZoom: 18,
+									attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+								}).addTo(map);
+
+
+								
+								var markerPopup = L.popup({minWidth:50});
+								markerPopup.setContent("<p>Hello</p>");
+
+								L.marker([51.5, -0.09]).addTo(map).bindPopup('<img src="img/avsmall.png"/>').openPopup();
+								var popup = L.popup();
+
+								function onMapClick(e) {
+									popup
+									.setLatLng(e.latlng)
+									.setContent("You clicked the map at " + e.latlng.toString())
+									.openOn(map);
+								}
+
+								map.on('click', onMapClick);
+
+								</script>
+							</div>
+						<!-- Gallery view -->
+							<div class="tab-pane fade" id="pictures">
+								<ul class="thumbnails">
+								  <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>
+								   <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>
+								   <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>
+								   <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>
+								   <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>
+								   <li class="span3">
+								    <a href="#" class="thumbnail">
+								      <img data-src="holder.js/250x200" alt="">
+								    </a>
+								  </li>								  
+								</ul>
+							</div>
+						<!-- Infos view -->
+							<div class="tab-pane fade" id="infos">
+								<h3>Général</h3>
+								<dl class="dl-horizontal">
+									<dt>Description</dt>
+									<dd>La description de l'album</dd>  										
+									<dt>Date de cr&eacute;ation</dt>
+									<dd>12/12/2012</dd>
+									<dt>Ouvert à</dt>
+									<dd>Tout le monde/Amis de John Doe / Personne</dd>
+								</dl>								
+							</div>
+						<!--Comments -->
+							<!-- Gallery view -->
+							<div class="tab-pane fade" id="comments">
+								<div class="media">
+								  <a class="pull-left" href="#">
+								    <img class="media-object" data-src="holder.js/64x64">
+								  </a>
+								  <div class="media-body">
+								    <h4 class="media-heading">John Doe</h4>								 
+								    <div class="media">
+								      Ceci est un commentaire
+								    </div>
+								  </div>
+								</div>
+								<div class="media">
+								  <a class="pull-left" href="#">
+								    <img class="media-object" data-src="holder.js/64x64">
+								  </a>
+								  <div class="media-body">
+								    <h4 class="media-heading">Jane Doe</h4>								 
+								    <div class="media">
+								      Tu le SENS mon gros commentaire ?
+								    </div>
+								  </div>
+								</div>
+							</div>
+						</div>
+					</div>							
+				</div>
+
+
+
+
+			</div>
+
+		</div>
+
+		<footer>
+			<p>&copy; Fotostep 2012</p>
+		</footer>
+
+	</div><!-- Container-->
+
+
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-tabs.js"></script>
+	<script src="js/holder.js"></script>
+	
+	<script>
+	$('#profileTab a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	})
+	</script>
+
+
+</body>
+
+</html>
