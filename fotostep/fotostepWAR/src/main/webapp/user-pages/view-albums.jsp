@@ -41,11 +41,14 @@
                     </div>
 
                     <div class = "span9" id = "albums-container">
-                        <c:forEach items="${viewAlbums.albums}" var="alb">
+                        <c:forEach items="#{viewAlbums.albums}" var="alb">
                             <div class="media">
-                                <a class="pull-left" href="#">
-                                    <img class="media-object align-center" src="holder.js/200x150">
-                                </a>
+                                <h:outputLink value="view-album.jsf" styleClass="pull-left">
+                                    <f:param name="UserId" value="#{sessionScope['userId']}" />
+                                    <f:param name="AlbumId" value="#{alb.idalbum}" />
+                                    <h:graphicImage styleClass="media-object" value="holder.js/200x150"/>
+                                </h:outputLink>
+
                                 <div class="media-body">
 
                                     <c:if test="${alb.isdefault == 0}">

@@ -34,7 +34,7 @@
                 <%@include file="templates/nav-menu.jsp" %>
 
                 <!-- Contenu -->
-                <%@include file = "../common/view-profile-content.jsp"%>
+                <%@include file = "templates/view-profile-content.jsp"%>
             </div>
         </div>
 

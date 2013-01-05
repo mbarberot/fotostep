@@ -1,4 +1,4 @@
-package jsf;
+package jsf.album;
 
 import business.model.database.Album;
 import business.model.database.User;

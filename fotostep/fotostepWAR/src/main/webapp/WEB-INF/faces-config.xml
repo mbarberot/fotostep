@@ -12,7 +12,7 @@
     </managed-bean>
     <managed-bean>
         <managed-bean-name>albumController</managed-bean-name>
-        <managed-bean-class>jsf.AlbumController</managed-bean-class>
+        <managed-bean-class>jsf.album.AlbumController</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
     <navigation-rule>
@@ -55,7 +55,12 @@
     </managed-bean>
     <managed-bean>
         <managed-bean-name>viewAlbums</managed-bean-name>
-        <managed-bean-class>jsf.ViewAlbumsController</managed-bean-class>
+        <managed-bean-class>jsf.album.ViewAlbumsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>viewAlbum</managed-bean-name>
+        <managed-bean-class>jsf.album.ViewAlbumController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
