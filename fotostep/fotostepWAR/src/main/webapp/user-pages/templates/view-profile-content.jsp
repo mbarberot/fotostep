@@ -93,13 +93,17 @@
                     <c:choose>
                         <c:when test="${fn:length(userProfileData.albums) gt 0}">
                         <ul class="thumbnails">
-                            <c:forEach items="${userProfileData.albums}" var="album">
+                            <c:forEach items="#{userProfileData.albums}" var="album">
                                 <li class="span3">
                                     <div class = "thumbnail">
                                         <img src="holder.js/250x200" alt="">
                                         <h3>${album.name}</h3>
                                         <p>${album.description}</p>
-                                        <a href="#">Voir l'album</a>
+                                        <h:outputLink id="view-album" value="view-album.jsf">
+                                            <f:param name="UserId" value="#{sessionScope['userId']}" />
+                                            <f:param name="AlbumId" value="#{album.idalbum}" />
+                                            <h:outputText value="Voir l'album"/>
+                                        </h:outputLink>
                                     </div>
                                 </li>
                             </c:forEach>
@@ -144,9 +148,9 @@
                         <c:when test="${fn:length(userProfileData.friends) gt 0}">
                             <c:forEach items="#{userProfileData.friends}" var="friend">
                                 <div class="media">
-                                    <h:outputLink styleClass="pull-left" id="view-my-profile" value="view-profile.jsf">
+                                    <h:outputLink styleClass="pull-left" id="view-profile" value="view-profile.jsf">
                                         <f:param name="UserId" value="#{friend.iduser}" />
-                                        <h:graphicImage value="../../assets/img/avsmall.png" styleClass="media-object"/>
+                                        <h:graphicImage value="../assets/img/avsmall.png" styleClass="media-object"/>
                                     </h:outputLink>
                                     <div class="media-body">
                                         <h4>${friend.firstname} ${friend.lastname}</h4>
