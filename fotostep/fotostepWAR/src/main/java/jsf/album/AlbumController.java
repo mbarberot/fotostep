@@ -1,4 +1,4 @@
-package jsf;
+package jsf.album;
 
 import business.model.databaseManager.albumManager.AlbumManager;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
