@@ -17,7 +17,7 @@
             <li><h:outputLink value="#">Modifier mon compte</h:outputLink></li>
 
             <li class="nav-header">Mes photos</li>
-            <li><h:outputLink value="#">Ajouter des photos</h:outputLink></li>
+            <li><h:outputLink value="upload.jsf">Ajouter des photos</h:outputLink></li>
             <li><h:outputLink value="view-albums.jsf">Gérer mes albums</h:outputLink></li>
 
             <li class="nav-header">Mes contacts</li>

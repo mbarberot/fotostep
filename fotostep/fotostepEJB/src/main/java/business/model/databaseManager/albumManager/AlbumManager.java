@@ -8,7 +8,6 @@ import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
 import java.util.Date;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -45,6 +44,19 @@ public class AlbumManager implements AlbumManagerLocal
 
     public void updateAlbum(Album album, String name, String description, AuthorizationEnum authorization, Picture picture) throws AlbumNotFoundException, PictureNotFoundException{
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Album getDefaultAlbum(User user) {
+        Query query = em.createQuery("SELECT a FROM Album a WHERE iduser = :id AND isdefault = :default");
+        query.setParameter("id", user.getIduser());
+        query.setParameter("default", 1);
+
+        try {
+            Album res = (Album) query.getSingleResult();
+            return res;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
 

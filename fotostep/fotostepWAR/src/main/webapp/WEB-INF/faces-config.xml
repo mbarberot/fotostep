@@ -45,9 +45,9 @@
     </managed-bean>
     <managed-bean>
         <managed-bean-name>webUpload</managed-bean-name>
-        <managed-bean-class>jsf.WebUploadBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-class>jsf.WebUploadController</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>userProfileData</managed-bean-name>
         <managed-bean-class>jsf.UserProfileDataController</managed-bean-class>

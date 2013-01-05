@@ -21,26 +21,38 @@
         <!-- Menu -->
         <%@include file="templates/header.jsp" %>
         <!-- /Menu -->
+        
+        <div class="index">
+            <div class="row">
+                <!-- /Menu de navigation -->
+                <%@include file="templates/nav-menu.jsp" %>
 
-        <div class="container">
-            <h:form id="uploadForm" enctype="multipart/form-data">
-                <h:panelGrid columns="3">
-                    <h:outputLabel for="file" value="Sélectionner le fichier" />
-                    <t:inputFileUpload id="file" value="#{webUpload.uploadedFile}" required="true" />
-                    <h:message for="file" styleClass="label label-important" />
+                <!-- Contenu -->
+                <div class = "span9">
+                    <div class = "page-header">
+                        <h2>Uploader une photo</h2>
+                    </div>
 
-                    <h:panelGroup />
-                    <h:commandButton value="Submit" action="#{myBean.submit}" />
-                    <h:message for="uploadForm" infoStyle="color: green;" errorStyle="color: red;" />
-                </h:panelGrid>
-            </h:form>
-
-            <h:outputLink value="file/#{webUpload.fileName}" rendered="#{webUpload.fileName != null}"></h:outputLink>
+                    <div class = "span9" id = "albums-container">
+                        <h:form id="uploadForm" enctype="multipart/form-data">
+                            <h:panelGrid columns="3">
+                                <h:outputLabel for="file" value="Sélectionner le fichier" />
+                                <t:inputFileUpload id="file" value="#{webUpload.uploadedFile}" required="true" />
+                                <h:message for="file" styleClass="label label-important" />
+                                <h:panelGroup />
+                                <h:commandButton value="Submit" action="#{webUpload.submit}" />
+                                <h:message for="uploadForm" infoStyle="color: green;" errorStyle="color: red;" />
+                            </h:panelGrid>
+                        </h:form>
+                    </div>
+                </div>
+                <!-- /Contenu -->
+            </div>
         </div>
-
         <%@ include file="templates/footer.jsp" %>
     </t:documentBody>
     <!-- /BODY -->
+    
 </f:view>
 </html>
 <!-- /HTML -->

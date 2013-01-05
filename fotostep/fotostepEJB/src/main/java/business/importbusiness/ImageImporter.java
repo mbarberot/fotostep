@@ -1,5 +1,11 @@
 package business.importbusiness;
 
+import business.model.database.Album;
+import business.model.database.FormatEnum;
+import business.model.database.Picture;
+import business.model.databaseManager.pictureManager.PictureManagerLocal;
+import java.nio.Buffer;
+import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 /**
@@ -10,4 +16,11 @@ import javax.ejb.Stateful;
 @Stateful
 public class ImageImporter implements ImageImporterLocal
 { 
+    @EJB
+    private PictureManagerLocal pictureManager;
+
+    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format) {
+        Picture picture = pictureManager.addImage(buffer, album, path, description, width, height, format);
+        return picture;
+    }
 }
