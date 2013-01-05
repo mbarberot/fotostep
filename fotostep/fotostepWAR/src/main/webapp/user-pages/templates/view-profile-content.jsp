@@ -146,7 +146,7 @@
                                 <div class="media">
                                     <h:outputLink styleClass="pull-left" id="view-my-profile" value="view-profile.jsf">
                                         <f:param name="UserId" value="#{friend.iduser}" />
-                                        <h:graphicImage value="../assets/img/avsmall.png" styleClass="media-object"/>
+                                        <h:graphicImage value="../../assets/img/avsmall.png" styleClass="media-object"/>
                                     </h:outputLink>
                                     <div class="media-body">
                                         <h4>${friend.firstname} ${friend.lastname}</h4>
