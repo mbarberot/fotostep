@@ -9,7 +9,9 @@ import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +25,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.imageio.ImageIO;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FilenameUtils;
@@ -119,14 +122,19 @@ public class WebUploadController {
         String prefix = FilenameUtils.getBaseName(uploadedFile.getName());
         String suffix = FilenameUtils.getExtension(uploadedFile.getName());
         
-        String path = System.getProperty("user.dir").toString() + "/pictures/user" + user.getIduser();
+        ServletContext theApplicationsServletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+        String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();
+        
         File repertory = new File(path);
-        if (!repertory.exists()) {
-            repertory.mkdirs();
-        }
+        repertory.mkdirs();
+        
         File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
         OutputStream output = new FileOutputStream(file);
         IOUtils.copy(uploadedFile.getInputStream(), output);
+        
+        output.close();
+        in.close();
+        
         imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, bimg.getWidth(), bimg.getHeight(), format);
 
     }
