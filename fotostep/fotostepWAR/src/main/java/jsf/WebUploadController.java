@@ -7,15 +7,22 @@ import business.model.database.FormatEnum;
 import business.model.database.User;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FilenameUtils;
@@ -26,76 +33,102 @@ public class WebUploadController {
     
     @EJB
     private ImageImporterLocal imageImporter;
+    
     @EJB
     private AlbumManagerLocal albumManager;
+    
     @EJB
     private UserManagerLocal userManager;
 
     private UploadedFile uploadedFile;
-    private String fileName;
+    private String description;
+    private String tags;
+    
+    // Constructeur
+    
+    public WebUploadController() {}
+    
+    // Validate
+    
+    public void validateUploadedFile(FacesContext context, UIComponent component,
+			Object value) throws ValidatorException {
+        UploadedFile file = (UploadedFile) value;
 
-    public void submit() throws ValidatorException, IOException {
-        
-        //String path = System.getProperty("user.home");  
-        //String newFileName = path + "/" + getFileName();
-        //System.out.println(path);
-            
-        if (uploadedFile.getSize() > 2097152) {
-            
-            //FacesContext context = FacesContext.getCurrentInstance();
-            //context.addMessage("Erreur taille image", new FacesMessage("L'image est trop volumineuse (2mo max)"));
-            System.out.println("Image trop grande");
-            
-//        } else if (!(uploadedFile.getContentType().equals("typeimage/jpeg") || uploadedFile.getContentType().equals("typeimage/png"))) {
-//            
-//            //FacesContext context = FacesContext.getCurrentInstance();
-//            //context.addMessage("Erreur format image", new FacesMessage("L'image n'est pas au bon format (JPG ou PNG uniquement)"));
-//            System.out.println("Image au mauvais format");
-//            
-       } else {
-            
-            Buffer buf = ByteBuffer.wrap(uploadedFile.getBytes());
-            FormatEnum format = FormatEnum.jpg;
-            if (uploadedFile.getContentType().equals("typeimage/jpeg"))
-                format = FormatEnum.jpg;
-            else
-                format = FormatEnum.png;
-            FacesContext context = FacesContext.getCurrentInstance();
-            HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-            HttpSession httpSession = request.getSession(false);
-            Integer myId = (Integer) httpSession.getAttribute("userId");
-            User u = userManager.getUserById(myId);
-            Album defaultAlbum = albumManager.getDefaultAlbum(u);
-            imageImporter.addImage(buf, defaultAlbum, uploadedFile.getName(), "No description", 0, 0, format);
-            
-            // Prepare filename prefix and suffix for an unique filename in upload folder.
-            String prefix = FilenameUtils.getBaseName(uploadedFile.getName());
-            String suffix = FilenameUtils.getExtension(uploadedFile.getName());
-
-            // Prepare file and outputstream.
-            File file = null;
-            OutputStream output = null;
-
-            // Create file with unique name in upload folder and write to it.
-            file = File.createTempFile(prefix + "_", "." + suffix, new File(System.getProperty("user.home").toString()));
-            output = new FileOutputStream(file);
-            IOUtils.copy(uploadedFile.getInputStream(), output);
-            fileName = file.getName();
-
+        if (!(file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png"))) {
+            throw new ValidatorException(new FacesMessage("Le fichier n'est pas au bon format (JPEG ou PNG)"));
+        } else if (file.getSize() > 2097152) {
+            throw new ValidatorException(new FacesMessage("Le fichier est trop volumineux (supérieur à 2 Mo)"));
+        } else if (file.getSize() == 0) {
+            throw new ValidatorException(new FacesMessage("Le fichier est vide"));
         }
     }
 
-
+    // Getters + Setters
+    
     public UploadedFile getUploadedFile() {
         return uploadedFile;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
+    
+    public String getDescription() {
+        return description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    public String getTags() {
+        return tags;
+    }
+    
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+    
+    // Méthode pour enregistrer une picture
+    
+    public void submit() throws ValidatorException, IOException {
+        
+        Buffer buffer = ByteBuffer.wrap(uploadedFile.getBytes());
+        FormatEnum format = null;
+        
+        if (uploadedFile.getContentType().equals("image/jpeg")) {
+            format = FormatEnum.jpg;
+        } else if (uploadedFile.getContentType().equals("image/png")) {
+            format = FormatEnum.png;
+        }
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer) httpSession.getAttribute("userId");
+        User user = userManager.getUserById(myId);
+        Album defaultAlbum = albumManager.getDefaultAlbum(user);
+        
+        InputStream in = new ByteArrayInputStream(uploadedFile.getBytes());
+        BufferedImage bimg = ImageIO.read(in);
+        
+        if (description.isEmpty()) {
+            description = "Pas de description";
+        }
+        
+        String prefix = FilenameUtils.getBaseName(uploadedFile.getName());
+        String suffix = FilenameUtils.getExtension(uploadedFile.getName());
+        
+        String path = System.getProperty("user.dir").toString() + "/pictures/user" + user.getIduser();
+        File repertory = new File(path);
+        if (!repertory.exists()) {
+            repertory.mkdirs();
+        }
+        File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
+        OutputStream output = new FileOutputStream(file);
+        IOUtils.copy(uploadedFile.getInputStream(), output);
+        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, bimg.getWidth(), bimg.getHeight(), format);
+
+    }
+ 
 }

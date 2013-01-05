@@ -33,16 +33,36 @@
                         <h2>Uploader une photo</h2>
                     </div>
 
-                    <div class = "span9" id = "albums-container">
-                        <h:form id="uploadForm" enctype="multipart/form-data">
-                            <h:panelGrid columns="3">
-                                <h:outputLabel for="file" value="Sélectionner le fichier" />
-                                <t:inputFileUpload id="file" value="#{webUpload.uploadedFile}" required="true" />
-                                <h:message for="file" styleClass="label label-important" />
-                                <h:panelGroup />
-                                <h:commandButton value="Submit" action="#{webUpload.submit}" />
-                                <h:message for="uploadForm" infoStyle="color: green;" errorStyle="color: red;" />
-                            </h:panelGrid>
+                    <div class="span9" >
+                        <h:form styleClass="form-horizontal" id="uploadForm" enctype="multipart/form-data">
+                            <h:messages styleClass="alert alert-error"/>
+
+                            <div class="control-group">
+                                <label class="control-label">Sélectionnez la photo</label>
+                                <div class="controls">
+                                    <t:inputFileUpload id="fileField" required="true" 
+                                                       value="#{webUpload.uploadedFile}"
+                                                       validator="#{webUpload.validateUploadedFile}"/>
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">Description</label>
+                                <div class="controls">
+                                    <h:inputTextarea id="descriptionField" value="#{webUpload.description}" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label class="control-label">TAGS</label>
+                                <div class="controls">
+                                    <h:inputTextarea id="tagsField" value="#{webUpload.tags}" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <h:commandButton styleClass="btn" value="Enregistrer" action="#{webUpload.submit}" />
+                            </div>                                
                         </h:form>
                     </div>
                 </div>

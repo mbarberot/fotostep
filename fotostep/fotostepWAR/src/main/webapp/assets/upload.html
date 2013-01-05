@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Fotostep - uploader une photo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<style>
+			body {
+				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			}
+		</style>
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+		<!-- Fav and touch icons -->
+		<link rel="shortcut icon" href="../assets/ico/favicon.ico">
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="ico/apple-touch-icon-144-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="ico/apple-touch-icon-114-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="ico/apple-touch-icon-72-precomposed.png">
+		<link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
+	</head>
+
+	<body>
+		<div class="container">	
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="index.html"> <img src="img/logo.png"></a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="#">Accueil</a></li>
+							<li><a href="#about">Rechercher des photos</a></li>
+							<li class="active"><a href="#">Inscription</a></li>
+						</ul>
+						<form class="form-inline pull-right" style="display: inline; margin-bottom: 0; margin-left: 15px" method="post">
+							<input type="text" placeholder="Email" class="input-small" name="login">
+							<input type="password" placeholder="Mot de passe" class="input-small" name = "passwd">
+							<button class="btn" type="submit" style="margin: 5px">S'identifier</button>
+						</form>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+			
+			<div class="page-header">
+				<h1><img src="img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
+			</div>
+			
+
+				<div class="row">
+					<div class="span3">					
+						<div class="well sidebar-nav">
+							<ul class="nav nav-list">
+								<li><a href="#">Accueil</a></li>
+								<li class="nav-header">Mon compte</li>
+								<li><a href="#">Ajouter des photos</a></li>
+								<li class="active"><a href="#">Modifier mon compte</a></li>
+								<li><a href="#">Voir mon profil</a></li>
+								<li class="nav-header">Mes contacts</li>
+								<li><a href="#">Voir mes contacts</a></li>
+							</ul>
+						</div>					
+					</div>
+					<div class="span9">
+						<div class ="page-header">					
+							<h2>Uploader une photo</h2>
+						</div>
+						<div class = "span9">
+							<form class="form-horizontal">	
+								<div id="myTabContent" class="tab-content">					
+									<div class="control-group">
+										<label class="control-label" for="inputLastName">Nom de la photo</label>
+										<div class="controls">
+										<input type="text" id="inputLastName" placeholder="Nom">
+										</div>
+									</div>				
+									<div class="control-group">
+										<label class="control-label" for="inputFirstName">Votre photo</label>
+										<div class="controls">
+										<input type="file" id="inputFirstName" placeholder="Prénom">
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="inputEmail">Description</label>
+										<div class="controls">
+										<textarea id="inputEmail" ></textarea>
+										</div>
+									</div>
+									<div class="control-group">
+										<label class="control-label" for="inputEmail">TAGS</label>
+										<div class="controls">
+										<textarea id="inputEmail" ></textarea>
+										</div>
+									</div>								
+									<div class="control-group">
+										<div class="controls">
+											<button type="submit" class="btn btn-primary">Enregistrer</button>
+										</div>
+									</div>								
+								</div>
+							</form>
+						</div>						
+					</div>
+				</div>
+		
+			
+			<hr>
+
+			<footer>
+				<p>&copy; Fotostep 2012</p>
+			</footer>
+			
+		</div> <!-- /container -->
+
+		<!-- Le javascript -->
+		<script src="js/jquery.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/bootstrap-tabs.js"></script>
+
+		<script>
+			$('#myTab a').click(function (e) {
+				e.preventDefault();
+				$(this).tab('show');
+			})
+		</script>
+
+	</body>
+</html>
