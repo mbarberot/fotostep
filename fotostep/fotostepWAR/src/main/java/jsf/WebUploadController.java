@@ -122,13 +122,22 @@ public class WebUploadController {
         String prefix = FilenameUtils.getBaseName(uploadedFile.getName());
         String suffix = FilenameUtils.getExtension(uploadedFile.getName());
         
+        
+        /* Solution 1 : les fichiers sont stockés sur le serveur 
+        
         ServletContext theApplicationsServletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();
+        String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();*/
+        
+        /* Solution 2 : les fichiers sont stockés hors du serveur */
+        
+        String path = "/fotosteppictures/user" + user.getIduser();
         
         File repertory = new File(path);
         repertory.mkdirs();
         
-        File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
+        //File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
+        File file = new File(path + "/" + prefix + "_" + System.currentTimeMillis() + "." + suffix);
+        file.createNewFile();
         OutputStream output = new FileOutputStream(file);
         IOUtils.copy(uploadedFile.getInputStream(), output);
         
