@@ -35,7 +35,9 @@
                 <div class = "span9">
                     <div class = "page-header">
                         <h2>Gestion de mes albums
-                            <button class = "btn btn-primary pull-right"><i class = "icon-plus-sign icon-white" ></i> Nouvel album</button>
+                            <h:outputLink styleClass="btn btn-primary pull-right" value="create-album.jsf">
+                                <i class = "icon-plus-sign icon-white" ></i> Nouvel album
+                            </h:outputLink>
                         </h2>
 
                     </div>
@@ -52,10 +54,17 @@
                                 <div class="media-body">
 
                                     <c:if test="${alb.isdefault == 0}">
-                                        <div class="btn-group pull-right">
-                                            <button class="btn btn-danger" id="btn-close"><i class="icon-remove icon-white"></i></button>
-                                            <button class="btn btn-info" id = "btn-edit"><i class="icon-edit icon-white"></i></button>
-                                        </div>
+
+                                            <h:form styleClass="form-inline">
+                                                <div class="btn-group pull-right">
+                                                <h:commandLink styleClass="btn btn-danger" action="#{viewAlbums.deleteAlbum}"
+                                                               onclick="if (!confirm('Voulez vous vraiment supprimer cet album ?')) return false">
+                                                    <f:param name="deletedalb" value="#{alb.idalbum}"/>
+                                                    <i class="icon-remove icon-white"></i>
+                                                </h:commandLink>
+                                                <button class="btn btn-info" id = "btn-edit"><i class="icon-edit icon-white"></i></button>
+                                                </div>
+                                            </h:form>
                                     </c:if>
 
                                     <h3 class = "media-heading">${alb.name}</h3>

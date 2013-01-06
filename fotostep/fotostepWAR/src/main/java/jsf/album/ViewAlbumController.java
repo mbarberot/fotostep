@@ -3,6 +3,7 @@ package jsf.album;
 import business.model.database.*;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.postgis.binary.ByteGetter;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +33,7 @@ public class ViewAlbumController {
     private String titre = "Album inacessible";
     //private User owner;
     private String description = "Aucune description pour cet album";
-    private String creationDate = "Non renseigné";
+    private String creationDate = "Non renseignée";
     private String authorization;
     private List<Picture> pictures = new ArrayList<Picture>();
     private List<User> likers = new ArrayList<User>();
@@ -99,10 +100,19 @@ public class ViewAlbumController {
         {
             isAuthorized = true;
             isMine = true;
-            if(viewedAlbum.getAuthorization() == AuthorizationEnum.PRIVATE)
+            switch(viewedAlbum.getAuthorization())
             {
-                authorization = "Privé";
+                case PUBLIC:
+                    authorization = "Publique";
+                    break;
+                case PRIVATE:
+                    authorization = "Privé";
+                    break;
+                case FRIENDS:
+                    authorization = "Amis";
+                    break;
             }
+
         }
         else
         {
@@ -133,7 +143,12 @@ public class ViewAlbumController {
 
         // L'album existe bien et l'utilisateur connecté peut le consulter
         titre = viewedAlbum.getName();
-        description = viewedAlbum.getDescription();
+
+        /*String desc = viewedAlbum.getDescription();
+        if(desc != null)
+        {
+            description = desc;
+        }  */
         creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();

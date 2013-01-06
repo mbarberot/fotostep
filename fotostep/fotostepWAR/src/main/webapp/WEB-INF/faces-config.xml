@@ -5,6 +5,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
     version="2.1">
+
     <managed-bean>
         <managed-bean-name>registerController</managed-bean-name>
         <managed-bean-class>jsf.RegisterController</managed-bean-class>
@@ -29,6 +30,22 @@
         <navigation-case>
             <from-outcome>login.success</from-outcome>
             <to-view-id>/user-pages/news.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/user-pages/create-album.jsp</from-view-id>
+        <navigation-case>
+            <to-view-id>/user-pages/view-albums.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/user-pages/view-albums.jsp</from-view-id>
+        <navigation-case>
+            <from-action>deleteAlbum</from-action>
+            <from-outcome>DELETE-OK</from-outcome>
+            <to-view-id>/user-pages/view-albums.jsp</to-view-id>
             <redirect/>
         </navigation-case>
     </navigation-rule>
@@ -61,6 +78,11 @@
     <managed-bean>
         <managed-bean-name>viewAlbum</managed-bean-name>
         <managed-bean-class>jsf.album.ViewAlbumController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>createAlbum</managed-bean-name>
+        <managed-bean-class>jsf.album.CreateAlbumController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
 
