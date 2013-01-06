@@ -25,21 +25,37 @@ public class AlbumManager implements AlbumManagerLocal
     @PersistenceContext
     EntityManager em;
 
-    public Album createAlbum(User user, String name, String description, AuthorizationEnum authorization) throws UserNotFoundException{
+    public Album createAlbum(User user, String name, String description, AuthorizationEnum authorization){
         Album album = new Album();
         
         album.setAuthorization(authorization);
         album.setDate(new Date());
-        album.setDescription(description);
+
+        if(!description.isEmpty())
+        {
+            album.setDescription(description);
+        }
         album.setName(name);
         album.setUser(user);
-        
+        album.setIsdefault(0);
         em.persist(album);
         return album;
     }
 
+    public Album findAlbumById(int id) {
+        try
+        {
+            Album alb = em.find(Album.class, id);
+            return alb;
+        }
+        catch(NoResultException e)
+        {
+            return null;
+        }
+    }
+
     public void deleteAlbum(Album album) throws AlbumNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        em.remove(em.find(Album.class, album.getIdalbum()));
     }
 
     public void updateAlbum(Album album, String name, String description, AuthorizationEnum authorization, Picture picture) throws AlbumNotFoundException, PictureNotFoundException{

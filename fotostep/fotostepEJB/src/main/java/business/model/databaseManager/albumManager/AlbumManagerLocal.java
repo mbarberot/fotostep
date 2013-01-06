@@ -18,7 +18,9 @@ import javax.ejb.Local;
 public interface AlbumManagerLocal
 {
     
-    public Album createAlbum(User user, String name, String description, AuthorizationEnum authorization) throws UserNotFoundException;
+    public Album createAlbum(User user, String name, String description, AuthorizationEnum authorization);
+
+    public Album findAlbumById(int id);
 
     public void deleteAlbum(Album album) throws AlbumNotFoundException;
 
