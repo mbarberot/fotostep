@@ -16,11 +16,11 @@ import com.vividsolutions.jts.geom.Point;
 @Local
 public interface PictureManagerLocal
 {
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format);
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tag, int width, int height, FormatEnum format);
     
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format, Point point);
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tag, int width, int height, FormatEnum format, Point point);
     
-    public void editImage(Picture picture, Album album, String description, Point point);
+    public void editImage(Picture picture, Album album, String description, String tag, Point point);
 
     public void removeImage(Picture picture);
 }

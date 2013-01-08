@@ -94,6 +94,7 @@
                                             <img data-src="holder.js/250x200" alt="">
                                         </a>
                                     </li>
+                                    <h:outputText value="#{viewAlbum.afficherImages}"></h:outputText>
                                 </c:forEach>
                             </ul>
                         </c:when>

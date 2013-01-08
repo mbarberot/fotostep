@@ -14,5 +14,5 @@ import javax.ejb.Local;
 @Local
 public interface ImageImporterLocal
 {
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format);
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tag, int width, int height, FormatEnum format);
 }

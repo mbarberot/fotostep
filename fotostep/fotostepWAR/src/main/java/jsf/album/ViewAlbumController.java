@@ -3,8 +3,6 @@ package jsf.album;
 import business.model.database.*;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
-import org.omg.CORBA.PUBLIC_MEMBER;
-import org.postgis.binary.ByteGetter;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -38,6 +36,7 @@ public class ViewAlbumController {
     private List<Picture> pictures = new ArrayList<Picture>();
     private List<User> likers = new ArrayList<User>();
     private List<Commentalbum> comments = new ArrayList<Commentalbum>();
+    private List<String> files = new ArrayList<String>();
 
     /* Formulaire d'ajout d'un commentaire */
     private String commentText;
@@ -154,6 +153,9 @@ public class ViewAlbumController {
         likers = viewedAlbum.getLikers();
         isLikedByMe = likers.contains(myUser);
         comments = viewedAlbum.getComments();
+        
+        for (Picture p : pictures)
+            files.add(p.getPath());
     }
 
     public String like()
