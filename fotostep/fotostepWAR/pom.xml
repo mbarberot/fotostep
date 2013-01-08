@@ -45,6 +45,12 @@
 	  <type>jar</type>
 	 </dependency>
 	 <dependency>
+	  <groupId>com.nhncorp.ntaf</groupId>
+	  <artifactId>ntaf-fitnesse</artifactId>
+	  <version>20101108</version>
+	  <type>jar</type>
+	 </dependency>
+	 <dependency>
 			<groupId>javaee</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>5</version>

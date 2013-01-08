@@ -7,11 +7,8 @@ import business.model.database.FormatEnum;
 import business.model.database.User;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,7 +22,6 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.imageio.ImageIO;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FilenameUtils;
@@ -144,7 +140,7 @@ public class WebUploadController {
         output.close();
         in.close();
         
-        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, bimg.getWidth(), bimg.getHeight(), format);
+        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, tags, bimg.getWidth(), bimg.getHeight(), format);
 
     }
  

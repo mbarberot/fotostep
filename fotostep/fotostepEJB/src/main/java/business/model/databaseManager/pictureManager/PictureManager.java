@@ -24,12 +24,13 @@ public class PictureManager implements PictureManagerLocal
     @PersistenceContext
     EntityManager em;
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format)
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags, int width, int height, FormatEnum format)
     {
         Picture picture = new Picture();
 
         picture.setAlbum(album);
         picture.setDescription(description);
+        picture.setTags(tags);
         picture.setFormat(format);
         picture.setHeight(height);
         picture.setPath(path);
@@ -43,7 +44,7 @@ public class PictureManager implements PictureManagerLocal
 
     }
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, 
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags,
     		int width, int height, FormatEnum format, Point point)
     {
         Picture picture = new Picture();
@@ -51,6 +52,7 @@ public class PictureManager implements PictureManagerLocal
         picture.setAlbum(album);
         picture.setCoord(point);
         picture.setDescription(description);
+        picture.setTags(tags);
         picture.setFormat(format);
         picture.setHeight(height);
         picture.setPath(path);
@@ -63,11 +65,12 @@ public class PictureManager implements PictureManagerLocal
         return picture;
     }
 
-    public void editImage(Picture picture, Album album, String description, Point point)
+    public void editImage(Picture picture, Album album, String description, String tags, Point point)
     {
         picture.setAlbum(album);
         picture.setCoord(point);
         picture.setDescription(description);
+        picture.setTags(tags);
     }
 
     public void removeImage(Picture picture)

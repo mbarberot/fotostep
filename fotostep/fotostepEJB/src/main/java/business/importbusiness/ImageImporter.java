@@ -19,8 +19,8 @@ public class ImageImporter implements ImageImporterLocal
     @EJB
     private PictureManagerLocal pictureManager;
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, int width, int height, FormatEnum format) {
-        Picture picture = pictureManager.addImage(buffer, album, path, description, width, height, format);
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tag, int width, int height, FormatEnum format) {
+        Picture picture = pictureManager.addImage(buffer, album, path, description, tag, width, height, format);
         return picture;
     }
 }
