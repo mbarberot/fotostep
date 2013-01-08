@@ -40,15 +40,13 @@
                         <div class="page-header">
                             <h2>Actualit&eacute;s</h2>
                         </div>
-                    </div>
-                    <div class="span9">
                         <c:choose>
                             <c:when test="${fn:length(newsController.news) gt 0}">
                                 <ul class="media-list">
                                     <c:forEach items="#{newsController.news}" var="new">
                                         <li class="media">
-                                            <h4 class="media-heading">${new.title}</h4>
-                                            <p class="media-body">${new.body}</p>
+                                            <h5 class="media-heading">${new.title}</h5>
+                                            <p class="media-body span7">${new.body}</p>
                                         </li>
                                     </c:forEach>
                                 </ul>
