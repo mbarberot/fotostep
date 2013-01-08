@@ -4,7 +4,7 @@
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <jta-data-source>FOTOSTEP_JNDI</jta-data-source>
     <class>business.model.database.Album</class>
-    <class>business.model.database.Commentalbum</class> 
+    <class>business.model.database.Commentalbum</class>
     <class>business.model.database.Commentpicture</class>
     <class>business.model.database.Picture</class>
     <class>business.model.database.User</class>
