@@ -1,17 +1,15 @@
 package jsf;
 
-import business.model.database.Album;
-import business.model.database.GenderEnum;
-import business.model.database.Picture;
-import business.model.database.User;
+import business.model.database.*;
 import business.model.databaseManager.userManager.UserManagerLocal;
-
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.*;
 
 /**
  * Bean contenant les informations d'un utilisateur
@@ -31,7 +29,6 @@ public class UserProfileDataController {
     private String avatarPath  = "../assets/img/avnormal.png";
     private List<Album> albums = new ArrayList<Album>();
     private List<User> friends = new ArrayList<User>();
-
     private List<Album> localizedAlbums = new ArrayList<Album>();
     private boolean isAFriend;
 

@@ -85,5 +85,9 @@
         <managed-bean-class>jsf.album.CreateAlbumController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
-
+    <managed-bean>
+        <managed-bean-name>newsController</managed-bean-name>
+        <managed-bean-class>jsf.NewsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
