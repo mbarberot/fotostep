@@ -19,10 +19,10 @@
                         <c:when test="${userProfileData.isAFriend}">
                             <a href="#" class = "btn btn-success">Déjà dans vos contacts</a>
                         </c:when>
-                        <c:otherwise>
-                            <h:co
+                        <c:when test="${userProfileData.isAFriend and !userProfileData.profileOfMine}">
                             <a href="#" class = "btn btn-primary"><i class="icon-user icon-white"></i>  Ajouter aux contacts </a>
-                        </c:otherwise>
+                        </c:when>
+                        <c:otherwise/>
                     </c:choose>
 
                 </div>
@@ -137,7 +137,7 @@
                         <dt>Inscrit le </dt>
                         <dd><h:outputText value="#{userProfileData.registerDate}"/></dd>
                     </dl>
-                    <c:if test="${userProfileData.isAFriend}">
+                    <c:if test="${userProfileData.isAFriend or userProfileData.profileOfMine}">
                         <h3>Contact</h3>
                         <dl class="dl-horizontal">
                             <dt>Mail</dt>

@@ -31,7 +31,7 @@ public class UserProfileDataController {
     private List<User> friends = new ArrayList<User>();
     private List<Album> localizedAlbums = new ArrayList<Album>();
     private boolean isAFriend;
-
+    private boolean profileOfMine;
 
     @EJB
     private UserManagerLocal um;
@@ -104,12 +104,21 @@ public class UserProfileDataController {
         // Récupère les albums visibles
         if(myId == idUser)
         {
-            isAFriend = true;
+            isAFriend = false;
             albums = viewedUser.getAlbums();
+            profileOfMine = true;
         }
         else
         {
-            isAFriend = friends.contains(myUser);
+            isAFriend = false;
+            for(User u : friends)
+            {
+                if(u.getIduser() == myId)
+                {
+                    isAFriend = true;
+                    break;
+                }
+            }
             albums = um.getAuthorizedAlbums(myUser, viewedUser);
         }
     }
@@ -227,5 +236,13 @@ public class UserProfileDataController {
 
     public void setLocalizedAlbums(List<Album> localizedAlbums) {
         this.localizedAlbums = localizedAlbums;
+    }
+
+    public boolean isProfileOfMine() {
+        return profileOfMine;
+    }
+
+    public void setProfileOfMine(boolean profileOfMine) {
+        this.profileOfMine = profileOfMine;
     }
 }
