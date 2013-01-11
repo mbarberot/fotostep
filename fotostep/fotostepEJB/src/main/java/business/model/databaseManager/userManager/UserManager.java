@@ -109,6 +109,9 @@ public class UserManager implements UserManagerLocal{
     		
     	user.getFriends().add(friend);
     	em.persist(user);
+    	
+    	if(friend.getFriends().remove(user))
+        	em.persist(friend);
     }   
     
     public void removeFriend(User user, User friend){
