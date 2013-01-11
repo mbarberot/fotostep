@@ -8,277 +8,257 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * The persistent class for the user database table.
- *
+ * 
  */
 @Entity
-@Table(name = "user")
-public class User implements Serializable
-{
+@Table(name="user")
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int iduser;
-    @Temporal(TemporalType.DATE)
-    private Date birthdate;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int iduser;
+
+	@Temporal(TemporalType.DATE)
+	private Date birthdate;
+
     @Enumerated(EnumType.STRING)
-    private EnabledEnum enabled;
+	private EnabledEnum enabled;
+
     private String avatar;
-    private String firstname;
+
+	private String firstname;
+
     @Enumerated(EnumType.STRING)
-    private GenderEnum gender;
-    private String lastname;
-    private String login;
-    private String password;
+	private GenderEnum gender;
+
+	private String lastname;
+
+	private String login;
+
+	private String password;
+
     private String place;
+
     private String twitterid;
+
     private String fbid;
-    @Temporal(TemporalType.DATE)
-    private Date registerdate;
-    //bi-directional many-to-one association to Album
-    @OneToMany(mappedBy = "user")
+
+
+
+	@Temporal(TemporalType.DATE)
+	private Date registerdate;
+
+	//bi-directional many-to-one association to Album
+	@OneToMany(mappedBy="user")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Album> albums;
-    //bi-directional many-to-one association to Commentalbum
-    @OneToMany(mappedBy = "author")
+	private List<Album> albums;
+
+	//bi-directional many-to-one association to Commentalbum
+	@OneToMany(mappedBy="author")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Commentalbum> commentsOnAlbums;
-    //bi-directional many-to-one association to Commentpicture
-    @OneToMany(mappedBy = "author")
+	private List<Commentalbum> commentsOnAlbums;
+
+	//bi-directional many-to-one association to Commentpicture
+	@OneToMany(mappedBy="author")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Commentpicture> commentsOnPictures;
-    //bi-directional many-to-many association to Album
-    @ManyToMany(mappedBy = "likers")
+	private List<Commentpicture> commentsOnPictures;
+
+	//bi-directional many-to-many association to Album
+	@ManyToMany(mappedBy="likers")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Album> likedAlbums;
-    //bi-directional many-to-many association to Picture
-    @ManyToMany(mappedBy = "likers")
+	private List<Album> likedAlbums;
+
+	//bi-directional many-to-many association to Picture
+	@ManyToMany(mappedBy="likers")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Picture> likedPictures;
-    //uni-directional many-to-many association to User
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userfriendship", joinColumns =
-    {
-        @JoinColumn(name = "iduser2")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "iduser1")
-    })
-    private List<User> friends;
+	private List<Picture> likedPictures;
 
-    public User()
-    {
-    }
+	//uni-directional many-to-many association to User
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		name="userfriendship"
+		, joinColumns={
+			@JoinColumn(name="iduser2")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="iduser1")
+			}
+		)
+	private List<User> friends;
 
-    public int getIduser()
-    {
-        return this.iduser;
-    }
+	public User() {
+	}
 
-    public void setIduser(int iduser)
-    {
-        this.iduser = iduser;
-    }
+	public int getIduser() {
+		return this.iduser;
+	}
 
-    public Date getBirthdate()
-    {
-        return this.birthdate;
-    }
+	public void setIduser(int iduser) {
+		this.iduser = iduser;
+	}
 
-    public void setBirthdate(Date birthdate)
-    {
-        this.birthdate = birthdate;
-    }
+	public Date getBirthdate() {
+		return this.birthdate;
+	}
 
-    public EnabledEnum getEnabled()
-    {
-        return this.enabled;
-    }
+	public void setBirthdate(Date birthdate) {
+		this.birthdate = birthdate;
+	}
 
-    public void setEnabled(EnabledEnum enabled)
-    {
-        this.enabled = enabled;
-    }
+	public EnabledEnum getEnabled() {
+		return this.enabled;
+	}
 
-    public String getFirstname()
-    {
-        return this.firstname;
-    }
+	public void setEnabled(EnabledEnum enabled) {
+		this.enabled = enabled;
+	}
 
-    public void setFirstname(String firstname)
-    {
-        this.firstname = firstname;
-    }
+	public String getFirstname() {
+		return this.firstname;
+	}
 
-    public GenderEnum getGender()
-    {
-        return this.gender;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    public void setGender(GenderEnum gender)
-    {
-        this.gender = gender;
-    }
+	public GenderEnum getGender() {
+		return this.gender;
+	}
 
-    public String getLastname()
-    {
-        return this.lastname;
-    }
+	public void setGender(GenderEnum gender) {
+		this.gender = gender;
+	}
 
-    public void setLastname(String lastname)
-    {
-        this.lastname = lastname;
-    }
+	public String getLastname() {
+		return this.lastname;
+	}
 
-    public String getLogin()
-    {
-        return this.login;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 
-    public void setLogin(String login)
-    {
-        this.login = login;
-    }
+	public String getLogin() {
+		return this.login;
+	}
 
-    public String getPassword()
-    {
-        return this.password;
-    }
+	public void setLogin(String login) {
+		this.login = login;
+	}
 
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
+	public String getPassword() {
+		return this.password;
+	}
 
-    public Date getRegisterdate()
-    {
-        return this.registerdate;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setRegisterdate(Date registerdate)
-    {
-        this.registerdate = registerdate;
-    }
+	public Date getRegisterdate() {
+		return this.registerdate;
+	}
 
-    public String getAvatar()
-    {
+	public void setRegisterdate(Date registerdate) {
+		this.registerdate = registerdate;
+	}
+
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(String avatar)
-    {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
-    public String getPlace()
-    {
+    public String getPlace() {
         return place;
     }
 
-    public void setPlace(String place)
-    {
+    public void setPlace(String place) {
         this.place = place;
     }
 
-    public String getTwitterid()
-    {
+    public String getTwitterid() {
         return twitterid;
     }
 
-    public void setTwitterid(String twitterid)
-    {
+    public void setTwitterid(String twitterid) {
         this.twitterid = twitterid;
     }
 
-    public String getFbid()
-    {
+    public String getFbid() {
         return fbid;
     }
 
-    public void setFbid(String fbid)
-    {
+    public void setFbid(String fbid) {
         this.fbid = fbid;
     }
 
-    public List<Album> getAlbums()
-    {
-        return this.albums;
-    }
+    public List<Album> getAlbums() {
+		return this.albums;
+	}
 
-    public void setAlbums(List<Album> albums)
-    {
-        this.albums = albums;
-    }
+	public void setAlbums(List<Album> albums) {
+		this.albums = albums;
+	}
 
-    public List<Commentalbum> getCommentsOnAlbums()
-    {
-        return this.commentsOnAlbums;
-    }
+	public List<Commentalbum> getCommentsOnAlbums() {
+		return this.commentsOnAlbums;
+	}
 
-    public void setCommentsOnAlbums(List<Commentalbum> commentsOnAlbums)
-    {
-        this.commentsOnAlbums = commentsOnAlbums;
-    }
+	public void setCommentsOnAlbums(List<Commentalbum> commentsOnAlbums) {
+		this.commentsOnAlbums = commentsOnAlbums;
+	}
 
-    public List<Commentpicture> getCommentsOnPictures()
-    {
-        return this.commentsOnPictures;
-    }
+	public List<Commentpicture> getCommentsOnPictures() {
+		return this.commentsOnPictures;
+	}
 
-    public void setCommentsOnPictures(List<Commentpicture> commentsOnPictures)
-    {
-        this.commentsOnPictures = commentsOnPictures;
-    }
+	public void setCommentsOnPictures(List<Commentpicture> commentsOnPictures) {
+		this.commentsOnPictures = commentsOnPictures;
+	}
 
-    public List<Album> getLikedAlbums()
-    {
-        return this.likedAlbums;
-    }
+	public List<Album> getLikedAlbums() {
+		return this.likedAlbums;
+	}
 
-    public void setLikedAlbums(List<Album> likedAlbums)
-    {
-        this.likedAlbums = likedAlbums;
-    }
+	public void setLikedAlbums(List<Album> likedAlbums) {
+		this.likedAlbums = likedAlbums;
+	}
+        
+        public void addLikedAlbum(Album album) {
+		this.likedAlbums.add(album);
+	}
+        
+        public void removeLikedAlbum(Album album) {
+		this.likedAlbums.remove(album);
+	}
 
-    public void addLikedAlbum(Album album)
-    {
-        this.likedAlbums.add(album);
-    }
+	public List<Picture> getLikedPictures() {
+		return this.likedPictures;
+	}
 
-    public void removeLikedAlbum(Album album)
-    {
-        this.likedAlbums.remove(album);
-    }
+	public void setLikedPictures(List<Picture> likedPictures) {
+		this.likedPictures = likedPictures;
+	}
+        
+        public void addLikedPicture(Picture picture) {
+		this.likedPictures.add(picture);
+	}
+        
+        public void removeLikedPicture(Picture picture) {
+		this.likedPictures.remove(picture);
+	}
 
-    public List<Picture> getLikedPictures()
-    {
-        return this.likedPictures;
-    }
+	public List<User> getFriends() {
+		return this.friends;
+	}
 
-    public void setLikedPictures(List<Picture> likedPictures)
-    {
-        this.likedPictures = likedPictures;
-    }
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
+	}
 
-    public void addLikedPicture(Picture picture)
-    {
-        this.likedPictures.add(picture);
-    }
-
-    public void removeLikedPicture(Picture picture)
-    {
-        this.likedPictures.remove(picture);
-    }
-
-    public List<User> getFriends()
-    {
-        return this.friends;
-    }
-
-    public void setFriends(List<User> friends)
-    {
-        this.friends = friends;
-    }
 }

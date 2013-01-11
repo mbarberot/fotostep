@@ -2,8 +2,10 @@ package business.model.databaseManager.userManager;
 
 import javax.ejb.Local;
 
+import business.model.database.Album;
 import business.model.database.User;
 import business.util.exceptions.UserNotFoundException;
+import java.util.List;
 
 @Local
 public interface UserManagerLocal {
@@ -12,4 +14,5 @@ public interface UserManagerLocal {
     public User getUserById(int id);
 	public User getUserByLogin(String mail);
     public User authenticate(String mail, String password) throws UserNotFoundException;
+    public List<Album> getAuthorizedAlbums(User connected, User viewed);
 }

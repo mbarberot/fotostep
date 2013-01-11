@@ -1,6 +1,8 @@
 package business.model.databaseManager.userManager;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -99,5 +101,29 @@ public class UserManager implements UserManagerLocal{
         
         return user;
     }
-	
+
+    public List<Album> getAuthorizedAlbums(User connected, User viewed) {
+        User co = getUserById(connected.getIduser());
+        User vi = getUserById(viewed.getIduser());
+
+        List<Album> res = new ArrayList<Album>();
+        List<Album> userAlbums = vi.getAlbums();
+
+
+        for(Album alb : userAlbums)
+        {
+            if(alb.getAuthorization() == AuthorizationEnum.PUBLIC)
+            {
+                res.add(alb);
+            }
+            else if(alb.getAuthorization() == AuthorizationEnum.FRIENDS &&
+                    co.getFriends().contains(vi) && vi.getFriends().contains(co))
+            {
+                res.add(alb);
+            }
+        }
+
+        return res;
+    }
+
 }

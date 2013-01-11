@@ -48,39 +48,48 @@ public class UserProfileDataController {
     {
 
         int idUser = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("UserId"));
-        User myUser = um.getUserById(idUser);
-        firstName = myUser.getFirstname();
-        lastName = myUser.getLastname();
+        User viewedUser = um.getUserById(idUser);
+        firstName = viewedUser.getFirstname();
+        lastName = viewedUser.getLastname();
 
-        Date uBirthdate = myUser.getBirthdate();
+        Date uBirthdate = viewedUser.getBirthdate();
         if(uBirthdate != null)
         {
           birthDate = uBirthdate.toString();
         }
 
-        String place = myUser.getPlace();
+        String place = viewedUser.getPlace();
         if(place != null)
         {
             userPlace = place;
         }
 
-        gender = (myUser.getGender().equals(GenderEnum.m))? "Homme" : "Femme";
-        registerDate = myUser.getRegisterdate().toString();
-        mail = myUser.getLogin();
+        gender = (viewedUser.getGender().equals(GenderEnum.m))? "Homme" : "Femme";
+        registerDate = viewedUser.getRegisterdate().toString();
+        mail = viewedUser.getLogin();
 
-        String userTwitter = myUser.getTwitterid();
+        String userTwitter = viewedUser.getTwitterid();
         if(userTwitter != null)
         {
             idTwitter = "#"+userTwitter;
         }
 
-        String userFb = myUser.getFbid();
+        String userFb = viewedUser.getFbid();
         if(userFb != null)
         {
             idFb = "facebook.com/"+userFb;
         }
-        albums = myUser.getAlbums();
-        friends = myUser.getFriends();
+
+        // IsAFriend => permet d'afficher ou non le bouton d'ajout
+        isAFriend = false;
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = um.getUserById(myId);
+
+
+        friends = viewedUser.getFriends();
 
         // Récupère les albums géolocalisés pour la map view
         for(Album alb : albums)
@@ -91,28 +100,17 @@ public class UserProfileDataController {
                 localizedAlbums.add(alb);
             }
         }
-        // IsAFriend => permet d'afficher ou non le bouton d'ajout
-        isAFriend = false;
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-        HttpSession httpSession = request.getSession(false);
-        Integer myId = (Integer)httpSession.getAttribute("userId");
 
-
+        // Récupère les albums visibles
         if(myId == idUser)
         {
             isAFriend = true;
+            albums = viewedUser.getAlbums();
         }
         else
         {
-            for(User friend : friends)
-            {
-                  if(friend.getIduser() == myId)
-                  {
-                      isAFriend = true;
-                      return;
-                  }
-            }
+            isAFriend = friends.contains(myUser);
+            albums = um.getAuthorizedAlbums(myUser, viewedUser);
         }
     }
 
