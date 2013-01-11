@@ -100,4 +100,37 @@ public class UserManager implements UserManagerLocal{
         return user;
     }
 	
+    public void askFriend(User user, User friend){
+    	if(friend.getFriends().contains(user))
+    		throw new IllegalStateException("L'autre utilisateur vous a déjà fait une demande");
+    	
+    	if(user.getFriends().contains(friend))
+    		throw new IllegalStateException("Cet utilisateur a déjà lancé un demande");
+    		
+    	user.getFriends().add(friend);
+    	em.persist(user);
+    	
+    	if(friend.getFriends().remove(user))
+        	em.persist(friend);
+    }   
+    
+    public void removeFriend(User user, User friend){
+    	if(!user.getFriends().contains(friend))
+    		throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
+
+    	user.getFriends().remove(friend);
+    	em.persist(user);
+    }
+    
+    public void acceptFriend(User user, User friend){
+    	if(!friend.getFriends().contains(user))
+    		throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
+    	
+    	if(user.getFriends().contains(friend))
+    		throw new IllegalStateException("Cet utilisateur est déjà ami avec cet utilisateur");
+    		
+    	user.getFriends().add(friend);
+    	em.persist(user);
+    }
+    
 }

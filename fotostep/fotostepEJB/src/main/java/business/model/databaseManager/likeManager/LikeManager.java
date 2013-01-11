@@ -16,30 +16,30 @@ import javax.persistence.PersistenceContext;
 public class LikeManager implements LikeManagerLocal
 {
 
-    @PersistenceContext
-    EntityManager em;
+	@PersistenceContext
+	EntityManager em;
 
-    public void like(User user, Album album)
-    {
-        user.addLikedAlbum(album);
-        album.addLiker(user);
-    }
+	public void like(User user, Album album)
+	{
+		user.addLikedAlbum(album);
+		em.persist(user);
+	}
 
-    public void like(User user, Picture picture)
-    {
-        user.addLikedPicture(picture);
-        picture.addLiker(user);
-    }
+	public void like(User user, Picture picture)
+	{
+		user.addLikedPicture(picture);
+		em.persist(user);
+	}
 
-    public void dislike(User user, Album album)
-    {
-        user.removeLikedAlbum(album);
-        album.removeLiker(user);
-    }
+	public void dislike(User user, Album album)
+	{
+		user.removeLikedAlbum(album);
+		em.persist(user);
+	}
 
-    public void dislike(User user, Picture picture)
-    {
-        user.removeLikedPicture(picture);
-        user.removeLikedAlbum(null);
-    }
+	public void dislike(User user, Picture picture)
+	{
+		user.removeLikedPicture(picture);
+		em.persist(user);
+	}
 }
