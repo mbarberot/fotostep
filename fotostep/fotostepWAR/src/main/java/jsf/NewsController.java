@@ -26,6 +26,9 @@ public class NewsController
     
     @EJB
     UserManagerLocal userManager;
+    
+    @EJB
+    NewsManagerLocal newsManager;
             
     private List<News> news = new ArrayList<News>();
 
@@ -36,29 +39,19 @@ public class NewsController
     @PostConstruct
     public void init()
     {
+        // Récupération de l'iduser placé dans la session http
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
         HttpSession session=req.getSession(false);
         Integer idUser = (Integer)session.getAttribute("userId");
        
+        // Récupération de l'utilisateur
         User user = userManager.getUserById(idUser);
         
-        /*
-        User user = new User();
-        user.setFirstname("Jane");
-        user.setLastname("Doe");
-        Album a = new Album();
-        a.setName("Dora chez les ours");
-        Commentalbum ca = new Commentalbum();
-        ca.setDate(new Date());
-        ca.setAlbum(a);
-        ca.setBody("Je kiffe les ours");
-        
-        news.add(new News(user, NewsEnum.COMMENTALBUM, ca.getDate(), ca));
-        /*
         try
         {
-            news.addAll(newsManager.getNewsFor(user));
+            //news.addAll(newsManager.getNewsFor(user));
+            news = newsManager.getNewsFor(user);
         }
         catch (UserNotFoundException ex)
         {
@@ -68,7 +61,6 @@ public class NewsController
         {
             ex.printStackTrace();
         }
-        */
     }
 
     public List<News> getNews()
