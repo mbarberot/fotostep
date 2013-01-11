@@ -5,6 +5,7 @@ import business.model.databaseManager.newsManager.NewsManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;

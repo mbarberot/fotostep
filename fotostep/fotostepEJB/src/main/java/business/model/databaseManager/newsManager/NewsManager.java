@@ -1,11 +1,9 @@
 package business.model.databaseManager.newsManager;
 
-import business.model.database.Commentalbum;
-import business.model.database.News;
-import business.model.database.NewsEnum;
-import business.model.database.User;
+import business.model.database.*;
 import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,12 +25,25 @@ public class NewsManager implements NewsManagerLocal
 
     public List<News> getNewsFor(User user) throws UserNotFoundException
     {
-        List<News> news = new ArrayList<News>();
+        ArrayList<News> news = new ArrayList<News>();
 
-
-        Query query;
-
-        query = em.createQuery("SELECT ca FROM Commentalbum ca JOIN ca.author u WHERE u IN(:friends) ORDER BY ca.date DESC");
+        addCommentAlbumNews(user, news);
+        addCommentPictureNews(user, news);
+        
+        // In dev
+        
+        
+        // Trier
+        Collections.sort(news);
+        // Récupérer les 10 dernières news
+        int limit = (news.size() < 10 ? news.size() : 10);
+        
+        return news.subList(0, limit) ;
+    }
+    
+    private void addCommentAlbumNews(User user, List<News> news)
+    {
+        Query query = em.createQuery("SELECT ca FROM Commentalbum ca JOIN ca.author u WHERE u IN(:friends) ORDER BY ca.date DESC");
         query.setParameter("friends", user.getFriends());
         query.setMaxResults(10);
         
@@ -45,7 +56,22 @@ public class NewsManager implements NewsManagerLocal
                 news.add(new News(ca.getAuthor(), NewsEnum.COMMENTALBUM, ca.getDate(), ca));
             }
         }
+    }
+    
+    private void addCommentPictureNews(User user, List<News> news)
+    {
+        Query query = em.createQuery("SELECT cp FROM Commentpicture cp JOIN cp.author u WHERE u IN(:friends) ORDER BY cp.date DESC");
+        query.setParameter("friends", user.getFriends());
+        query.setMaxResults(10);
         
-        return news;
+        List<Commentpicture> commentpicture = query.getResultList();
+        
+        if(commentpicture != null && !commentpicture.isEmpty())
+        {
+            for(Commentpicture cp : commentpicture)
+            {   
+                news.add(new News(cp.getAuthor(), NewsEnum.COMMENTPICTURE, cp.getDate(), cp));
+            }
+        }
     }
 }

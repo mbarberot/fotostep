@@ -57,10 +57,16 @@ public class News implements Comparable<News>
         switch(type)
         {
             case COMMENTALBUM :
-                Commentalbum comm = (Commentalbum) data;
-                Album album = comm.getAlbum();
+                Commentalbum commAlb = (Commentalbum) data;
+                Album album = commAlb.getAlbum();
                 title += "a commenté l'album " + album.getName();
-                content = comm.getBody();
+                content = commAlb.getBody();
+                break;
+            case COMMENTPICTURE :
+                Commentpicture commPic = (Commentpicture) data;
+                Picture pic = commPic.getPicture();
+                title += "a commenté l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName() + ".";
+                content = commPic.getBody();
                 break;
             // TODO : Les autres type
                     
@@ -69,11 +75,11 @@ public class News implements Comparable<News>
 
     public int compareTo(News t)
     {
-        if(this.date.after(t.date))
+        if(this.date.before(t.date))
         {
             return 1;
         } 
-        else if(this.date.before(t.date))
+        else if(this.date.after(t.date))
         {
             return -1;
         }
