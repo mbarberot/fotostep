@@ -8,7 +8,6 @@ import business.model.database.Commentalbum;
 import business.model.database.Commentpicture;
 import business.model.database.Picture;
 import business.model.database.User;
-import java.awt.Image;
 import java.util.Date;
 
 /**
@@ -39,7 +38,7 @@ public class CommentManager implements CommentManagerLocal
 	}
 
 	public void deleteComment(Commentalbum comment) {
-		em.remove(comment);
+		em.remove(em.find(Commentalbum.class, comment.getIdcommentalbum()));
 	}
 
 	public Commentpicture addComment(Picture picture, User user, String text) {
@@ -58,7 +57,7 @@ public class CommentManager implements CommentManagerLocal
 	}
 
 	public void deleteComment(Commentpicture comment) {
-		em.remove(comment);
+		em.remove(em.find(Commentpicture.class, comment.getIdcommentpicture()));
 	}
 
 }

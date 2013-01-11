@@ -1,35 +1,66 @@
 package jsf;
 
-import business.model.database.News;
+import business.model.database.*;
+import business.model.databaseManager.newsManager.NewsManagerLocal;
+import business.model.databaseManager.userManager.UserManagerLocal;
+import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+import javax.persistence.NoResultException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Contrôleur pour les news
- * 
+ *
  * TODO : Récupérer les news
- * 
+ *
  * @author Mathieu Barberot
  */
 public class NewsController
 {
-
-    List<News> news = new ArrayList<News>();
     
+    @EJB
+    UserManagerLocal userManager;
+    
+    @EJB
+    NewsManagerLocal newsManager;
+            
+    private List<News> news = new ArrayList<News>();
+
     public NewsController()
     {
     }
-    
+
     @PostConstruct
     public void init()
     {
-        news.add(new News("Demande d'amitié", "Jane veut devenir votre ami(e) !"));
-        news.add(new News("Nouvel ami(e) !", "Jane fait désormais partie de vos ami(e)s."));
-        news.add(new News("Jane aime l'album \"Dora chez les ours\"", ""));
-        news.add(new News("Jane a créé l'album : \"Martine et le grizzli\"", ""));
-        news.add(new News("Jane a commenté l'album \"J'aime les poneys\"", "Waai les poney s'trop cool !"));
-        news.add(new News("Vous aimez l'image \"Grandeur et décadence du lapin des cavernes\"", ""));
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
+        HttpSession session=req.getSession(false);
+        Integer idUser = (Integer)session.getAttribute("userId");
+       
+        // Récupération de l'utilisateur
+        User user = userManager.getUserById(idUser);
+        
+        try
+        {
+            //news.addAll(newsManager.getNewsFor(user));
+            news = newsManager.getNewsFor(user);
+        }
+        catch (UserNotFoundException ex)
+        {
+            ex.printStackTrace();
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     public List<News> getNews()
@@ -41,6 +72,4 @@ public class NewsController
     {
         this.news = news;
     }
-    
-    
 }

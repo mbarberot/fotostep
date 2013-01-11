@@ -46,7 +46,7 @@
                                     <c:forEach items="#{newsController.news}" var="new">
                                         <li class="media">
                                             <h5 class="media-heading">${new.title}</h5>
-                                            <p class="media-body span7">${new.body}</p>
+                                            <p class="media-body span7">${new.content}</p>
                                         </li>
                                     </c:forEach>
                                 </ul>

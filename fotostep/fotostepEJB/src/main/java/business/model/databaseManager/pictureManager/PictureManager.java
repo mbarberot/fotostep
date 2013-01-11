@@ -75,7 +75,9 @@ public class PictureManager implements PictureManagerLocal
 
     public void removeImage(Picture picture)
     {
-        em.remove(picture);
+        em.remove(em.find(Picture.class, picture.getIdpicture()));
+        
+        //TODO : Supprimer l'image du disque
     }
     
     private void saveImage (Buffer buffer, String path)
