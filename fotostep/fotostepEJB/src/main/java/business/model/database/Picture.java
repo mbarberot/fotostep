@@ -4,6 +4,8 @@ import com.vividsolutions.jts.geom.Point;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 
 /**
@@ -31,19 +33,16 @@ public class Picture implements Serializable
     private int height;
     private String path;
     private int width;
+    
     //bi-directional many-to-one association to Commentpicture
     @OneToMany(mappedBy = "picture")
     private List<Commentpicture> comments;
+    
     //bi-directional many-to-many association to User
-    @ManyToMany
-    @JoinTable(name = "likepicture", joinColumns =
-    {
-        @JoinColumn(name = "idpicture")
-    }, inverseJoinColumns =
-    {
-        @JoinColumn(name = "iduser")
-    })
-    private List<User> likers;
+    @OneToMany(mappedBy = "picture")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Likepicture> likepictures;
+    
     //bi-directional many-to-one association to Album
     @ManyToOne
     @JoinColumn(name = "idalbum")
@@ -143,24 +142,24 @@ public class Picture implements Serializable
         this.comments = comments;
     }
 
-    public List<User> getLikers()
+    public List<Likepicture> getLikers()
     {
-        return this.likers;
+        return this.likepictures;
     }
 
-    public void setLikers(List<User> likers)
+    public void setLikers(List<Likepicture> likers)
     {
-        this.likers = likers;
+        this.likepictures = likers;
     }
 
-    public void addLiker(User user)
+    public void addLiker(Likepicture user)
     {
-        this.likers.add(user);
+        this.likepictures.add(user);
     }
 
-    public void removeLiker(User user)
+    public void removeLiker(Likepicture user)
     {
-        this.likers.remove(user);
+        this.likepictures.remove(user);
     }
 
     public Album getAlbum()

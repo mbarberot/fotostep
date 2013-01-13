@@ -54,6 +54,9 @@ public class News implements Comparable<News>
         title = user.getFirstname() + " " + user.getLastname() + " ";
         content = "";
         
+        Album alb;
+        Picture pic;
+        
         switch(type)
         {
             case COMMENTALBUM :
@@ -64,13 +67,22 @@ public class News implements Comparable<News>
                 break;
             case COMMENTPICTURE :
                 Commentpicture commPic = (Commentpicture) data;
-                Picture pic = commPic.getPicture();
-                title += "a commenté l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName() + ".";
+                pic = commPic.getPicture();
+                title += "a commenté l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName();
                 content = commPic.getBody();
+                break;    
+            case LIKEPICTURE :
+                Likepicture likePic = (Likepicture) data;
+                pic = likePic.getPicture();
+                title += "aime l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName();
                 break;
+            
+                
             // TODO : Les autres type
                     
         }
+        
+        title += ".";
     }
 
     public int compareTo(News t)

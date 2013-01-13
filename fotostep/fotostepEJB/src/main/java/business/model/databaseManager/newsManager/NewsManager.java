@@ -31,7 +31,19 @@ public class NewsManager implements NewsManagerLocal
         addCommentPictureNews(user, news);
         
         // In dev
+        Query query = em.createQuery("SELECT lp FROM Likepicture lp WHERE lp.liker IN(:friends) ORDER BY lp.date DESC");
+        query.setParameter("friends", user.getFriends());
+        query.setMaxResults(10);
         
+        List<Likepicture> likePicture = query.getResultList();
+        
+        if(likePicture != null && !likePicture.isEmpty())
+        {
+            for(Likepicture lp : likePicture)
+            {
+                news.add(new News(lp.getLiker(), NewsEnum.LIKEPICTURE, lp.getDate(), lp));
+            }
+        }
         
         // Trier
         Collections.sort(news);
