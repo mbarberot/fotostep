@@ -67,9 +67,9 @@ public class User implements Serializable
     private List<Commentpicture> commentsOnPictures;
     
     //bi-directional many-to-many association to Album
-    @OneToMany(mappedBy = "likers")
+    @OneToMany(mappedBy = "liker")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Album> likedAlbums;
+    private List<Likealbum> likedAlbums;
     
     //bi-directional many-to-many association to Picture
     @OneToMany(mappedBy = "liker")
@@ -251,22 +251,22 @@ public class User implements Serializable
         this.commentsOnPictures = commentsOnPictures;
     }
 
-    public List<Album> getLikedAlbums()
+    public List<Likealbum> getLikedAlbums()
     {
         return this.likedAlbums;
     }
 
-    public void setLikedAlbums(List<Album> likedAlbums)
+    public void setLikedAlbums(List<Likealbum> likedAlbums)
     {
         this.likedAlbums = likedAlbums;
     }
 
-    public void addLikedAlbum(Album album)
+    public void addLikedAlbum(Likealbum album)
     {
         this.likedAlbums.add(album);
     }
 
-    public void removeLikedAlbum(Album album)
+    public void removeLikedAlbum(Likealbum album)
     {
         this.likedAlbums.remove(album);
     }

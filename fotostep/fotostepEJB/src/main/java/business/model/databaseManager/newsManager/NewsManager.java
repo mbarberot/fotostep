@@ -3,8 +3,10 @@ package business.model.databaseManager.newsManager;
 import business.model.database.*;
 import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -22,6 +24,8 @@ public class NewsManager implements NewsManagerLocal
 
     @PersistenceContext
     EntityManager em;
+    
+    List<AuthorizationEnum> rights = Arrays.asList(AuthorizationEnum.FRIENDS,AuthorizationEnum.PUBLIC);
 
     public List<News> getNewsFor(User user) throws UserNotFoundException
     {
@@ -29,10 +33,105 @@ public class NewsManager implements NewsManagerLocal
 
         addCommentAlbumNews(user, news);
         addCommentPictureNews(user, news);
+        addLikeAlbumNews(user, news);
+        addLikePictureNews(user, news);
+        addNewPhotoNews(user, news);
+        addCreateAlbumNews(user, news);
         
         // In dev
-        Query query = em.createQuery("SELECT lp FROM Likepicture lp WHERE lp.liker IN(:friends) ORDER BY lp.date DESC");
+        
+        
+        // Trier
+        Collections.sort(news);
+        // Récupérer les 10 dernières news
+        int limit = (news.size() < 10 ? news.size() : 10);
+        
+        return news.subList(0, limit) ;
+    }
+    
+    private void addCreateAlbumNews(User user, List<News> news)
+    {
+        Query query = em.createQuery(
+                "SELECT a "
+                + "FROM Album a "
+                + "WHERE a.authorization IN(:rights) AND a.user IN(:friends) "
+                + "ORDER BY a.date DESC");
+        
         query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
+        query.setMaxResults(10);
+        
+        List<Album> list = query.getResultList();
+        
+        if(list != null && !list.isEmpty())
+        {
+            for(Album e : list)
+            {
+                news.add(new News(e.getUser(), NewsEnum.CREATEALBUM, e.getDate(), e));
+            }
+        }
+    }
+    
+    private void addNewPhotoNews(User user, List<News> news)
+    {
+        Query query = em.createQuery(
+                "SELECT p "
+                + "FROM Picture p "
+                + "JOIN p.album a "
+                + "WHERE a.authorization IN(:rights) AND a.user IN(:friends) "
+                + "ORDER BY p.date DESC");
+        
+        query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
+        query.setMaxResults(10);
+        
+        List<Picture> list = query.getResultList();
+        
+        if(list != null && !list.isEmpty())
+        {
+            for(Picture e : list)
+            {
+                news.add(new News(e.getAlbum().getUser(), NewsEnum.ADDPHOTO, e.getDate(), e));
+            }
+        }
+    }
+    
+    private void addLikeAlbumNews(User user, List<News> news)
+    {
+        Query query = em.createQuery(
+                "SELECT la "
+                + "FROM Likealbum la "
+                + "JOIN la.album a "
+                + "WHERE la.liker IN(:friends) AND a.authorization IN(:rights) "
+                + "ORDER BY la.date DESC");
+        
+        query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
+        query.setMaxResults(10);
+        
+        List<Likealbum> likeAlbum = query.getResultList();
+        
+        if(likeAlbum != null && !likeAlbum.isEmpty())
+        {
+            for(Likealbum la : likeAlbum)
+            {
+                news.add(new News(la.getLiker(), NewsEnum.LIKEALBUM, la.getDate(), la));
+            }
+        }
+    }
+    
+    private void addLikePictureNews(User user, List<News> news)
+    {
+        Query query = em.createQuery(
+                "SELECT lp "
+                + "FROM Likepicture lp "
+                + "JOIN lp.picture p "
+                + "JOIN p.album a "
+                + "WHERE a.authorization IN(:rights) AND lp.liker IN(:friends) "
+                + "ORDER BY lp.date DESC");
+        
+        query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
         query.setMaxResults(10);
         
         List<Likepicture> likePicture = query.getResultList();
@@ -44,19 +143,19 @@ public class NewsManager implements NewsManagerLocal
                 news.add(new News(lp.getLiker(), NewsEnum.LIKEPICTURE, lp.getDate(), lp));
             }
         }
-        
-        // Trier
-        Collections.sort(news);
-        // Récupérer les 10 dernières news
-        int limit = (news.size() < 10 ? news.size() : 10);
-        
-        return news.subList(0, limit) ;
     }
     
     private void addCommentAlbumNews(User user, List<News> news)
     {
-        Query query = em.createQuery("SELECT ca FROM Commentalbum ca JOIN ca.author u WHERE u IN(:friends) ORDER BY ca.date DESC");
+        Query query = em.createQuery(
+                "SELECT ca "
+                + "FROM Commentalbum ca "
+                + "JOIN ca.album a "
+                + "WHERE a.authorization IN(:rights) AND ca.author IN(:friends) "
+                + "ORDER BY ca.date DESC");
+        
         query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
         query.setMaxResults(10);
         
         List<Commentalbum> commentAlbum = query.getResultList();
@@ -72,8 +171,9 @@ public class NewsManager implements NewsManagerLocal
     
     private void addCommentPictureNews(User user, List<News> news)
     {
-        Query query = em.createQuery("SELECT cp FROM Commentpicture cp JOIN cp.author u WHERE u IN(:friends) ORDER BY cp.date DESC");
+        Query query = em.createQuery("SELECT cp FROM Commentpicture cp JOIN cp.picture p JOIN p.album a WHERE a.authorization IN(:rights) AND cp.author IN(:friends) ORDER BY cp.date DESC");
         query.setParameter("friends", user.getFriends());
+        query.setParameter("rights", rights);
         query.setMaxResults(10);
         
         List<Commentpicture> commentpicture = query.getResultList();

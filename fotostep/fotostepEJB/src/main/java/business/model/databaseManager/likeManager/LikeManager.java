@@ -17,48 +17,68 @@ import javax.persistence.Query;
 public class LikeManager implements LikeManagerLocal
 {
 
-	@PersistenceContext
-	EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-	public void like(User user, Album album)
-	{
-		user.addLikedAlbum(album);
-		em.persist(user);
-	}
+    public void like(User user, Album album)
+    {
+        Likealbum likealbum = new Likealbum();
+        likealbum.setDate(new Date());
+        likealbum.setAlbum(album);
+        likealbum.setLiker(user);
 
-	public void like(User user, Picture picture)
-	{
-                
-                Likepicture likepicture = new Likepicture();
-                likepicture.setDate(new Date());
-                likepicture.setPicture(picture);
-                likepicture.setLiker(user);
-            
-		user.addLikedPicture(likepicture);
-                
-		em.persist(user);
-	}
+        user.addLikedAlbum(likealbum);
+        em.persist(user);
+    }
 
-	public void dislike(User user, Album album)
-	{
-		user.removeLikedAlbum(album);
-		em.persist(user);
-	}
+    public void like(User user, Picture picture)
+    {
 
-	public void dislike(User user, Picture picture)
-	{
-                Query query = em.createQuery("SELECT lp FROM LikePicture lp WHERE lp.user = :user and lp.picture = :picture");
-                query.setParameter("user", user);
-                query.setParameter("picture", picture);
-            
-                try 
-                { 
-                    Likepicture likepicture = (Likepicture) query.getSingleResult(); 
-                    user.removeLikedPicture(likepicture);
-                    em.persist(user);
-                }
-                catch(NoResultException ex) { ex.printStackTrace(); }
-		
-		
-	}
+        Likepicture likepicture = new Likepicture();
+        likepicture.setDate(new Date());
+        likepicture.setPicture(picture);
+        likepicture.setLiker(user);
+
+        user.addLikedPicture(likepicture);
+
+        em.persist(user);
+    }
+
+    public void dislike(User user, Album album)
+    {
+        Query query = em.createQuery("SELECT lp FROM Likealbum lp WHERE lp.liker = :liker and lp.album = :album");
+        query.setParameter("liker", user);
+        query.setParameter("album", album);
+
+        try
+        {
+            Likealbum likealbum = (Likealbum) query.getSingleResult();
+            user.removeLikedAlbum(likealbum);
+            em.persist(user);
+        }
+        catch (NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public void dislike(User user, Picture picture)
+    {
+        Query query = em.createQuery("SELECT lp FROM LikePicture lp WHERE lp.user = :user and lp.picture = :picture");
+        query.setParameter("user", user);
+        query.setParameter("picture", picture);
+
+        try
+        {
+            Likepicture likepicture = (Likepicture) query.getSingleResult();
+            user.removeLikedPicture(likepicture);
+            em.persist(user);
+        }
+        catch (NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+
+
+    }
 }

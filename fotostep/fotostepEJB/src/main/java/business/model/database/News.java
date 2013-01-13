@@ -59,6 +59,11 @@ public class News implements Comparable<News>
         
         switch(type)
         {
+            case ADDPHOTO : 
+                pic = (Picture) data;
+                title += "a ajouté l'image " + pic.getPath() + " à son album \"" + pic.getAlbum().getName() + "\"";
+                content += pic.getDescription();
+                break;
             case COMMENTALBUM :
                 Commentalbum commAlb = (Commentalbum) data;
                 Album album = commAlb.getAlbum();
@@ -68,16 +73,25 @@ public class News implements Comparable<News>
             case COMMENTPICTURE :
                 Commentpicture commPic = (Commentpicture) data;
                 pic = commPic.getPicture();
-                title += "a commenté l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName();
+                title += "a commenté l'image " + pic.getPath() + " de l'album \"" + pic.getAlbum().getName() + "\"";
                 content = commPic.getBody();
-                break;    
+                break;
+            case CREATEALBUM :
+                alb = (Album) data;
+                title += "a créé un nouvel album, intitulé : \"" + alb.getName() + "\"";
+                content += alb.getDescription();
+                break;
+            case LIKEALBUM :
+                Likealbum likeAlb = (Likealbum) data;
+                alb = likeAlb.getAlbum();
+                title += "aime l'album \"" + alb.getName() + "\"";
+                content = alb.getDescription();
+                break;
             case LIKEPICTURE :
                 Likepicture likePic = (Likepicture) data;
                 pic = likePic.getPicture();
-                title += "aime l'image " + pic.getPath() + " de l'album " + pic.getAlbum().getName();
+                title += "aime l'image " + pic.getPath() + " de l'album \"" + pic.getAlbum().getName() + "\"";
                 break;
-            
-                
             // TODO : Les autres type
                     
         }

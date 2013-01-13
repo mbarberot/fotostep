@@ -2,6 +2,7 @@ package business.model.database;
 
 import com.vividsolutions.jts.geom.Point;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 import org.hibernate.annotations.LazyCollection;
@@ -33,6 +34,8 @@ public class Picture implements Serializable
     private int height;
     private String path;
     private int width;
+    @Temporal(TemporalType.DATE)
+    private Date date;
     
     //bi-directional many-to-one association to Commentpicture
     @OneToMany(mappedBy = "picture")
@@ -132,6 +135,16 @@ public class Picture implements Serializable
         this.width = width;
     }
 
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public void setDate(Date date)
+    {
+        this.date = date;
+    }
+    
     public List<Commentpicture> getComments()
     {
         return this.comments;
