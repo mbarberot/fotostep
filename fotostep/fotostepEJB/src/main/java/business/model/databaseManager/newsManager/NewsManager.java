@@ -37,8 +37,7 @@ public class NewsManager implements NewsManagerLocal
         addLikePictureNews(user, news);
         addNewPhotoNews(user, news);
         addCreateAlbumNews(user, news);
-        
-        // In dev
+        addNewFriendNews(user, news);
         
         
         // Trier
@@ -47,6 +46,29 @@ public class NewsManager implements NewsManagerLocal
         int limit = (news.size() < 10 ? news.size() : 10);
         
         return news.subList(0, limit) ;
+    }
+    
+    private void addNewFriendNews(User user, List<News> news)
+    {
+        // In dev
+        Query query = em.createQuery(
+                "SELECT f "
+                + "FROM Userfriendship f "
+                + "WHERE f.user1 IN(:friends) AND f.user1 IN (SELECT f2.user2 FROM Userfriendship f2 WHERE f2.user1 = f.user2) "
+                + "ORDER BY f.date DESC");
+        
+        query.setParameter("friends", user.getFriends());
+        query.setMaxResults(10);
+        
+        List<Userfriendship> list = query.getResultList();
+        
+        if(list != null && !list.isEmpty())
+        {
+            for(Userfriendship e : list)
+            {
+                news.add(new News(e.getUser1(), NewsEnum.NEWFRIEND, e.getDate(), e));
+            }
+        }
     }
     
     private void addCreateAlbumNews(User user, List<News> news)

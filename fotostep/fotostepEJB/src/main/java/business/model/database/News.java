@@ -92,8 +92,13 @@ public class News implements Comparable<News>
                 pic = likePic.getPicture();
                 title += "aime l'image " + pic.getPath() + " de l'album \"" + pic.getAlbum().getName() + "\"";
                 break;
-            // TODO : Les autres type
-                    
+            case NEWFRIEND :
+                Userfriendship friend = (Userfriendship) data;
+                User u = friend.getUser2();
+                title += "a ajouté " + u.getFirstname() + " " + u.getLastname() + " à ses amis";
+                break;
+            case UPDATEINFO :
+                break;
         }
         
         title += ".";
