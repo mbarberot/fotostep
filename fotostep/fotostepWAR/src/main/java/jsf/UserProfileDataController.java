@@ -23,6 +23,7 @@ public class UserProfileDataController {
     private String userPlace  = "Non renseigné";
     private String gender  = "Non renseigné";
     private String registerDate;
+    private String updateDate;
     private String mail  = "Non renseigné";
     private String idTwitter  = "Non renseigné";
     private String idFb = "Non renseigné";
@@ -66,6 +67,7 @@ public class UserProfileDataController {
 
         gender = (viewedUser.getGender().equals(GenderEnum.m))? "Homme" : "Femme";
         registerDate = viewedUser.getRegisterdate().toString();
+        updateDate = viewedUser.getUpdatedate().toString();
         mail = viewedUser.getLogin();
 
         String userTwitter = viewedUser.getTwitterid();
