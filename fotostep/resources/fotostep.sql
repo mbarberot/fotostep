@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Dim 13 Janvier 2013 à 11:31
+-- Généré le : Lun 14 Janvier 2013 à 09:03
 -- Version du serveur: 5.5.8
 -- Version de PHP: 5.3.5
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `album` (
   PRIMARY KEY (`idalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_cover_image_idx` (`coverimage`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `picture` (
   PRIMARY KEY (`idpicture`),
   UNIQUE KEY `path_UNIQUE` (`path`),
   KEY `fk_album_idx` (`idalbum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -144,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(32) NOT NULL,
   `enabled` enum('pending','accepted','deleted','banned') DEFAULT 'accepted',
   `registerdate` date NOT NULL,
+  `updatedate` date NOT NULL,
   `avatar` varchar(100) DEFAULT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
