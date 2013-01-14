@@ -56,6 +56,7 @@ public class News implements Comparable<News>
         
         Album alb;
         Picture pic;
+        User u;
         
         switch(type)
         {
@@ -94,10 +95,11 @@ public class News implements Comparable<News>
                 break;
             case NEWFRIEND :
                 Userfriendship friend = (Userfriendship) data;
-                User u = friend.getUser2();
+                u = friend.getUser2();
                 title += "a ajouté " + u.getFirstname() + " " + u.getLastname() + " à ses amis";
                 break;
             case UPDATEINFO :
+                title += "a mis à jour ses informations personnelles";
                 break;
         }
         

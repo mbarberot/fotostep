@@ -51,6 +51,9 @@ public class User implements Serializable
     @Temporal(TemporalType.DATE)
     private Date registerdate;
     
+    @Temporal(TemporalType.DATE)
+    private Date updatedate;
+    
     //bi-directional many-to-one association to Album
     @OneToMany(mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -181,6 +184,16 @@ public class User implements Serializable
         this.registerdate = registerdate;
     }
 
+    public Date getUpdatedate()
+    {
+        return updatedate;
+    }
+
+    public void setUpdatedate(Date updatedate)
+    {
+        this.updatedate = updatedate;
+    }
+    
     public String getAvatar()
     {
         return avatar;

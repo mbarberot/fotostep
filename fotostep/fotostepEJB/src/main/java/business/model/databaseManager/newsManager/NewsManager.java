@@ -40,6 +40,26 @@ public class NewsManager implements NewsManagerLocal
         addNewFriendNews(user, news);
         
         
+        Query query = em.createQuery(
+                "SELECT u "
+                + "FROM User u "
+                + "WHERE u IN(:friends) AND u.updatedate > u.registerdate "
+                + "ORDER BY u.updatedate DESC");
+        
+        query.setParameter("friends", user.getFriends());
+        query.setMaxResults(10);
+        
+        List<User> list = query.getResultList();
+        
+        if(list != null && !list.isEmpty())
+        {
+            for(User e : list)
+            {
+                news.add(new News(e, NewsEnum.UPDATEINFO, e.getUpdatedate(), e));
+            }
+        }
+        
+        
         // Trier
         Collections.sort(news);
         // Récupérer les 10 dernières news
