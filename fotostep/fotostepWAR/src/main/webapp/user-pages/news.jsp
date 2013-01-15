@@ -40,7 +40,7 @@
                         <div class="page-header">
                             <h2>Actualit&eacute;s</h2>
                         </div>
-                        <c:choose>
+                        <%-- <c:choose>
                             <c:when test="${fn:length(newsController.news) gt 0}">
                                 <ul class="media-list">
                                     <c:forEach items="#{newsController.news}" var="new">
@@ -52,7 +52,7 @@
                                 </ul>
                             </c:when>
                             <c:otherwise><h4>Aucune news</h4></c:otherwise>
-                        </c:choose>
+                        </c:choose> --%>
                     </div>
                 </div>
 

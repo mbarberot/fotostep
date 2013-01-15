@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-  <display-name>fotostepWAR</display-name>
-  <session-config>
-    <session-timeout>30</session-timeout>
-  </session-config>
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
-  <context-param>
-    <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
-    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-    <param-value>client</param-value>
-  </context-param>
-  <context-param>
-    <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
-    <param-value>resources.application</param-value>
-  </context-param>
-  <listener>
-    <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
-  </listener>
-  <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.jsf</url-pattern>
-  </servlet-mapping>
-
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>fotostepWAR</display-name>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <context-param>
+        <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+    </context-param>
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>resources.application</param-value>
+    </context-param>
+    <listener>
+        <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>Download</servlet-name>
+        <servlet-class>images.Download</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Download</servlet-name>
+        <url-pattern>/images</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>userFilter</filter-name>
         <filter-class>filters.UserFilter</filter-class>
@@ -41,33 +48,27 @@
         <filter-name>userFilter</filter-name>
         <url-pattern>/user-pages/*</url-pattern>
     </filter-mapping>
-
     <filter>
         <filter-name>MyFacesExtensionsFilter</filter-name>
         <filter-class>org.apache.myfaces.webapp.filter.ExtensionsFilter</filter-class>
     </filter>
-
     <!-- extension mapping for adding <script/>, <link/>, and other resource tags to JSF-pages  -->
     <filter-mapping>
         <filter-name>MyFacesExtensionsFilter</filter-name>
         <!-- servlet-name must match the name of your javax.faces.webapp.FacesServlet entry -->
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-
     <!-- extension mapping for serving page-independent resources (javascript, stylesheets, images, etc.)  -->
     <filter-mapping>
         <filter-name>MyFacesExtensionsFilter</filter-name>
         <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
     </filter-mapping>
-
-
     <context-param>
         <description>Only applicable if state saving method is "server" (= default).
             Defines the amount (default = 20) of the latest views are stored in session.</description>
         <param-name>org.apache.myfaces.NUMBER_OF_VIEWS_IN_SESSION</param-name>
         <param-value>20</param-value>
     </context-param>
-
     <context-param>
         <description>Only applicable if state saving method is "server" (= default).
             If true (default) the state will be serialized to a byte stream before it
@@ -76,7 +77,6 @@
         <param-name>org.apache.myfaces.SERIALIZE_STATE_IN_SESSION</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>Only applicable if state saving method is "server" (= default) and if
             org.apache.myfaces.SERIALIZE_STATE_IN_SESSION is true (= default)
@@ -85,7 +85,6 @@
         <param-name>org.apache.myfaces.COMPRESS_STATE_IN_SESSION</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>This parameter tells MyFaces if javascript code should be allowed in the
             rendered HTML output.
@@ -97,12 +96,10 @@
         <param-name>org.apache.myfaces.ALLOW_JAVASCRIPT</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <param-name>org.apache.myfaces.DETECT_JAVASCRIPT</param-name>
         <param-value>false</param-value>
     </context-param>
-
     <context-param>
         <description>If true, rendered HTML code will be formatted, so that it is "human readable".
             i.e. additional line separators and whitespace will be written, that do not
@@ -120,7 +117,6 @@
         <param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>Used for encrypting view state. Only relevant for client side
             state saving. See MyFaces wiki/web site documentation for instructions
@@ -129,7 +125,6 @@
         <param-name>org.apache.myfaces.SECRET</param-name>
         <param-value>NzY1NDMyMTA=</param-value>
     </context-param>
-
     <context-param>
         <description>
             Validate managed beans, navigation rules and ensure that forms are not nested.
@@ -137,7 +132,6 @@
         <param-name>org.apache.myfaces.VALIDATE</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>
             Treat readonly same as if disabled attribute was set for select elements.
@@ -145,7 +139,6 @@
         <param-name>org.apache.myfaces.READONLY_AS_DISABLED_FOR_SELECTS</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>
             Use the defined class as the class which will be called when a resource is added to the
@@ -155,7 +148,6 @@
         <param-name>org.apache.myfaces.ADD_RESOURCE_CLASS</param-name>
         <param-value>org.apache.myfaces.component.html.util.StreamingAddResource</param-value>
     </context-param>
-
     <context-param>
         <description>
             Virtual path in the URL which triggers loading of resources for the MyFaces extended components
@@ -164,7 +156,6 @@
         <param-name>org.apache.myfaces.RESOURCE_VIRTUAL_PATH</param-name>
         <param-value>/faces/myFacesExtensionResource</param-value>
     </context-param>
-
     <context-param>
         <description>
             Check if the extensions-filter has been properly configured.
@@ -172,7 +163,6 @@
         <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
         <param-value>true</param-value>
     </context-param>
-
     <context-param>
         <description>
             Define partial state saving as true/false.

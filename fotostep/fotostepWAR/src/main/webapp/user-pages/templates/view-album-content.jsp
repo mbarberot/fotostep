@@ -118,7 +118,7 @@
                                 <c:forEach items="#{viewAlbum.pictures}" var="pic">
                                     <li class="span3">
                                         <a href="#" class="thumbnail">
-                                            <h:graphicImage value="/images" />
+                                            <h:graphicImage value="images" />
                                         </a>
                                     </li>
                                  </c:forEach>
