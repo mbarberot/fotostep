@@ -118,11 +118,10 @@
                                 <c:forEach items="#{viewAlbum.pictures}" var="pic">
                                     <li class="span3">
                                         <a href="#" class="thumbnail">
-                                            <img data-src="holder.js/250x200" alt="">
+                                            <h:graphicImage value="images" />
                                         </a>
                                     </li>
-                                    <h:outputText value="#{viewAlbum.afficherImages}"></h:outputText>
-                                </c:forEach>
+                                 </c:forEach>
                             </ul>
                         </c:when>
                          <c:otherwise>

@@ -12,6 +12,7 @@ import com.vividsolutions.jts.geom.Point;
 
 import business.model.database.Picture;
 import business.model.database.User;
+import java.util.Date;
 
 /**
  * Bean de manipulation de l'entité Image dans la base de données.
@@ -24,7 +25,7 @@ public class PictureManager implements PictureManagerLocal
     @PersistenceContext
     EntityManager em;
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags, int width, int height, FormatEnum format)
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags, int width, int height, FormatEnum format, Date date)
     {
         Picture picture = new Picture();
 
@@ -35,6 +36,7 @@ public class PictureManager implements PictureManagerLocal
         picture.setHeight(height);
         picture.setPath(path);
         picture.setWidth(width);
+        picture.setDate(date);
 
         em.persist(picture);
         

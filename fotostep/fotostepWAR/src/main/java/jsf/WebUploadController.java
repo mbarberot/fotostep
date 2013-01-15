@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -101,6 +102,8 @@ public class WebUploadController {
             format = FormatEnum.png;
         }
         
+        Date date = new Date(System.currentTimeMillis());
+        
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         HttpSession httpSession = request.getSession(false);
@@ -140,7 +143,7 @@ public class WebUploadController {
         output.close();
         in.close();
         
-        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, tags, bimg.getWidth(), bimg.getHeight(), format);
+        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
 
     }
  
