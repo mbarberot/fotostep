@@ -1,7 +1,11 @@
 package business.model.databaseManager.likeManager;
 
 import business.model.database.*;
+import business.model.databaseManager.albumManager.AlbumManagerLocal;
+import business.model.databaseManager.userManager.UserManagerLocal;
+
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -20,15 +24,25 @@ public class LikeManager implements LikeManagerLocal
     @PersistenceContext
     EntityManager em;
 
+    @EJB
+    UserManagerLocal um;
+    @EJB
+    AlbumManagerLocal am;
+
     public void like(User user, Album album)
     {
+        User userLiker = um.getUserById(user.getIduser());
+        Album likedAlbum = am.findAlbumById(album.getIdalbum());
+
         Likealbum likealbum = new Likealbum();
         likealbum.setDate(new Date());
-        likealbum.setAlbum(album);
-        likealbum.setLiker(user);
+        likealbum.setAlbum(likedAlbum);
+        likealbum.setLiker(userLiker);
+        em.persist(likealbum);
 
+        /*
         user.addLikedAlbum(likealbum);
-        em.persist(user);
+        em.persist(user); */
     }
 
     public void like(User user, Picture picture)
@@ -46,15 +60,20 @@ public class LikeManager implements LikeManagerLocal
 
     public void dislike(User user, Album album)
     {
+        User userLiker = um.getUserById(user.getIduser());
+        Album likedAlbum = am.findAlbumById(album.getIdalbum());
+
         Query query = em.createQuery("SELECT lp FROM Likealbum lp WHERE lp.liker = :liker and lp.album = :album");
-        query.setParameter("liker", user);
-        query.setParameter("album", album);
+        query.setParameter("liker", userLiker);
+        query.setParameter("album", likedAlbum);
 
         try
         {
             Likealbum likealbum = (Likealbum) query.getSingleResult();
+            em.remove(likealbum);
+            /*
             user.removeLikedAlbum(likealbum);
-            em.persist(user);
+            em.persist(user);  */
         }
         catch (NoResultException ex)
         {

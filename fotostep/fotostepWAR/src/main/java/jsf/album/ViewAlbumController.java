@@ -3,6 +3,7 @@ package jsf.album;
 import business.model.database.*;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
+import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
 import org.omg.CORBA.PUBLIC_MEMBER;
@@ -28,12 +29,15 @@ public class ViewAlbumController {
     CommentManagerLocal cm;
     @EJB
     AlbumManagerLocal am;
+    @EJB
+    LikeManagerLocal lm;
 
     /* Infos de controle */
     private boolean isAuthorized = false;
     private boolean isLikedByMe;
     private boolean isMine = false;
     private boolean isDefault;
+    private Album currentAlbum;
 
     private int albId;
 
@@ -149,26 +153,64 @@ public class ViewAlbumController {
         }
 
         // L'album existe bien et l'utilisateur connecté peut le consulter
+        currentAlbum = viewedAlbum;
         albId = viewedAlbum.getIdalbum();
         titre = viewedAlbum.getName();
         creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
-        isLikedByMe = likers.contains(myUser);
+        isLikedByMe = false;
+        for(User liker : likers)
+        {
+            if(liker.getIduser() == myUser.getIduser())
+            {
+                isLikedByMe = true;
+                break;
+            }
+        }
         comments = viewedAlbum.getComments();
         isDefault = viewedAlbum.getIsdefault()== 1;
     }
 
     public String like()
     {
+        // Récupération de l'utilisateur de la session
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = new User();
+        myUser.setIduser(myId);
+
         if(!isLikedByMe)
         {
             // Like
+
+            // Màj de la vue
+            likers.add(myUser);
+
+            // Màj du modèle
+            lm.like(myUser, currentAlbum);
+            setIsLikedByMe(true);
         }else
         {
             // Unlike
-        }
+            System.out.println("Unlike");
+            likers.remove(myUser);
+            int i;
 
+            for(i = 0 ; i < likers.size() ; i++)
+            {
+                if(likers.get(i).getIduser() == myUser.getIduser())
+                {
+                    likers.remove(i);
+                    i = likers.size();
+                }
+            }
+            lm.dislike(myUser, currentAlbum);
+
+            setIsLikedByMe(false);
+        }
         return "LIKE_OK";
     }
 
