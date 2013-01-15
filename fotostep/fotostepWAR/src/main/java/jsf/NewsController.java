@@ -4,6 +4,7 @@ import business.model.database.*;
 import business.model.databaseManager.newsManager.NewsManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.UserNotFoundException;
+import component.NewsComponent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -31,7 +32,8 @@ public class NewsController
     @EJB
     NewsManagerLocal newsManager;
             
-    private List<News> news = new ArrayList<News>();
+    private List<NewsComponent> news = new ArrayList<NewsComponent>();
+    private List<News> rawNews = new ArrayList<News>();
 
     public NewsController()
     {
@@ -51,8 +53,20 @@ public class NewsController
         
         try
         {
-            //news.addAll(newsManager.getNewsFor(user));
-            news = newsManager.getNewsFor(user);
+            rawNews = newsManager.getNewsFor(user);
+            
+            List<NewsComponent> printedNews = new ArrayList<NewsComponent>();
+            for(News n : rawNews)
+            {
+                try 
+                {
+                    printedNews.add(new NewsComponent(n, idUser));
+                }
+                catch(Exception ex) { ex.printStackTrace(); }
+            }
+            news = printedNews;
+            
+            System.out.println("[DEBUG] Nb News : " + rawNews.size());
         }
         catch (UserNotFoundException ex)
         {
@@ -62,14 +76,15 @@ public class NewsController
         {
             ex.printStackTrace();
         }
+        System.out.println("[DEBUG] Nb News : " + news.size());
     }
 
-    public List<News> getNews()
+    public List<NewsComponent> getNews()
     {
         return news;
     }
 
-    public void setNews(List<News> news)
+    public void setNews(List<NewsComponent> news)
     {
         this.news = news;
     }

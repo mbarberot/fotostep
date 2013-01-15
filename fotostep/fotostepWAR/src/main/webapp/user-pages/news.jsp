@@ -40,19 +40,27 @@
                         <div class="page-header">
                             <h2>Actualit&eacute;s</h2>
                         </div>
-                        <%-- <c:choose>
+                        <c:choose>
                             <c:when test="${fn:length(newsController.news) gt 0}">
                                 <ul class="media-list">
                                     <c:forEach items="#{newsController.news}" var="new">
-                                        <li class="media">
-                                            <h5 class="media-heading">${new.title}</h5>
-                                            <p class="media-body span7">${new.content}</p>
+                                        <li>
+                                            <div class="media">
+                                                <a class="pull-left" href="${new.userpage}">
+                                                    <img src="${new.avatar}"/>
+                                                </a>
+                                                <div class="media-body">
+                                                    <h5 class="media-heading">${new.title}</h5>
+                                                    <p>${new.content}</p>
+                                                </div>
+                                            </div>
+                                            <br>
                                         </li>
                                     </c:forEach>
                                 </ul>
                             </c:when>
                             <c:otherwise><h4>Aucune news</h4></c:otherwise>
-                        </c:choose> --%>
+                        </c:choose>
                     </div>
                 </div>
 
