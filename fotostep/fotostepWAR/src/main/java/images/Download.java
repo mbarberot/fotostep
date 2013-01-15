@@ -4,12 +4,15 @@
  */
 package images;
 
+import business.model.database.FormatEnum;
+import business.model.database.Picture;
+import business.model.databaseManager.pictureManager.PictureManagerLocal;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Administrateur
  */
 public class Download extends HttpServlet {
+    
+    @EJB
+    private PictureManagerLocal pictureManagerLocal;
 
     /**
      * Processes requests for both HTTP
@@ -65,58 +71,36 @@ public class Download extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        System.out.println("Le programe passe bien par ici");
-                
-        response.setContentType("image/PNG");
-        response.setHeader("Content-Disposition", "attachment;filename=\"Capture_1357488150987.PNG\"");
-
-        ServletOutputStream out = response.getOutputStream();
-        File file = null;
-        BufferedInputStream from = null;
-        try {
-            //dans mon cas le filepath et le path complet après création
-            // d'un temp file 
-            file = new File("/fotosteppictures/user9/Capture_1357488150987.PNG");
-            response.setContentLength((int) file.length());
-            int bufferSize = 64 * 1024;
-            long time = System.currentTimeMillis();
-
-            try {
-                from = new BufferedInputStream(new FileInputStream(file), bufferSize * 2);
-                byte[] bufferFile = new byte[bufferSize];
-                for (int i = 0;; i++) {
-                    int len = from.read(bufferFile);
-                    if (len < 0) {
-                        break;
-                    }
-                    out.write(bufferFile, 0, len);
-                }
-                out.flush();
-            } finally {
-                try {
-                    from.close();
-                } catch (Exception e) {
-                }
-                try {
-                    out.close();
-                } catch (Exception e) {
-                }
-            }
-            time = (System.currentTimeMillis() - time) / 1000;
-            // seconds download 
-            double kb = (file.length() * 1.0 / 1024);
-
-            if (file != null) {
-                file.delete();
-            }
-        } catch (Exception e) {
-            return;
-        } finally {
-            try {
-                file.delete();
-            } catch (Exception ex) {
-            }
+        String userId = request.getParameter("UserId");
+        String pictureId = request.getParameter("PictureId");
+                 
+        Picture pictureToView = pictureManagerLocal.findPictureById(Integer.parseInt(pictureId));
+        File filePicture = new File(pictureToView.getPath());
+        
+        String format = null;
+        if (pictureToView.getFormat() == FormatEnum.jpg) {
+            format = "jpeg";
+        } else if (pictureToView.getFormat() == FormatEnum.png) {
+            format = "PNG";
         }
+        response.setContentType("image/" + format);
+        response.setHeader("Content-Disposition", "attachment;filename=\"" + filePicture.getName() + "\"");
+        ServletOutputStream out = response.getOutputStream();
+        BufferedInputStream from = null;
+        response.setContentLength((int) filePicture.length());
+        int bufferSize = 64 * 1024;
+        from = new BufferedInputStream(new FileInputStream(filePicture), bufferSize * 2);
+        byte[] bufferFile = new byte[bufferSize];
+        for (int i = 0;; i++) {
+            int len = from.read(bufferFile);
+            if (len < 0) {
+                break;
+            }
+            out.write(bufferFile, 0, len);
+        }
+        out.flush();
+        from.close();
+        out.close();
     }
 
     /**
