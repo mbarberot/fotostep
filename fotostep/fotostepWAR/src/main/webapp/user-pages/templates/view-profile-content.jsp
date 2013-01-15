@@ -15,9 +15,16 @@
                         <f:param value="#{userProfileData.lastName}" />
                     </h:outputFormat></h2>
 
-                    <c:if test="${userProfileData.isAFriend == false}">
-                        <a href="#" class = "btn btn-primary"><i class="icon-user icon-white"></i>  Ajouter aux contacts </a>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${userProfileData.isAFriend}">
+                            <a href="#" class = "btn btn-success">Déjà dans vos contacts</a>
+                        </c:when>
+                        <c:when test="${userProfileData.isAFriend and !userProfileData.profileOfMine}">
+                            <a href="#" class = "btn btn-primary"><i class="icon-user icon-white"></i>  Ajouter aux contacts </a>
+                        </c:when>
+                        <c:otherwise/>
+                    </c:choose>
+
                 </div>
             </div>
         </div>
@@ -130,16 +137,18 @@
                         <dt>Inscrit le </dt>
                         <dd><h:outputText value="#{userProfileData.registerDate}"/></dd>
                     </dl>
-                    <h3>Contact</h3>
-                    <dl class="dl-horizontal">
-                        <dt>Mail</dt>
-                        <dd><h:outputText value="#{userProfileData.mail}"/></dd>
-                        <dt>Twitter</dt>
-                        <dd><h:outputText value="#{userProfileData.idTwitter}"/></dd>
-                        <dt>Facebook</dt>
-                        <dd><h:outputText value = "#{userProfileData.idFb}"/></dd>
+                    <c:if test="${userProfileData.isAFriend or userProfileData.profileOfMine}">
+                        <h3>Contact</h3>
+                        <dl class="dl-horizontal">
+                            <dt>Mail</dt>
+                            <dd><h:outputText value="#{userProfileData.mail}"/></dd>
+                            <dt>Twitter</dt>
+                            <dd><h:outputText value="#{userProfileData.idTwitter}"/></dd>
+                            <dt>Facebook</dt>
+                            <dd><h:outputText value = "#{userProfileData.idFb}"/></dd>
 
-                    </dl>
+                        </dl>
+                    </c:if>
                 </div>
 
                 <!-- Friends view -->

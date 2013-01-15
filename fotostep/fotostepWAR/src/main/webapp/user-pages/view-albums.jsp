@@ -57,11 +57,7 @@
 
                                             <h:form styleClass="form-inline">
                                                 <div class="btn-group pull-right">
-                                                <h:commandLink styleClass="btn btn-danger" action="#{viewAlbums.deleteAlbum}"
-                                                               onclick="if (!confirm('Voulez vous vraiment supprimer cet album ?')) return false">
-                                                    <f:param name="deletedalb" value="#{alb.idalbum}"/>
-                                                    <i class="icon-remove icon-white"></i>
-                                                </h:commandLink>
+
                                                 <button class="btn btn-info" id = "btn-edit"><i class="icon-edit icon-white"></i></button>
                                                 </div>
                                             </h:form>

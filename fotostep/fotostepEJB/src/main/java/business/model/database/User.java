@@ -18,45 +18,67 @@ public class User implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int iduser;
+    
     @Temporal(TemporalType.DATE)
     private Date birthdate;
+    
     @Enumerated(EnumType.STRING)
     private EnabledEnum enabled;
+    
     private String avatar;
+    
     private String firstname;
+    
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
+    
     private String lastname;
+    
     private String login;
+    
     private String password;
+    
     private String place;
+    
     private String twitterid;
+    
     private String fbid;
+    
     @Temporal(TemporalType.DATE)
     private Date registerdate;
+    
+    @Temporal(TemporalType.DATE)
+    private Date updatedate;
+    
     //bi-directional many-to-one association to Album
     @OneToMany(mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Album> albums;
+   
     //bi-directional many-to-one association to Commentalbum
     @OneToMany(mappedBy = "author")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Commentalbum> commentsOnAlbums;
+    
     //bi-directional many-to-one association to Commentpicture
     @OneToMany(mappedBy = "author")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Commentpicture> commentsOnPictures;
+    
     //bi-directional many-to-many association to Album
-    @ManyToMany(mappedBy = "likers")
+    @OneToMany(mappedBy = "liker")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Album> likedAlbums;
+    private List<Likealbum> likedAlbums;
+    
     //bi-directional many-to-many association to Picture
-    @ManyToMany(mappedBy = "likers")
+    @OneToMany(mappedBy = "liker")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Picture> likedPictures;
+    private List<Likepicture> likedPictures;
+    
     //uni-directional many-to-many association to User
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "userfriendship", joinColumns =
@@ -162,6 +184,16 @@ public class User implements Serializable
         this.registerdate = registerdate;
     }
 
+    public Date getUpdatedate()
+    {
+        return updatedate;
+    }
+
+    public void setUpdatedate(Date updatedate)
+    {
+        this.updatedate = updatedate;
+    }
+    
     public String getAvatar()
     {
         return avatar;
@@ -232,42 +264,42 @@ public class User implements Serializable
         this.commentsOnPictures = commentsOnPictures;
     }
 
-    public List<Album> getLikedAlbums()
+    public List<Likealbum> getLikedAlbums()
     {
         return this.likedAlbums;
     }
 
-    public void setLikedAlbums(List<Album> likedAlbums)
+    public void setLikedAlbums(List<Likealbum> likedAlbums)
     {
         this.likedAlbums = likedAlbums;
     }
 
-    public void addLikedAlbum(Album album)
+    public void addLikedAlbum(Likealbum album)
     {
         this.likedAlbums.add(album);
     }
 
-    public void removeLikedAlbum(Album album)
+    public void removeLikedAlbum(Likealbum album)
     {
         this.likedAlbums.remove(album);
     }
 
-    public List<Picture> getLikedPictures()
+    public List<Likepicture> getLikedPictures()
     {
         return this.likedPictures;
     }
 
-    public void setLikedPictures(List<Picture> likedPictures)
+    public void setLikedPictures(List<Likepicture> likedPictures)
     {
         this.likedPictures = likedPictures;
     }
 
-    public void addLikedPicture(Picture picture)
+    public void addLikedPicture(Likepicture picture)
     {
         this.likedPictures.add(picture);
     }
 
-    public void removeLikedPicture(Picture picture)
+    public void removeLikedPicture(Likepicture picture)
     {
         this.likedPictures.remove(picture);
     }

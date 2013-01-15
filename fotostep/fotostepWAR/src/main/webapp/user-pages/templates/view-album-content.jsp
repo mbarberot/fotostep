@@ -9,7 +9,30 @@
         <div class = "page-header">
             <h2><h:outputText value="#{viewAlbum.titre}"/>
                 <c:if test="${viewAlbum.isMine}">
-                    <button class = "btn btn-primary pull-right"><i class = "icon-plus-sign icon-white" ></i> Nouvelle photo</button>
+                    <div class="btn-group pull-right">
+                        <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+                            Actions sur l'album
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <h:form>
+                                <li>
+                                    <a href = "#">Nouvelle photo</a>
+                                </li>
+                                <c:if test="${!viewAlbum.isDefault}">
+                                    <li>
+                                        <h:commandLink value="Supprimer" action="#{viewAlbum.deleteAlbum}"
+                                                       onclick="if (!confirm('Voulez vous vraiment supprimer cet album ?')) return false">
+                                            <f:param value="#{viewAlbum.albId}" name="deletedalb"/>
+                                        </h:commandLink>
+                                    </li>
+                                    <li>
+                                        <a href = "#">Editer l'album</a>
+                                    </li>
+                                </c:if>
+                            </h:form>
+                        </ul>
+                    </div>
                 </c:if>
             </h2>
 
@@ -30,7 +53,11 @@
                 <a href="#" class="btn btn-inverse" id = "btn-comment"><i class="icon-comment icon-white"></i>
                     <h:outputText value="#{fn:length(viewAlbum.comments)}"/>
                 </a>
+
+
             </div>
+
+
         </div>
 
         <div class = "span9" id = "albums-container">

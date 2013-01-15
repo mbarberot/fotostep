@@ -1,8 +1,12 @@
 package jsf.album;
 
 import business.model.database.*;
+import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import business.util.exceptions.AlbumNotFoundException;
+import org.omg.CORBA.PUBLIC_MEMBER;
+import org.postgis.binary.ByteGetter;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -11,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author Joan Racenet
@@ -21,11 +26,16 @@ public class ViewAlbumController {
     UserManagerLocal um;
     @EJB
     CommentManagerLocal cm;
+    @EJB
+    AlbumManagerLocal am;
 
     /* Infos de controle */
     private boolean isAuthorized = false;
     private boolean isLikedByMe;
     private boolean isMine = false;
+    private boolean isDefault;
+
+    private int albId;
 
     /* Infos à afficher */
     private String titre = "Album inacessible";
@@ -36,7 +46,6 @@ public class ViewAlbumController {
     private List<Picture> pictures = new ArrayList<Picture>();
     private List<User> likers = new ArrayList<User>();
     private List<Commentalbum> comments = new ArrayList<Commentalbum>();
-    private List<String> files = new ArrayList<String>();
 
     /* Formulaire d'ajout d'un commentaire */
     private String commentText;
@@ -61,7 +70,6 @@ public class ViewAlbumController {
             isAuthorized = false;
             return;
         }
-
         // Récupération de l'utilisateur de la session
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -141,21 +149,14 @@ public class ViewAlbumController {
         }
 
         // L'album existe bien et l'utilisateur connecté peut le consulter
+        albId = viewedAlbum.getIdalbum();
         titre = viewedAlbum.getName();
-
-        /*String desc = viewedAlbum.getDescription();
-        if(desc != null)
-        {
-            description = desc;
-        }  */
         creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
         isLikedByMe = likers.contains(myUser);
         comments = viewedAlbum.getComments();
-        
-        for (Picture p : pictures)
-            files.add(p.getPath());
+        isDefault = viewedAlbum.getIsdefault()== 1;
     }
 
     public String like()
@@ -169,6 +170,25 @@ public class ViewAlbumController {
         }
 
         return "LIKE_OK";
+    }
+
+    public String deleteAlbum()
+    {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        String value = (String)requestMap.get("deletedalb");
+        int idToDelete = Integer.parseInt(value);
+
+        Album todelete = am.findAlbumById(idToDelete);
+        if(todelete != null)
+        {
+            try {
+                am.deleteAlbum(todelete);
+            } catch (AlbumNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return "DELETE_OK";
     }
 
     public String postComment()
@@ -263,5 +283,21 @@ public class ViewAlbumController {
 
     public void setCommentText(String commentText) {
         this.commentText = commentText;
+    }
+
+    public int getAlbId() {
+        return albId;
+    }
+
+    public void setAlbId(int albId) {
+        this.albId = albId;
+    }
+
+    public boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(boolean aDefault) {
+        isDefault = aDefault;
     }
 }

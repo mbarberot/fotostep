@@ -49,6 +49,14 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/user-pages/view-album.jsp</from-view-id>
+        <navigation-case>
+            <from-outcome>DELETE_OK</from-outcome>
+            <to-view-id>/user-pages/view-albums.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
 
     <managed-bean>
         <managed-bean-name>loginController</managed-bean-name>
