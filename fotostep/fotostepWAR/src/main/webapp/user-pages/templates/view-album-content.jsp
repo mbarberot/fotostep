@@ -118,7 +118,8 @@
                                 <c:forEach items="#{viewAlbum.pictures}" var="pic">
                                     <li class="span3">
                                         <a href="#" class="thumbnail">
-                                            <h:graphicImage value="images" />
+                                            <h:graphicImage value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}">
+                                            </h:graphicImage>
                                         </a>
                                     </li>
                                  </c:forEach>

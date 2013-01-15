@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Point;
 import business.model.database.Picture;
 import business.model.database.User;
 import java.util.Date;
+import javax.persistence.NoResultException;
 
 /**
  * Bean de manipulation de l'entité Image dans la base de données.
@@ -73,6 +74,15 @@ public class PictureManager implements PictureManagerLocal
         picture.setCoord(point);
         picture.setDescription(description);
         picture.setTags(tags);
+    }    
+    
+    public Picture findPictureById(int id) {        
+        try {
+            Picture pic = em.find(Picture.class, id);
+            return pic;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void removeImage(Picture picture)
@@ -86,4 +96,5 @@ public class PictureManager implements PictureManagerLocal
     {
         // TODO : Ecrire l'image sur le disque
     }
+
 }

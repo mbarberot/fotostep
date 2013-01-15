@@ -21,6 +21,9 @@ public interface PictureManagerLocal
     public Picture addImage(Buffer buffer, Album album, String path, String description, String tag, int width, int height, FormatEnum format, Point point);
     
     public void editImage(Picture picture, Album album, String description, String tag, Point point);
+    
+    public Picture findPictureById(int id);
 
-    public void removeImage(Picture picture);
+    public void removeImage(Picture picture);   
+
 }
