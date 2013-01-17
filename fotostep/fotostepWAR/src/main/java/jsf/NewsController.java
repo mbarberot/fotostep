@@ -50,33 +50,37 @@ public class NewsController
        
         // Récupération de l'utilisateur
         User user = userManager.getUserById(idUser);
-        
-        try
+
+        if(!user.getFriends().isEmpty())
         {
-            rawNews = newsManager.getNewsFor(user);
-            
-            List<NewsComponent> printedNews = new ArrayList<NewsComponent>();
-            for(News n : rawNews)
+
+            try
             {
-                try 
+                rawNews = newsManager.getNewsFor(user);
+
+                List<NewsComponent> printedNews = new ArrayList<NewsComponent>();
+                for(News n : rawNews)
                 {
-                    printedNews.add(new NewsComponent(n, idUser));
+                    try
+                    {
+                        printedNews.add(new NewsComponent(n, idUser));
+                    }
+                    catch(Exception ex) { ex.printStackTrace(); }
                 }
-                catch(Exception ex) { ex.printStackTrace(); }
+                news = printedNews;
+
+                System.out.println("[DEBUG] Nb News : " + rawNews.size());
             }
-            news = printedNews;
-            
-            System.out.println("[DEBUG] Nb News : " + rawNews.size());
+            catch (UserNotFoundException ex)
+            {
+                ex.printStackTrace();
+            }
+            catch(NoResultException ex)
+            {
+                ex.printStackTrace();
+            }
+            System.out.println("[DEBUG] Nb News : " + news.size());
         }
-        catch (UserNotFoundException ex)
-        {
-            ex.printStackTrace();
-        }
-        catch(NoResultException ex)
-        {
-            ex.printStackTrace();
-        }
-        System.out.println("[DEBUG] Nb News : " + news.size());
     }
 
     public List<NewsComponent> getNews()

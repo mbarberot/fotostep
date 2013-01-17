@@ -110,6 +110,8 @@
             <artifactId>richfaces-ui</artifactId>
             <version>3.2.2.GA</version>
         </dependency>
+
+
     </dependencies>
 
 	<build>

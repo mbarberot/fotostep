@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author Joan Racenet
+ * @author Joan Racenet
  */
 public class ViewAlbumController {
 
@@ -34,11 +34,8 @@ public class ViewAlbumController {
 
     /* Infos de controle */
     private boolean isAuthorized = false;
-    private boolean isLikedByMe;
     private boolean isMine = false;
     private boolean isDefault;
-    private Album currentAlbum;
-
     private int albId;
 
     /* Infos à afficher */
@@ -153,25 +150,51 @@ public class ViewAlbumController {
         }
 
         // L'album existe bien et l'utilisateur connecté peut le consulter
-        currentAlbum = viewedAlbum;
         albId = viewedAlbum.getIdalbum();
         titre = viewedAlbum.getName();
         creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
-        isLikedByMe = false;
-        for(User liker : likers)
-        {
-            if(liker.getIduser() == myUser.getIduser())
-            {
-                isLikedByMe = true;
-                break;
-            }
-        }
+
         comments = viewedAlbum.getComments();
         isDefault = viewedAlbum.getIsdefault()== 1;
     }
 
+    public String unlike()
+    {
+        // Récupération de l'utilisateur de la session
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = new User();
+        myUser.setIduser(myId);
+
+        context = FacesContext.getCurrentInstance();
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        String value = (String)requestMap.get("unlikealbum");
+        int albumtounlike = Integer.parseInt(value);
+
+        Album currentAlbum = new Album();
+        currentAlbum.setIdalbum(albumtounlike);
+
+        // Unlike
+        System.out.println("Unlike");
+        int i;
+
+        for(i = 0 ; i < likers.size() ; i++)
+        {
+            if(likers.get(i).getIduser() == myUser.getIduser())
+            {
+                likers.remove(i);
+                i = likers.size();
+            }
+        }
+        lm.dislike(myUser, currentAlbum);
+
+        return "UNLIKE_OK";
+
+    }
     public String like()
     {
         // Récupération de l'utilisateur de la session
@@ -182,35 +205,22 @@ public class ViewAlbumController {
         User myUser = new User();
         myUser.setIduser(myId);
 
-        if(!isLikedByMe)
-        {
-            // Like
+        context = FacesContext.getCurrentInstance();
+        Map requestMap = context.getExternalContext().getRequestParameterMap();
+        String value = (String)requestMap.get("likealbum");
+        int albumtolike = Integer.parseInt(value);
 
-            // Màj de la vue
-            likers.add(myUser);
+        Album currentAlbum = new Album();
+        currentAlbum.setIdalbum(albumtolike);
 
-            // Màj du modèle
-            lm.like(myUser, currentAlbum);
-            setIsLikedByMe(true);
-        }else
-        {
-            // Unlike
-            System.out.println("Unlike");
-            likers.remove(myUser);
-            int i;
+        // Like
+        System.out.println("Like");
+        // Màj de la vue
+        likers.add(myUser);
 
-            for(i = 0 ; i < likers.size() ; i++)
-            {
-                if(likers.get(i).getIduser() == myUser.getIduser())
-                {
-                    likers.remove(i);
-                    i = likers.size();
-                }
-            }
-            lm.dislike(myUser, currentAlbum);
+        // Màj du modèle
+        lm.like(myUser, currentAlbum);
 
-            setIsLikedByMe(false);
-        }
         return "LIKE_OK";
     }
 
@@ -220,6 +230,7 @@ public class ViewAlbumController {
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String value = (String)requestMap.get("deletedalb");
         int idToDelete = Integer.parseInt(value);
+
 
         Album todelete = am.findAlbumById(idToDelete);
         if(todelete != null)
@@ -245,14 +256,6 @@ public class ViewAlbumController {
 
     public void setIsAuthorized(boolean authorized) {
         isAuthorized = authorized;
-    }
-
-    public boolean getIsLikedByMe() {
-        return isLikedByMe;
-    }
-
-    public void setIsLikedByMe(boolean likedByMe) {
-        isLikedByMe = likedByMe;
     }
 
     public boolean getIsMine() {

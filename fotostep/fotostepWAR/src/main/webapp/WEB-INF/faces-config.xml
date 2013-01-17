@@ -90,7 +90,7 @@
     <managed-bean>
         <managed-bean-name>viewAlbum</managed-bean-name>
         <managed-bean-class>jsf.album.ViewAlbumController</managed-bean-class>
-        <managed-bean-scope>session</managed-bean-scope>
+        <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
     <managed-bean>
         <managed-bean-name>createAlbum</managed-bean-name>
@@ -101,5 +101,10 @@
         <managed-bean-name>newsController</managed-bean-name>
         <managed-bean-class>jsf.NewsController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>likeAlbumController</managed-bean-name>
+        <managed-bean-class>jsf.album.LikeAlbumController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 </faces-config>
