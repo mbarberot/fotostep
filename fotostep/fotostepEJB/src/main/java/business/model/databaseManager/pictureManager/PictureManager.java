@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 import javax.ejb.Stateless;
@@ -97,10 +99,11 @@ public class PictureManager implements PictureManagerLocal
     
     public void generateTumb(Picture picture, int width, int height)
     {
-    	File file = new File(System.getProperty("user.home") + picture.getPath());
+        Path picPath = Paths.get(System.getProperty("user.home") + picture.getPath());
+        File file = new File(picPath.toString());
     	
     	if(!file.exists() || !file.isFile())
-    		throw new IllegalStateException("The file " + picture.getPath() + " don't exist");
+    		throw new IllegalStateException("The file " + picPath.toString() + " don't exist");
     	
     	try {
     		BufferedImage original = ImageIO.read(file);
@@ -109,8 +112,9 @@ public class PictureManager implements PictureManagerLocal
     		Graphics2D g = resizedImage.createGraphics();
     		g.drawImage(original, 0, 0, width, height, null);
     		g.dispose();
-    		
-    		File newFile = new File(System.getProperty("user.home") + picture.getPath() + "_" + width + "_" + height);
+
+            Path resizedPicPath = Paths.get(System.getProperty("user.home") + picture.getPath() + "_" + width + "_" + height);
+    		File newFile = new File(resizedPicPath.toUri());
     		newFile.createNewFile();
     		ImageIO.write(resizedImage, picture.getFormat().name(), newFile);
     	} catch (IOException e) {
