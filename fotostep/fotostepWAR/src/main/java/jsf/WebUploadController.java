@@ -135,7 +135,7 @@ public class WebUploadController {
         repertory.mkdirs();
         
         //File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
-        File file = new File(path + "/" + prefix + "_" + System.currentTimeMillis() + "." + suffix);
+        File file = new File(path + "/" + prefix + "_" + System.currentTimeMillis());
         file.createNewFile();
         OutputStream output = new FileOutputStream(file);
         IOUtils.copy(uploadedFile.getInputStream(), output);
@@ -143,7 +143,7 @@ public class WebUploadController {
         output.close();
         in.close();
         
-        imageImporter.addImage(buffer, defaultAlbum, path + "/" + file.getName(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
+        imageImporter.addImage(buffer, defaultAlbum, path + "/" + prefix + "_" + System.currentTimeMillis(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
 
     }
  
