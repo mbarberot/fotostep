@@ -46,6 +46,8 @@ public class PictureManager implements PictureManagerLocal
 
         em.persist(picture);
         
+        generateTumb(picture, 600, 400);
+        
         return picture;
 
     }
@@ -65,6 +67,8 @@ public class PictureManager implements PictureManagerLocal
         picture.setWidth(width);
 
         em.persist(picture);
+        
+        generateTumb(picture, 600, 400);
         
         return picture;
     }
@@ -93,7 +97,7 @@ public class PictureManager implements PictureManagerLocal
     
     public void generateTumb(Picture picture, int width, int height)
     {
-    	File file = new File(picture.getPath());
+    	File file = new File(System.getProperty("user.home") + picture.getPath());
     	
     	if(!file.exists() || !file.isFile())
     		throw new IllegalStateException("The file " + picture.getPath() + " don't exist");
@@ -106,7 +110,7 @@ public class PictureManager implements PictureManagerLocal
     		g.drawImage(original, 0, 0, width, height, null);
     		g.dispose();
     		
-    		File newFile = new File(picture.getPath() + "_" + width + "_" + height);
+    		File newFile = new File(System.getProperty("user.home") + picture.getPath() + "_" + width + "_" + height);
     		newFile.createNewFile();
     		ImageIO.write(resizedImage, picture.getFormat().name(), newFile);
     	} catch (IOException e) {

@@ -6,6 +6,8 @@ import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
+import org.ajax4jsf.model.KeepAlive;
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.postgis.binary.ByteGetter;
 
 import javax.annotation.PostConstruct;
@@ -16,7 +18,6 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.nio.file.FileStore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,6 @@ public class ViewAlbumController{
     UserManagerLocal um;
     @EJB
     LikeManagerLocal lm;
-    @EJB
-    CommentManagerLocal cm;
 
     /* Infos de controle */
     private boolean isAuthorized;
@@ -46,6 +45,7 @@ public class ViewAlbumController{
 
     /* Infos à afficher */
     private String titre = "Album inacessible";
+    //private User owner;
     private String description = "Aucune description pour cet album";
     private String creationDate = "Non renseignée";
     private String authorization;
@@ -54,7 +54,7 @@ public class ViewAlbumController{
     private List<Commentalbum> comments = new ArrayList<Commentalbum>();
 
     /* Formulaire d'ajout d'un commentaire */
-    private String commentText = "";
+    private String commentText;
 
 
     public ViewAlbumController(){}
@@ -272,36 +272,9 @@ public class ViewAlbumController{
 
     public String postComment()
     {
-
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
-        HttpSession httpSession = request.getSession(false);
-        Integer myId = (Integer)httpSession.getAttribute("userId");
-
-        User myUser = um.getUserById(myId);
-
-        Album alb = am.findAlbumById(this.albId);
-
-        // Modification du model
-        Commentalbum added = cm.addComment(alb, myUser, this.getCommentText());
-
-        // Modification de la vue
-        this.comments.add(added);
-
-        //cm.addComment(deleteAlbum(),  user, text);
         return "COMMENT_OK" ;
     }
 
-
-    public int getNumberOfPictures()
-    {
-        return this.pictures.size();
-    }
-
-    public int getNumberOfComments()
-    {
-        return this.comments.size();
-    }
 
     public boolean getIsAuthorized() {
         return isAuthorized;
