@@ -35,6 +35,8 @@ public class ViewAlbumController{
     UserManagerLocal um;
     @EJB
     LikeManagerLocal lm;
+    @EJB
+    CommentManagerLocal cm;
 
     /* Infos de controle */
     private boolean isAuthorized;
@@ -272,6 +274,21 @@ public class ViewAlbumController{
 
     public String postComment()
     {
+
+        //TODO : vérifier si le commentaire est vide
+
+        // Récupère l'utilisateur connecté
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = um.getUserById(myId);
+
+        // Récupère l'album
+        Album toComment = am.findAlbumById(this.albId);
+
+        // Création du commentaire
+        cm.addComment(toComment,myUser,this.getCommentText());
         return "COMMENT_OK" ;
     }
 
@@ -395,5 +412,15 @@ public class ViewAlbumController{
 
     public void setLm(LikeManagerLocal lm) {
         this.lm = lm;
+    }
+
+    public int getNumberOfPictures()
+    {
+        return this.pictures.size();
+    }
+
+    public int getNumberOfComments()
+    {
+        return this.comments.size();
     }
 }

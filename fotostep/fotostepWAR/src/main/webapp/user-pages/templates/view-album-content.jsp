@@ -119,10 +119,11 @@
                         <h3>Pas de photos dans l'album</h3>
                     </h:outputText>
 
+                    <%@include file="view-picture.jsp"%>
                     <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}"
                                 styleClass="thumbnails" itemStyleClass="span3" value="#{viewAlbum.pictures}">
                         <a href="#" class="thumbnail">
-                            <h:graphicImage value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}">
+                            <h:graphicImage value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}" onclick="openbox('Titre du formulaire', 0)">
                             </h:graphicImage>
                         </a>
                     </t:dataList>

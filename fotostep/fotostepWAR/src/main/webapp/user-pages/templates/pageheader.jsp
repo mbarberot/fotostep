@@ -28,4 +28,6 @@
             <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
             <![endif]-->
+    <link type="text/css" rel="stylesheet" href="../assets/css/lightboxstyle.css">
+    <script src="../assets/js/lightbox-picture.js" type="text/javascript"></script>
 </f:subview>
