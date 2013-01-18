@@ -25,13 +25,11 @@ import javax.servlet.http.HttpSession;
  */
 public class NewsController
 {
-    
+
     @EJB
     UserManagerLocal userManager;
-    
     @EJB
     NewsManagerLocal newsManager;
-            
     private List<NewsComponent> news = new ArrayList<NewsComponent>();
     private List<News> rawNews = new ArrayList<News>();
 
@@ -44,39 +42,33 @@ public class NewsController
     {
         // Récupération de l'iduser placé dans la session http
         FacesContext ctx = FacesContext.getCurrentInstance();
-        HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
-        HttpSession session=req.getSession(false);
-        Integer idUser = (Integer)session.getAttribute("userId");
-       
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer idUser = (Integer) session.getAttribute("userId");
+
         // Récupération de l'utilisateur
         User user = userManager.getUserById(idUser);
-        
+
         try
         {
             rawNews = newsManager.getNewsFor(user);
-            
+
             List<NewsComponent> printedNews = new ArrayList<NewsComponent>();
-            for(News n : rawNews)
+            for (News n : rawNews)
             {
-                try 
-                {
-                    printedNews.add(new NewsComponent(n, idUser));
-                }
-                catch(Exception ex) { ex.printStackTrace(); }
+                printedNews.add(new NewsComponent(n, idUser));
+
             }
             news = printedNews;
-            
-            System.out.println("[DEBUG] Nb News : " + rawNews.size());
         }
         catch (UserNotFoundException ex)
         {
             ex.printStackTrace();
         }
-        catch(NoResultException ex)
+        catch (NoResultException ex)
         {
             ex.printStackTrace();
         }
-        System.out.println("[DEBUG] Nb News : " + news.size());
     }
 
     public List<NewsComponent> getNews()

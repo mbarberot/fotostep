@@ -12,6 +12,7 @@ public class NewsComponent
     protected String content;
     protected String userpage;
     protected String avatar;
+    protected String icon;
     
     public NewsComponent(News news, int idUser)
     {
@@ -19,12 +20,13 @@ public class NewsComponent
         content = "";
         userpage = "";
         avatar = "";
+        icon = "";
              
         
         initTitleAndContent(news,idUser);
         initUserpageAndAvatar(news.getUser()); 
+        initIcon(news.getType());
         
-        System.out.println("[DEBUG]" + title);
     }
     
     private void initTitleAndContent(News news, int idUser)
@@ -48,7 +50,7 @@ public class NewsComponent
                 title += "a ajouté une "
                         + "<a href=\"" + p.getPath() + "\">image</a> "
                         + "à son album "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 content = "&quot;" + p.getDescription() + "&quot;";
@@ -57,7 +59,7 @@ public class NewsComponent
             case CREATEALBUM :
                 a = (Album) news.getData();
                 title += "a créé un nouvel album : "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 content = "&quot;" + a.getDescription() + "&quot;";
@@ -72,7 +74,7 @@ public class NewsComponent
                         + "image"
                         + "</a> "
                         + "de l'album "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 content = "&quot;" + cp.getBody() + "&quot;";
@@ -82,7 +84,7 @@ public class NewsComponent
                 Commentalbum ca = (Commentalbum) news.getData();
                 a = ca.getAlbum();
                 title += "a commenté l'album "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 content = "&quot;" + ca.getBody() + "&quot;";
@@ -97,7 +99,7 @@ public class NewsComponent
                         + "image"
                         + "</a> "
                         + "de l'album "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 break;
@@ -106,7 +108,7 @@ public class NewsComponent
                 Likealbum la = (Likealbum) news.getData();
                 a = la.getAlbum();
                 title += "a aime l'album "
-                        + "<a href=\"view-album.jsf?UserId=" + idUser + "&AlbumId=" + a.getIdalbum() + "\">"
+                        + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
                         + "</a>.";
                 break;
@@ -136,6 +138,32 @@ public class NewsComponent
         if(avatar == null || avatar.isEmpty())
         {
             avatar = "holder.js/64x64";
+        }
+    }
+    
+    private void initIcon(NewsEnum type)
+    {
+        switch(type)
+        {
+            case ADDPHOTO : 
+            case CREATEALBUM :
+                icon = "icon-plus-sign";
+                break;
+                
+            case COMMENTALBUM :
+            case COMMENTPICTURE :
+                icon = "icon-comment";
+                break;
+                
+            case LIKEALBUM :
+            case LIKEPICTURE :
+                icon = "icon-heart";
+                break;
+                
+            case NEWFRIEND :
+            case UPDATEINFO :
+                icon = "icon-user";
+                break;
         }
     }
     
@@ -178,4 +206,16 @@ public class NewsComponent
     {
         this.userpage = userpage;
     }
+
+    public String getIcon()
+    {
+        return icon;
+    }
+
+    public void setIcon(String icon)
+    {
+        this.icon = icon;
+    }
+    
+    
 }

@@ -44,13 +44,13 @@
                             <c:when test="${fn:length(newsController.news) gt 0}">
                                 <ul class="media-list">
                                     <c:forEach items="#{newsController.news}" var="new">
-                                        <li>
-                                            <div class="media">
+                                        <li class="media">
+                                            <div>
                                                 <a class="pull-left" href="${new.userpage}">
-                                                    <img src="${new.avatar}"/>
+                                                    <img src="${new.avatar}" width="64" height="64"/>
                                                 </a>
                                                 <div class="media-body">
-                                                    <h5 class="media-heading">${new.title}</h5>
+                                                    <h5 class="media-heading"><i class="${new.icon}"></i> ${new.title}</h5>
                                                     <p>${new.content}</p>
                                                 </div>
                                             </div>
