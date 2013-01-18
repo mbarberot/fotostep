@@ -115,23 +115,18 @@
 
                 <!-- Gallery view -->
                 <div class="tab-pane fade" id="pictures">
-                    <c:choose>
-                        <c:when test ="${fn:length(viewAlbum.pictures) gt 0}">
-                            <ul class="thumbnails">
-                                <c:forEach items="#{viewAlbum.pictures}" var="pic">
-                                    <li class="span3">
-                                        <a href="#" class="thumbnail">
-                                            <h:graphicImage value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}">
-                                            </h:graphicImage>
-                                        </a>
-                                    </li>
-                                 </c:forEach>
-                            </ul>
-                        </c:when>
-                         <c:otherwise>
-                             <h3>Pas de photos dans l'album</h3>
-                         </c:otherwise>
-                    </c:choose>
+                    <h:outputText rendered="#{viewAlbum.numberOfPictures eq 0}">
+                        <h3>Pas de photos dans l'album</h3>
+                    </h:outputText>
+
+                    <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}"
+                                styleClass="thumbnails" itemStyleClass="span3" value="#{viewAlbum.pictures}">
+                        <a href="#" class="thumbnail">
+                            <h:graphicImage value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}">
+                            </h:graphicImage>
+                        </a>
+                    </t:dataList>
+
                 </div>
 
                 <!-- Infos view -->
@@ -149,33 +144,43 @@
 
                 <!--Comments -->
                 <div class="tab-pane fade" id="comments">
-                    <c:choose>
-                        <c:when test ="${fn:length(viewAlbum.comments) gt 0}">
-                            <div class="media">
-                                <c:forEach items="#{viewAlbum.comments}" var="comm">
-                                    <a class="pull-left" href="#">
-                                        <img class="media-object" data-src="../assets/js/holder.js/64x64">
-                                    </a>
-                                    <div class="media-body">
-                                        <h4 class="media-heading">
-                                            <h:outputFormat value="{0} {1}">
-                                                <f:param value="#{comm.author.firstname}" />
-                                                <f:param value="#{comm.author.lastname}" />
-                                            </h:outputFormat>
-                                        </h4>
-                                        <div class="media">
-                                            <h:outputText value="#{comm.body}"/>
-                                            <p>Le <h:outputText value="#{comm.date}"/></p>
-                                        </div>
-                                    </div>
-                                </c:forEach>
+                    <a4j:outputPanel id = "comments-list">
+                    <h:outputText rendered="#{viewAlbum.numberOfComments eq 0}">
+                        <h3>Pas de commentaires sur l'album</h3>
+                    </h:outputText>
+                    <t:dataList var="comm" rendered="#{viewAlbum.numberOfComments gt 0}"
+                                styleClass="thumbnails" value="#{viewAlbum.comments}">
+                        <div class = "media">
+                            <a class="pull-left" href="#">
+                                <img class="media-object" data-src="../assets/js/holder.js/64x64">
+                            </a>
+                            <div class="media-body">
+                                <h4 class="media-heading">
+                                    <h:outputFormat value="{0} {1}">
+                                        <f:param value="#{comm.author.firstname}" />
+                                        <f:param value="#{comm.author.lastname}" />
+                                    </h:outputFormat>
+                                </h4>
+                                <div class="media">
+                                    <h:outputText value="#{comm.body}"/>
+                                    <p>Le <h:outputText value="#{comm.date}"/></p>
+                                </div>
                             </div>
-                        </c:when>
-                        <c:otherwise>
-                            <h3>Pas de commentaires sur l'album</h3>
-                        </c:otherwise>
-                    </c:choose>
-
+                        </div>
+                    </t:dataList>
+                    <h:form styleClass="from-horizontal">
+                        <div class="control-group">
+                            <div class="controls">
+                                <h:inputTextarea value = "#{viewAlbum.commentText}"
+                                                 style="width: 50%;" id = "comment-text">
+                                  </h:inputTextarea>
+                                <a4j:commandButton action="#{viewAlbum.postComment}"
+                                                   reRender="comments-list"
+                                        styleClass="btn pull-right" value="Poster le commentaire"/>
+                            </div>
+                        </div>
+                    </h:form>
+                    </a4j:outputPanel>
                 </div>
             </div>
         </div>
