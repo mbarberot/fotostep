@@ -288,7 +288,11 @@ public class ViewAlbumController{
         Album toComment = am.findAlbumById(this.albId);
 
         // Création du commentaire
-        cm.addComment(toComment,myUser,this.getCommentText());
+        Commentalbum comm = cm.addComment(toComment,myUser,this.getCommentText());
+
+        // Màj de la vue
+        comments.add(comm);
+        commentText = "";
         return "COMMENT_OK" ;
     }
 
