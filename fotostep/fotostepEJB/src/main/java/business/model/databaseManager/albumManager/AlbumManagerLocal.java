@@ -8,6 +8,7 @@ import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
 import javax.ejb.Local;
+import java.io.Serializable;
 
 /**
  * Interface locale du bean AlbumManager

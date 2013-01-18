@@ -56,8 +56,14 @@ public class NewsController
             List<NewsComponent> printedNews = new ArrayList<NewsComponent>();
             for (News n : rawNews)
             {
-                printedNews.add(new NewsComponent(n, idUser));
-
+                try
+                {
+                    printedNews.add(new NewsComponent(n, idUser));
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
             news = printedNews;
         }
@@ -69,6 +75,7 @@ public class NewsController
         {
             ex.printStackTrace();
         }
+
     }
 
     public List<NewsComponent> getNews()

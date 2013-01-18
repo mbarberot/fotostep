@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Administrateur
+ * @author Thomas Martzloff
  */
 public class Download extends HttpServlet {
     

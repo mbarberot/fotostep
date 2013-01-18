@@ -93,6 +93,25 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- RichFaces libraries -->
+
+        <dependency>
+            <groupId>org.richfaces.framework</groupId>
+            <artifactId>richfaces-impl</artifactId>
+            <version>3.2.2.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.framework</groupId>
+            <artifactId>richfaces-api</artifactId>
+            <version>3.2.2.GA</version>
+        </dependency>
+        <dependency>
+            <groupId>org.richfaces.ui</groupId>
+            <artifactId>richfaces-ui</artifactId>
+            <version>3.2.2.GA</version>
+        </dependency>
+
+
     </dependencies>
 
 	<build>

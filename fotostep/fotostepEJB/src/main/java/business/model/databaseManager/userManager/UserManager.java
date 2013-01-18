@@ -13,7 +13,7 @@ import javax.persistence.Query;
 import business.model.database.*;
 import business.util.exceptions.UserNotFoundException;
 
-@Stateless
+@Stateless(mappedName = "UserManager")
 public class UserManager implements UserManagerLocal
 {
 

@@ -63,6 +63,23 @@
         <filter-name>MyFacesExtensionsFilter</filter-name>
         <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
     </filter-mapping>
+
+
+    <filter>
+        <display-name>RichFaces Filter</display-name>
+        <filter-name>richfaces</filter-name>
+        <filter-class>org.ajax4jsf.Filter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>richfaces</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+    </filter-mapping>
+
+    <!-- Defining and mapping the RichFaces filter -->
     <context-param>
         <description>Only applicable if state saving method is "server" (= default).
             Defines the amount (default = 20) of the latest views are stored in session.</description>

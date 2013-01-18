@@ -26,13 +26,11 @@ public class Likealbum implements Serializable
     @Id
     @ManyToOne
     @JoinColumn(name = "iduser")
-    @LazyCollection(LazyCollectionOption.FALSE)
     private User liker;
     
     @Id
     @ManyToOne
     @JoinColumn(name = "idalbum")
-    @LazyCollection(LazyCollectionOption.FALSE)
     private Album album;
     
     @Temporal(TemporalType.DATE)

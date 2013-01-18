@@ -2,18 +2,23 @@ package business.model.databaseManager.pictureManager;
 
 import business.model.database.Album;
 import business.model.database.FormatEnum;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.nio.Buffer;
+import java.util.Date;
 
 import javax.ejb.Stateless;
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import com.vividsolutions.jts.geom.Point;
 
 import business.model.database.Picture;
-import business.model.database.User;
-import java.util.Date;
-import javax.persistence.NoResultException;
 
 /**
  * Bean de manipulation de l'entité Image dans la base de données.
@@ -41,8 +46,6 @@ public class PictureManager implements PictureManagerLocal
 
         em.persist(picture);
         
-        saveImage(buffer, path);
-        
         return picture;
 
     }
@@ -62,8 +65,6 @@ public class PictureManager implements PictureManagerLocal
         picture.setWidth(width);
 
         em.persist(picture);
-        
-        saveImage(buffer, path);
         
         return picture;
     }
@@ -88,13 +89,29 @@ public class PictureManager implements PictureManagerLocal
     public void removeImage(Picture picture)
     {
         em.remove(em.find(Picture.class, picture.getIdpicture()));
-        
-        //TODO : Supprimer l'image du disque
     }
     
-    private void saveImage (Buffer buffer, String path)
+    public void generateTumb(Picture picture, int width, int height)
     {
-        // TODO : Ecrire l'image sur le disque
+    	File file = new File(picture.getPath());
+    	
+    	if(!file.exists() || !file.isFile())
+    		throw new IllegalStateException("The file " + picture.getPath() + " don't exist");
+    	
+    	try {
+    		BufferedImage original = ImageIO.read(file);
+    		
+    		BufferedImage resizedImage = new BufferedImage(width, height, original.getType());
+    		Graphics2D g = resizedImage.createGraphics();
+    		g.drawImage(original, 0, 0, width, height, null);
+    		g.dispose();
+    		
+    		File newFile = new File(picture.getPath() + "_" + width + "_" + height);
+    		newFile.createNewFile();
+    		ImageIO.write(resizedImage, picture.getFormat().name(), newFile);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
     }
 
 }

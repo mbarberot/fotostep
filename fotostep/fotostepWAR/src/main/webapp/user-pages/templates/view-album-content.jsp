@@ -3,6 +3,8 @@
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 
 <f:subview id="view-album-content">
     <div class = "span9">
@@ -37,23 +39,24 @@
             </h2>
 
             <div class="btn-group">
-                <c:choose>
-                    <c:when test="${viewAlbum.isLikedByMe}">
-                        <a href="#" class="btn btn-success" id="btn-unlike"><i class="icon-minus icon-white"></i>
-                            <h:outputText value="#{fn:length(viewAlbum.likers)}"/>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="#" class="btn btn-info" id="btn-like"><i class="icon-heart icon-white"></i>
-                            <h:outputText value="#{fn:length(viewAlbum.likers)}"/>
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-
-                <a href="#" class="btn btn-inverse" id = "btn-comment"><i class="icon-comment icon-white"></i>
-                    <h:outputText value="#{fn:length(viewAlbum.comments)}"/>
-                </a>
-
+                <a4j:form id="control-buttons">
+                        <a4j:commandLink styleClass="btn btn-success" id = "btn-like"
+                                           action="#{viewAlbum.unlike}" reRender="control-buttons"
+                                           value = "#{fn:length(viewAlbum.likers)}"
+                                rendered="#{viewAlbum.isLikedByMe}">
+                            <a4j:actionparam value="#{viewAlbum.albId}" name="unlikealbum"/>
+                            Vous aimez déjà cet album
+                            <i class="icon-thumbs-down icon-white"></i>
+                        </a4j:commandLink>
+                        <a4j:commandLink styleClass="btn btn-info" id = "btn-unlike"
+                                action="#{viewAlbum.like}" reRender="control-buttons"
+                                value = "#{fn:length(viewAlbum.likers)}"
+                                rendered="#{!viewAlbum.isLikedByMe}">
+                            <a4j:actionparam value="#{viewAlbum.albId}" name="likealbum"/>
+                            Aimer
+                           <i class=" icon-thumbs-up icon-white"></i>
+                        </a4j:commandLink>
+                </a4j:form>
 
             </div>
 
