@@ -6,14 +6,18 @@ import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
+import org.ajax4jsf.model.KeepAlive;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.postgis.binary.ByteGetter;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,21 +25,22 @@ import java.util.Map;
 /**
  * @author Joan Racenet
  */
-public class ViewAlbumController {
+
+public class ViewAlbumController{
+
 
     @EJB
-    UserManagerLocal um;
-    @EJB
-    CommentManagerLocal cm;
-    @EJB
     AlbumManagerLocal am;
+    @EJB
+    UserManagerLocal um;
     @EJB
     LikeManagerLocal lm;
 
     /* Infos de controle */
-    private boolean isAuthorized = false;
-    private boolean isMine = false;
+    private boolean isAuthorized;
+    private boolean isMine;
     private boolean isDefault;
+    private boolean isLikedByMe;
     private int albId;
 
     /* Infos à afficher */
@@ -57,18 +62,23 @@ public class ViewAlbumController {
     @PostConstruct
     public void init()
     {
-
-        // Récupération des paramètres de requête
         Integer idUser = null, idAlbum = null;
+        // Récupération des paramètres de requête
         try
         {
             idUser = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("UserId"));
             idAlbum = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
-        }catch(Exception e) {}
+        }catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
+
+        reload(idUser, idAlbum);
+    }
+    public void reload(Integer idUser, Integer idAlbum)
+    {
 
         if(idUser == null || idAlbum == null)
         {
             isAuthorized = false;
+            System.out.println("idUser ou idAlbum vaut null");
             return;
         }
         // Récupération de l'utilisateur de la session
@@ -78,12 +88,14 @@ public class ViewAlbumController {
         Integer myId = (Integer)httpSession.getAttribute("userId");
 
         User myUser = um.getUserById(myId);
+        System.out.println("My Id User = " + myUser.getIduser());
 
         // Récupération du propriétaire de l'album
         User owner = um.getUserById(idUser);
         if(owner == null)
         {
             isAuthorized = false;
+            System.out.println("Owner vaut null");
             return;
         }
 
@@ -91,7 +103,7 @@ public class ViewAlbumController {
         Album viewedAlbum = null;
         for(Album alb : owner.getAlbums())
         {
-            if(alb.getIdalbum() == idAlbum)
+            if(alb.getIdalbum() == idAlbum.intValue())
             {
                 viewedAlbum = alb;
                 break;
@@ -100,10 +112,12 @@ public class ViewAlbumController {
         if(viewedAlbum == null)
         {
             isAuthorized = false;
+            System.out.println("ViewedAlbum vaut null");
             return;
         }
 
         // Vérifier si l'utilisateur connecté a le droit de voir l'album
+        isMine = false;
         if(myId.equals(idUser))
         {
             isAuthorized = true;
@@ -139,6 +153,7 @@ public class ViewAlbumController {
                     else
                     {
                         isAuthorized = false;
+                        System.out.println("Pas un ami");
                         return;
                     }
                     break;
@@ -155,13 +170,21 @@ public class ViewAlbumController {
         creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
-
+        this.isLikedByMe = false;
+        for(User liker : likers)
+        {
+            if(liker.getIduser() == myId.intValue())
+            {
+                this.isLikedByMe = true;
+            }
+        }
         comments = viewedAlbum.getComments();
         isDefault = viewedAlbum.getIsdefault()== 1;
     }
 
     public String unlike()
     {
+
         // Récupération de l'utilisateur de la session
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
@@ -191,6 +214,7 @@ public class ViewAlbumController {
             }
         }
         lm.dislike(myUser, currentAlbum);
+        isLikedByMe = false;
 
         return "UNLIKE_OK";
 
@@ -220,12 +244,14 @@ public class ViewAlbumController {
 
         // Màj du modèle
         lm.like(myUser, currentAlbum);
+        isLikedByMe = true;
 
         return "LIKE_OK";
     }
 
     public String deleteAlbum()
     {
+
         FacesContext context = FacesContext.getCurrentInstance();
         Map requestMap = context.getExternalContext().getRequestParameterMap();
         String value = (String)requestMap.get("deletedalb");
@@ -344,5 +370,30 @@ public class ViewAlbumController {
 
     public void setIsDefault(boolean aDefault) {
         isDefault = aDefault;
+    }
+
+    public boolean getIsLikedByMe() {
+        return isLikedByMe;
+    }
+
+    public void setIsLikedByMe(boolean likedByMe) {
+        isLikedByMe = likedByMe;
+    }
+
+
+    public AlbumManagerLocal getAm() {
+        return am;
+    }
+
+    public void setAm(AlbumManagerLocal am) {
+        this.am = am;
+    }
+
+    public LikeManagerLocal getLm() {
+        return lm;
+    }
+
+    public void setLm(LikeManagerLocal lm) {
+        this.lm = lm;
     }
 }

@@ -39,28 +39,24 @@
             </h2>
 
             <div class="btn-group">
-                <h:form id = "control-buttons">
-                <c:choose>
-                    <c:when test="${likeAlbumController.isLikedByMe}">
+                <a4j:form id="control-buttons">
                         <a4j:commandLink styleClass="btn btn-success" id = "btn-like"
                                            action="#{viewAlbum.unlike}" reRender="control-buttons"
-                                           value = "#{fn:length(viewAlbum.likers)} ">
+                                           value = "#{fn:length(viewAlbum.likers)}"
+                                rendered="#{viewAlbum.isLikedByMe}">
                             <a4j:actionparam value="#{viewAlbum.albId}" name="unlikealbum"/>
                             Vous aimez déjà cet album
                             <i class="icon-thumbs-down icon-white"></i>
                         </a4j:commandLink>
-                    </c:when>
-                    <c:otherwise>
                         <a4j:commandLink styleClass="btn btn-info" id = "btn-unlike"
                                 action="#{viewAlbum.like}" reRender="control-buttons"
-                                value = "#{fn:length(viewAlbum.likers)}">
+                                value = "#{fn:length(viewAlbum.likers)}"
+                                rendered="#{!viewAlbum.isLikedByMe}">
                             <a4j:actionparam value="#{viewAlbum.albId}" name="likealbum"/>
                             Aimer
                            <i class=" icon-thumbs-up icon-white"></i>
                         </a4j:commandLink>
-                    </c:otherwise>
-                </c:choose>
-                </h:form>
+                </a4j:form>
 
             </div>
 

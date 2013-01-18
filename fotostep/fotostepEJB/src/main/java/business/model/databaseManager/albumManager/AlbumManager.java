@@ -6,6 +6,8 @@ import business.model.database.Picture;
 import business.model.database.User;
 import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
+
+import java.io.Serializable;
 import java.util.Date;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,7 +21,7 @@ import javax.persistence.Query;
  * @author Mathieu Barberot
  */
 @Stateless
-public class AlbumManager implements AlbumManagerLocal
+public class AlbumManager implements AlbumManagerLocal, Serializable
 {
 	@PersistenceContext
 	EntityManager em;
