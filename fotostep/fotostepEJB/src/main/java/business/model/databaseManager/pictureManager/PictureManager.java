@@ -47,8 +47,12 @@ public class PictureManager implements PictureManagerLocal
         picture.setDate(date);
 
         em.persist(picture);
-        
-        generateTumb(picture, 600, 400);
+
+        // Miniature pour les albums
+        generateThumb(picture, 250, 200);
+
+        // Miniature pour la visualisation de la photo dans la lightbox
+        generateThumb(picture, 800, 600);
         
         return picture;
 
@@ -69,8 +73,12 @@ public class PictureManager implements PictureManagerLocal
         picture.setWidth(width);
 
         em.persist(picture);
-        
-        generateTumb(picture, 600, 400);
+
+        // Miniature pour les albums
+        generateThumb(picture, 250, 200);
+
+        // Miniature pour la visualisation de la photo dans la lightbox
+        generateThumb(picture, 800, 600);
         
         return picture;
     }
@@ -97,8 +105,10 @@ public class PictureManager implements PictureManagerLocal
         em.remove(em.find(Picture.class, picture.getIdpicture()));
     }
     
-    public void generateTumb(Picture picture, int width, int height)
+    public void generateThumb(Picture picture, int width, int height)
     {
+
+        // TODO : à voir les ratios hauteur/largeur
         Path picPath = Paths.get(System.getProperty("user.home") + picture.getPath());
         File file = new File(picPath.toString());
     	

@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -73,9 +75,16 @@ public class Download extends HttpServlet {
         
         String userId = request.getParameter("UserId");
         String pictureId = request.getParameter("PictureId");
-                 
+        String thumb = request.getParameter("Thumb");
+
         Picture pictureToView = pictureManagerLocal.findPictureById(Integer.parseInt(pictureId));
-        File filePicture = new File(System.getProperty("user.home") + pictureToView.getPath());
+        Path picPath = Paths.get(System.getProperty("user.home") + pictureToView.getPath());
+        if(thumb!= null && thumb.equals("albtype"))
+        {
+            picPath = Paths.get(picPath + "_250_200");
+        }
+
+        File filePicture = new File(picPath.toUri());
         
         String format = null;
         if (pictureToView.getFormat() == FormatEnum.jpg) {
