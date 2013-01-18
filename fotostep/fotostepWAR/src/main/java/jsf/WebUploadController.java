@@ -1,4 +1,4 @@
-package jsf;
+    package jsf;
 
 
 import business.importbusiness.ImageImporterLocal;
@@ -129,7 +129,7 @@ public class WebUploadController {
         
         /* Solution 2 : les fichiers sont stockés hors du serveur */
         
-        String path = "/fotosteppictures/user" + user.getIduser();
+        String path = System.getProperty("user.home") + "/fotosteppictures/user" + user.getIduser();
         
         File repertory = new File(path);
         repertory.mkdirs();

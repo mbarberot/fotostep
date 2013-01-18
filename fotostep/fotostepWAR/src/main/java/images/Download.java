@@ -75,7 +75,7 @@ public class Download extends HttpServlet {
         String pictureId = request.getParameter("PictureId");
                  
         Picture pictureToView = pictureManagerLocal.findPictureById(Integer.parseInt(pictureId));
-        File filePicture = new File(pictureToView.getPath());
+        File filePicture = new File(System.getProperty("user.home") + pictureToView.getPath());
         
         String format = null;
         if (pictureToView.getFormat() == FormatEnum.jpg) {

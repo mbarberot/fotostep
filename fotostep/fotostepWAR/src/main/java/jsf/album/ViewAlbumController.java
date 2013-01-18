@@ -1,26 +1,21 @@
 package jsf.album;
 
-import business.model.database.*;
+import business.model.database.Album;
+import business.model.database.Commentalbum;
+import business.model.database.Picture;
+import business.model.database.User;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
-import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
-import org.ajax4jsf.model.KeepAlive;
-import org.omg.CORBA.PUBLIC_MEMBER;
-import org.postgis.binary.ByteGetter;
-
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author Joan Racenet
@@ -72,6 +67,7 @@ public class ViewAlbumController{
 
         reload(idUser, idAlbum);
     }
+    
     public void reload(Integer idUser, Integer idAlbum)
     {
 
