@@ -58,7 +58,11 @@ public class NewsController
             {
                 try
                 {
-                    printedNews.add(new NewsComponent(n, idUser));
+                    try
+                    {
+                        printedNews.add(new NewsComponent(n, idUser));
+                    }
+                    catch(Exception ex) { ex.printStackTrace(); }
                 }
                 catch (Exception ex)
                 {
