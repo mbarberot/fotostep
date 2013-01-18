@@ -83,4 +83,11 @@ public class Commentalbum implements Serializable
     {
         this.author = author;
     }
+
+    @Override
+    public boolean equals(Object object){
+    	if(object instanceof Album)
+    		return ((Commentalbum)object).album.equals(album) && ((Commentalbum)object).author.equals(author);
+    	return false;
+    }
 }

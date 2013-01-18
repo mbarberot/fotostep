@@ -83,4 +83,11 @@ public class Commentpicture implements Serializable
     {
         this.picture = picture;
     }
+
+    @Override
+    public boolean equals(Object object){
+    	if(object instanceof Album)
+    		return ((Commentpicture)object).picture.equals(picture) && ((Commentpicture)object).author.equals(author);
+    	return false;
+    }
 }

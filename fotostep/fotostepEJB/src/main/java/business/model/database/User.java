@@ -313,4 +313,16 @@ public class User implements Serializable
     {
         this.friends = friends;
     }
+
+    @Override
+    public boolean equals(Object object){
+    	if(object instanceof User)
+    		return ((User)object).iduser == iduser;
+    	return false;
+    }
+    
+    @Override
+    public int hashCode(){
+    	return iduser;
+    }
 }

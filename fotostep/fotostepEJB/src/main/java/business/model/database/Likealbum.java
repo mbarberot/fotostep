@@ -70,4 +70,11 @@ public class Likealbum implements Serializable
     {
         this.liker = liker;
     }
+    
+    @Override
+    public boolean equals(Object object){
+    	if(object instanceof Album)
+    		return ((Likealbum)object).album.equals(album) && ((Likealbum)object).liker.equals(liker);
+    	return false;
+    }
 }

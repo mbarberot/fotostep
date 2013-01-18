@@ -179,4 +179,16 @@ public class Album implements Serializable
     {
         this.pictures = pictures;
     }
+    
+    @Override
+    public boolean equals(Object object){
+    	if(object instanceof Album)
+    		return ((Album)object).idalbum == idalbum;
+    	return false;
+    }
+    
+    @Override
+    public int hashCode(){
+    	return idalbum;
+    }
 }
