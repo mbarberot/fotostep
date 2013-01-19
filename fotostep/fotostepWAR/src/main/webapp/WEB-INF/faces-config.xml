@@ -107,4 +107,9 @@
         <managed-bean-class>jsf.album.ViewAlbumRequest</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>viewFriends</managed-bean-name>
+        <managed-bean-class>jsf.friends.ViewFriendsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

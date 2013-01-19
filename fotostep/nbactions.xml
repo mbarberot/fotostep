@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>CUSTOM-Build-offline</actionName>
+            <displayName>Build-offline</displayName>
+            <goals>
+                <goal>install</goal>
+                <goal>--offline</goal>
+            </goals>
+        </action>
+    </actions>
