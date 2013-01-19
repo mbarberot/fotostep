@@ -46,7 +46,7 @@ public class ViewFriendsController
         User user = userManager.getUserById(iduser);
         
         friends = user.getFriends();
-        wannaMoreFriends(11);
+        //wannaMoreFriends(11);
         
         hasFriend = !friends.isEmpty();
     }
@@ -81,6 +81,7 @@ public class ViewFriendsController
 
     public boolean isHasFriend()
     {
+        init();
         return hasFriend;
     }
 
@@ -91,36 +92,26 @@ public class ViewFriendsController
     
     public String removeFriend()
     {
-        
-        
-        
         // Récupération de l'iduser placé dans la session http
         FacesContext ctx = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
         HttpSession session = req.getSession(false);
         Integer iduser = (Integer) session.getAttribute("userId");
 
+        // Récupération de l'idfriend placé dans la requete Ajax
         ctx = FacesContext.getCurrentInstance();
         Map<String,String> requestMap = ctx.getExternalContext().getRequestParameterMap();
         String value = requestMap.get("remove-user");
         Integer idFriend = new Integer(value);
         
-        System.out.println("trying to remove friend nb "+ idFriend);
-
         
         // Récupération des utilisateurs
         User user = userManager.getUserById(iduser);
         User friend = userManager.getUserById(idFriend);
         
-        System.out.println("User = " + user + " friend = " + friend);
-
         // Suppression de l'amitié
         userManager.removeFriend(user, friend);
         
-        
-        User u2 = userManager.getUserById(iduser);
-        System.out.println("still have the removed friend = " + u2.getFriends().contains(friend));
-
         return "REMOVE_FRIEND_OK";
 
     }

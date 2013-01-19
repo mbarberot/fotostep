@@ -42,7 +42,6 @@
                             <t:div id="no-friend" rendered="#{!viewFriends.hasFriend}">
                                 <t:htmlTag value="h4">
                                     <t:outputText value="Vous n'avez pas de contacts pour le moment" />
-                                    <t:outputText value="#{viewFriends.hasFriend}" />
                                 </t:htmlTag>
                                 <t:outputText value="Ajoutez-en tout de suite en allant à la page \"Chercher des contacts\" !"/>
                             </t:div>
