@@ -1,17 +1,15 @@
 package business.model.databaseManager.userManager;
 
+import business.model.database.*;
+import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import business.model.database.*;
-import business.util.exceptions.UserNotFoundException;
 
 @Stateless(mappedName = "UserManager")
 public class UserManager implements UserManagerLocal
@@ -42,7 +40,7 @@ public class UserManager implements UserManagerLocal
         Date d = new Date();
         newUser.setRegisterdate(d);
         newUser.setUpdatedate(d);
-        
+
         newUser.setEnabled(EnabledEnum.accepted);
         em.persist(newUser);
 
@@ -155,8 +153,11 @@ public class UserManager implements UserManagerLocal
         }
     }
 
-    public void removeFriend(User user, User friend)
+    public void removeFriend(User u, User f)
     {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
         if (!user.getFriends().contains(friend))
         {
             throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
