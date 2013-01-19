@@ -19,7 +19,10 @@
                         <ul class="dropdown-menu">
                             <h:form>
                                 <li>
-                                    <a href="#">Nouvelle photo</a>
+                                    <h:outputLink value="upload.jsf">
+                                        <f:param name="AlbumId" value="#{viewAlbum.albId}" />
+                                        Nouvelle photo
+                                    </h:outputLink>
                                 </li>
                                 <c:if test="${!viewAlbum.isDefault}">
                                     <li>

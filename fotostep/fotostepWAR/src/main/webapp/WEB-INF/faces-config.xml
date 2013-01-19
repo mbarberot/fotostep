@@ -61,7 +61,6 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
-
     <managed-bean>
         <managed-bean-name>loginController</managed-bean-name>
         <managed-bean-class>jsf.LoginController</managed-bean-class>
@@ -74,8 +73,7 @@
     </managed-bean>
     <managed-bean>
         <managed-bean-name>webUpload</managed-bean-name>
-        <managed-bean-class>jsf.WebUploadController</managed-bean-class>
-    
+        <managed-bean-class>jsf.WebUploadController</managed-bean-class>    
         <managed-bean-scope>request</managed-bean-scope></managed-bean>
     <managed-bean>
         <managed-bean-name>userProfileData</managed-bean-name>

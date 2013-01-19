@@ -1,5 +1,4 @@
-    package jsf;
-
+package jsf;
 
 import business.importbusiness.ImageImporterLocal;
 import business.model.database.Album;
@@ -32,28 +31,25 @@ import org.apache.commons.io.IOUtils;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
 public class WebUploadController {
-    
+
     @EJB
     private ImageImporterLocal imageImporter;
-    
     @EJB
     private AlbumManagerLocal albumManager;
-    
     @EJB
     private UserManagerLocal userManager;
-
     private UploadedFile uploadedFile;
     private String description;
-    private String tags;
-    
+    private String tags;    
+    private String albumName;
+
     // Constructeur
-    
-    public WebUploadController() {}
-    
+    public WebUploadController() {
+    }
+
     // Validate
-    
     public void validateUploadedFile(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
+            Object value) throws ValidatorException {
         UploadedFile file = (UploadedFile) value;
 
         if (!(file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png"))) {
@@ -66,7 +62,6 @@ public class WebUploadController {
     }
 
     // Getters + Setters
-    
     public UploadedFile getUploadedFile() {
         return uploadedFile;
     }
@@ -74,69 +69,105 @@ public class WebUploadController {
     public void setUploadedFile(UploadedFile uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
-    
+
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public String getTags() {
         return tags;
     }
-    
+
     public void setTags(String tags) {
         this.tags = tags;
     }
     
-    // Méthode pour enregistrer une picture
-    
-    public void submit() throws ValidatorException, IOException {
         
+    public String getAlbumName() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer) httpSession.getAttribute("userId");
+        User user = userManager.getUserById(myId);        
+        String albumId = null;
+        Album album = null;
+        try {
+            albumId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId");
+        } catch (Exception e) {
+            // Vous n'avez quand même pas cru que j'allais gérer les exceptions ? @Thomas
+        }
+        if (albumId == null) {
+            album = albumManager.getDefaultAlbum(user);
+        } else {
+            album = albumManager.findAlbumById(Integer.parseInt(albumId));
+        }
+        return album.getName();
+    }
+    
+    private void setAlbumName(String albumName) {
+        this.albumName = albumName;
+    }
+
+    // Méthode pour enregistrer une picture
+    public void submit() throws ValidatorException, IOException {
+
         Buffer buffer = ByteBuffer.wrap(uploadedFile.getBytes());
         FormatEnum format = null;
-        
+        int albumId = 0;
+
         if (uploadedFile.getContentType().equals("image/jpeg")) {
             format = FormatEnum.jpg;
         } else if (uploadedFile.getContentType().equals("image/png")) {
             format = FormatEnum.png;
         }
-        
+
         Date date = new Date(System.currentTimeMillis());
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         HttpSession httpSession = request.getSession(false);
         Integer myId = (Integer) httpSession.getAttribute("userId");
+        try {
+            albumId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
+        } catch (Exception e) {
+            // Vous n'avez quand même pas cru que j'allais gérer les exceptions ? @Thomas
+        }
         User user = userManager.getUserById(myId);
-        Album defaultAlbum = albumManager.getDefaultAlbum(user);
-        
+
+        Album album;
+        if (albumId == 0) {
+            album = albumManager.getDefaultAlbum(user);
+        } else {
+            album = albumManager.findAlbumById(albumId);
+        }
+
         InputStream in = new ByteArrayInputStream(uploadedFile.getBytes());
         BufferedImage bimg = ImageIO.read(in);
-        
+
         if (description.isEmpty()) {
             description = "Pas de description";
         }
-        
+
         String prefix = FilenameUtils.getBaseName(uploadedFile.getName());
         String suffix = FilenameUtils.getExtension(uploadedFile.getName());
-        
-        
+
         /* Solution 1 : les fichiers sont stockés sur le serveur 
         
-        ServletContext theApplicationsServletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
-        String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();*/
-        
+         ServletContext theApplicationsServletContext = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
+         String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();*/
+
         /* Solution 2 : les fichiers sont stockés hors du serveur */
         Path systemPath = Paths.get(System.getProperty("user.home"));
         Path userDirPath = Paths.get("/fotosteppictures/user" + user.getIduser());
 
-        Path dirPath = Paths.get(systemPath.toString()+userDirPath.toString());
+        Path dirPath = Paths.get(systemPath.toString() + userDirPath.toString());
         File repertory = new File(dirPath.toUri());
         repertory.mkdirs();
-        
+
         //File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
         long serverTimeStamp = System.currentTimeMillis();
         Path picPath = Paths.get(dirPath.toString() + "/" + prefix + "_" + serverTimeStamp);
@@ -144,13 +175,13 @@ public class WebUploadController {
         file.createNewFile();
         OutputStream output = new FileOutputStream(file);
         IOUtils.copy(uploadedFile.getInputStream(), output);
-        
+
         output.close();
         in.close();
 
         Path dbPicPath = Paths.get(userDirPath.toString() + "/" + prefix + "_" + serverTimeStamp);
-        imageImporter.addImage(buffer, defaultAlbum, dbPicPath.toString(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
+        imageImporter.addImage(buffer, album, dbPicPath.toString(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
 
     }
- 
+
 }

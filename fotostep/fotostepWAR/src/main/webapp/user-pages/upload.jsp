@@ -36,6 +36,13 @@
                     </div>
 
                     <div class="span9" >
+                        <p>Votre photo sera ajoutée dans l'album 
+                        <strong>
+                            <h:outputFormat value="#{webUpload.albumName}">
+                                <f:param name="AlbumId" value="#{param.AlbumId}" />
+                            </h:outputFormat>
+                        </strong>.
+                        </p>
                         <h:form styleClass="form-horizontal" id="uploadForm" enctype="multipart/form-data">
                             <h:messages styleClass="alert alert-error"/>
 
@@ -61,9 +68,10 @@
                                     <h:inputTextarea id="tagsField" value="#{webUpload.tags}" />
                                 </div>
                             </div>
-
                             <div class="control-group">
-                                <h:commandButton styleClass="btn" value="Enregistrer" action="#{webUpload.submit}" />
+                                <h:commandLink styleClass="btn" value="Enregistrer" action="#{webUpload.submit}">
+                                    <f:param name="AlbumId" value="#{param.AlbumId}" />
+                                </h:commandLink>
                             </div>                                
                         </h:form>
                     </div>
