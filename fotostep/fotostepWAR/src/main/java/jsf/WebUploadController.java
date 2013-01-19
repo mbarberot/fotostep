@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -128,22 +130,26 @@ public class WebUploadController {
         String path = theApplicationsServletContext.getRealPath("resources/images/") + "/user" + user.getIduser();*/
         
         /* Solution 2 : les fichiers sont stockés hors du serveur */
-        
-        String path = System.getProperty("user.home") + "/fotosteppictures/user" + user.getIduser();
-        
-        File repertory = new File(path);
+        Path systemPath = Paths.get(System.getProperty("user.home"));
+        Path userDirPath = Paths.get("/fotosteppictures/user" + user.getIduser());
+
+        Path dirPath = Paths.get(systemPath.toString()+userDirPath.toString());
+        File repertory = new File(dirPath.toUri());
         repertory.mkdirs();
         
         //File file = File.createTempFile(prefix + "_", "." + suffix, new File(path));
-        File file = new File(path + "/" + prefix + "_" + System.currentTimeMillis());
+        long serverTimeStamp = System.currentTimeMillis();
+        Path picPath = Paths.get(dirPath.toString() + "/" + prefix + "_" + serverTimeStamp);
+        File file = new File(picPath.toString());
         file.createNewFile();
         OutputStream output = new FileOutputStream(file);
         IOUtils.copy(uploadedFile.getInputStream(), output);
         
         output.close();
         in.close();
-        
-        imageImporter.addImage(buffer, defaultAlbum, path + "/" + prefix + "_" + System.currentTimeMillis(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
+
+        Path dbPicPath = Paths.get(userDirPath.toString() + "/" + prefix + "_" + serverTimeStamp);
+        imageImporter.addImage(buffer, defaultAlbum, dbPicPath.toString(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
 
     }
  
