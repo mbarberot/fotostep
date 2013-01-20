@@ -10,8 +10,7 @@
     <div class="span9">
         <div class="page-header">
             <h2><h:outputText value="#{viewAlbum.titre}"/>
-                <c:if test="${viewAlbum.isMine}">
-                    <div class="btn-group pull-right">
+                    <t:div styleClass="btn-group pull-right" rendered="#{viewAlbum.isMine}">
                         <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
                             Actions sur l'album
                             <span class="caret"></span>
@@ -24,9 +23,8 @@
                                         Nouvelle photo
                                     </h:outputLink>
                                 </li>
-                                <c:if test="${!viewAlbum.isDefault}">
                                     <li>
-                                        <h:commandLink value="Supprimer" action="#{viewAlbum.deleteAlbum}"
+                                        <h:commandLink rendered="#{!viewAlbum.isDefault}" value="Supprimer" action="#{viewAlbum.deleteAlbum}"
                                                        onclick="if (!confirm('Voulez vous vraiment supprimer cet album ?')) return false">
                                             <f:param value="#{viewAlbum.albId}" name="deletedalb"/>
                                         </h:commandLink>
@@ -34,11 +32,9 @@
                                     <li>
                                         <a href="#">Editer l'album</a>
                                     </li>
-                                </c:if>
                             </h:form>
                         </ul>
-                    </div>
-                </c:if>
+                </t:div>
             </h2>
 
             <div class="btn-group">
@@ -129,13 +125,12 @@
                                     styleClass="thumbnails" value="#{viewAlbum.pictures}">
                             <li class="span3">
                                 <h:outputLink styleClass="thumbnail" value="view-photo.jsf">
-                                    <f:param name="UserId" value="#{sessionScope['userId']}"/>
+                                    <f:param name="UserId" value="#{param.UserId}"/>
                                     <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                                     <f:param name="PictureId" value="#{pic.idpicture}"/>
                                     <h:graphicImage
-                                            value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}&Thumb=albtype"
-                                            >
-                                    </h:graphicImage>
+                                            value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype"
+                                            />
                                 </h:outputLink>
                             </li>
                         </t:dataList>
@@ -166,7 +161,12 @@
                                     styleClass="thumbnails" value="#{viewAlbum.comments}">
                             <div class="media">
                                 <a class="pull-left" href="#">
-                                    <img class="media-object" data-src="../assets/js/holder.js/64x64">
+                                    <h:graphicImage
+                                        value="/images?UserId=#{comm.author.iduser}&PictureId=#{comm.author.avatar.idpicture}&Thumb=profileMinType"
+                                        rendered="#{comm.author.avatar != null}"/>
+                                    <h:graphicImage
+                                            value="../assets/img/avsmall.png"
+                                            rendered="#{comm.author.avatar == null}"/>
                                 </a>
 
                                 <div class="media-body">

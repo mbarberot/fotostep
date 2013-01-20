@@ -83,7 +83,7 @@ public class LoginController
         HttpSession session = ((HttpSession) ec.getSession(false));
         session.invalidate();
         try {
-            ec.redirect("fotostep/index.jsp ");
+            ec.redirect("fotostep/");
         } catch (IOException e) {
         }
         return "logout.success";

@@ -40,6 +40,7 @@
                         <div class="page-header">
                             <h2>Actualit&eacute;s</h2>
                         </div>
+
                         <c:choose>
                             <c:when test="${fn:length(newsController.news) gt 0}">
                                 <ul class="media-list">

@@ -33,6 +33,7 @@
                     </li>
                 </ul>
 
+
                 <h:form styleClass="form-inline pull-right"
                         style="display: inline; margin-bottom: 0; margin-left: 15px">
                         <h:commandButton id="logout-btn" value="Se déconnecter" action="#{loginController.doLogout}" styleClass="btn-inverse" style="margin:5px" />

@@ -61,6 +61,14 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/user-pages/templates/header.jsp</from-view-id>
+        <navigation-case>
+            <from-action>doLogout</from-action>
+            <to-view-id>/index.jsp</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
     <managed-bean>
         <managed-bean-name>loginController</managed-bean-name>
         <managed-bean-class>jsf.LoginController</managed-bean-class>

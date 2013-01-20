@@ -75,7 +75,7 @@ public class ViewAlbumController{
     }
     public void reload(Integer idUser, Integer idAlbum)
     {
-
+        System.out.println("Voir l'album id=" + idAlbum + " de id=" + idUser);
         if(idUser == null || idAlbum == null)
         {
             isAuthorized = false;

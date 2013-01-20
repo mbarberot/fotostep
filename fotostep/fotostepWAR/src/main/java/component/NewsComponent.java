@@ -133,11 +133,16 @@ public class NewsComponent
     private void initUserpageAndAvatar(User user)
     {
         userpage = "view-profile.jsf?UserId=" + user.getIduser();
-        avatar = user.getAvatar();
-        
-        if(avatar == null || avatar.isEmpty())
+        Picture av = user.getAvatar();
+
+        if(av == null)
         {
-            avatar = "holder.js/64x64";
+            avatar = "../assets/img/avsmall.png";
+        }
+        else
+        {
+           avatar = "/images?UserId=" + user.getIduser() + "&PictureId="+ user.getAvatar().getIdpicture()
+            + "&Thumb=profileMinType";
         }
     }
     
