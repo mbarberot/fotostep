@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Sam 19 Janvier 2013 à 23:18
+-- Généré le: Dim 20 Janvier 2013 à 14:25
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.3.13
 
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Structure de la table `album`
 --
 
+DROP TABLE IF EXISTS `album`;
 CREATE TABLE IF NOT EXISTS `album` (
   `idalbum` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
@@ -38,14 +39,7 @@ CREATE TABLE IF NOT EXISTS `album` (
   PRIMARY KEY (`idalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_cover_image_idx` (`coverimage`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
-
---
--- Contenu de la table `album`
---
-
-INSERT INTO `album` (`idalbum`, `iduser`, `isdefault`, `name`, `description`, `authorization`, `coverimage`, `date`) VALUES
-(11, 12, 1, 'Album par défaut', 'Album par défaut où sont stockées vos photos', 'PRIVATE', NULL, '2013-01-19');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -53,6 +47,7 @@ INSERT INTO `album` (`idalbum`, `iduser`, `isdefault`, `name`, `description`, `a
 -- Structure de la table `commentalbum`
 --
 
+DROP TABLE IF EXISTS `commentalbum`;
 CREATE TABLE IF NOT EXISTS `commentalbum` (
   `idcommentalbum` int(11) NOT NULL AUTO_INCREMENT,
   `idalbum` int(11) NOT NULL,
@@ -62,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `commentalbum` (
   PRIMARY KEY (`idcommentalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_album_idx` (`idalbum`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -70,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `commentalbum` (
 -- Structure de la table `commentpicture`
 --
 
+DROP TABLE IF EXISTS `commentpicture`;
 CREATE TABLE IF NOT EXISTS `commentpicture` (
   `idcommentpicture` int(11) NOT NULL AUTO_INCREMENT,
   `idpicture` int(11) NOT NULL,
@@ -79,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `commentpicture` (
   PRIMARY KEY (`idcommentpicture`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_picture_idx` (`idpicture`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -87,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `commentpicture` (
 -- Structure de la table `likealbum`
 --
 
+DROP TABLE IF EXISTS `likealbum`;
 CREATE TABLE IF NOT EXISTS `likealbum` (
   `iduser` int(11) NOT NULL,
   `idalbum` int(11) NOT NULL,
@@ -102,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `likealbum` (
 -- Structure de la table `likepicture`
 --
 
+DROP TABLE IF EXISTS `likepicture`;
 CREATE TABLE IF NOT EXISTS `likepicture` (
   `iduser` int(11) NOT NULL,
   `idpicture` int(11) NOT NULL,
@@ -117,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `likepicture` (
 -- Structure de la table `picture`
 --
 
+DROP TABLE IF EXISTS `picture`;
 CREATE TABLE IF NOT EXISTS `picture` (
   `idpicture` int(11) NOT NULL AUTO_INCREMENT,
   `idalbum` int(11) NOT NULL,
@@ -132,14 +131,7 @@ CREATE TABLE IF NOT EXISTS `picture` (
   PRIMARY KEY (`idpicture`),
   UNIQUE KEY `path_UNIQUE` (`path`),
   KEY `fk_album_idx` (`idalbum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
-
---
--- Contenu de la table `picture`
---
-
-INSERT INTO `picture` (`idpicture`, `idalbum`, `path`, `description`, `tags`, `width`, `height`, `format`, `lgt`, `lat`, `date`) VALUES
-(4, 11, '\\fotosteppictures\\user12\\_DSC0111_1358617675987', 'Pas de description', '', 3872, 2592, 'jpg', 0, 0, '2013-01-19');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -147,6 +139,7 @@ INSERT INTO `picture` (`idpicture`, `idalbum`, `path`, `description`, `tags`, `w
 -- Structure de la table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(45) NOT NULL,
@@ -154,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `enabled` enum('pending','accepted','deleted','banned') DEFAULT 'accepted',
   `registerdate` date NOT NULL,
   `updatedate` date NOT NULL,
-  `avatar` varchar(100) DEFAULT NULL,
+  `avatar` int(11) DEFAULT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(45) NOT NULL,
   `birthdate` date DEFAULT NULL,
@@ -163,15 +156,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `twitterid` varchar(45) DEFAULT NULL COMMENT 'Le nom d''utilisateur twitter',
   `fbid` varchar(45) DEFAULT NULL COMMENT 'Le nom d''utilisateur facebook',
   PRIMARY KEY (`iduser`),
-  UNIQUE KEY `login_UNIQUE` (`login`)
+  UNIQUE KEY `login_UNIQUE` (`login`),
+  KEY `avatar` (`avatar`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
---
--- Contenu de la table `user`
---
-
-INSERT INTO `user` (`iduser`, `login`, `password`, `enabled`, `registerdate`, `updatedate`, `avatar`, `firstname`, `lastname`, `birthdate`, `gender`, `place`, `twitterid`, `fbid`) VALUES
-(12, 'joanracenet@gmail.com', '998322b81d0ac4549ebe7f9e39ba2f05', 'accepted', '2013-01-19', '2013-01-19', NULL, 'Joan', 'Racenet', NULL, 'm', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -179,6 +166,7 @@ INSERT INTO `user` (`iduser`, `login`, `password`, `enabled`, `registerdate`, `u
 -- Structure de la table `userfriendship`
 --
 
+DROP TABLE IF EXISTS `userfriendship`;
 CREATE TABLE IF NOT EXISTS `userfriendship` (
   `iduser1` int(11) NOT NULL,
   `iduser2` int(11) NOT NULL,
@@ -232,6 +220,12 @@ ALTER TABLE `likepicture`
 --
 ALTER TABLE `picture`
   ADD CONSTRAINT `fk_picture_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Contraintes pour la table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`avatar`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `userfriendship`

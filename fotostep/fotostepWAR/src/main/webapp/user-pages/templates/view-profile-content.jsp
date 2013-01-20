@@ -8,7 +8,14 @@
     <div class = "span9">
         <div class="page-header">
             <div class="media">
-                <h:graphicImage value="#{userProfileData.avatarPath}" styleClass="media-object pull-left" />
+                <h:graphicImage
+                        value="/images?UserId=#{param.UserId}&PictureId=#{userProfileData.avatar.idpicture}&Thumb=profileType"
+                        styleClass="media-object pull-left"
+                        rendered="#{userProfileData.avatar != null}"/>
+                <h:graphicImage
+                        value="../assets/img/avnormal.png"
+                        styleClass="media-object pull-left"
+                        rendered="#{userProfileData.avatar == null}"/>
                 <div class="media-body">
                     <h2><h:outputFormat value="{0} {1}">
                         <f:param value="#{userProfileData.firstName}" />
@@ -83,7 +90,17 @@
                             <ul class="pager">
                                 <li class="bordered"><a href="#" ><</a></li>
                                 <c:forEach items="#{userProfileData.localizedAlbums}" var="alb">
-                                    <li><a href="#"><img src="holder.js/64x64" class="img-polaroid"></a></li>
+                                    <li><a href="#">
+                                        <h:graphicImage
+                                                value="/images?UserId=#{param.UserId}&PictureId=#{alb.coverPicture.idpicture}&Thumb=albtype"
+                                                styleClass="media-object pull-left"
+                                                rendered="#{alb.coverPicture != null}"/>
+                                        <h:graphicImage
+                                                value="../assets/img/albdefaut.png"
+                                                styleClass="media-object pull-left"
+                                                rendered="#{alb.coverPicture == null}"/>
+                                    </a>
+                                    </li>
                                  </c:forEach>
                                 <li class="bordered"><a href="#">></a></li>
                             </ul>
@@ -103,11 +120,18 @@
                             <c:forEach items="#{userProfileData.albums}" var="album">
                                 <li class="span3">
                                     <div class = "thumbnail">
-                                        <img src="holder.js/250x200" alt="">
+                                        <h:graphicImage
+                                                value="/images?UserId=#{param.UserId}&PictureId=#{album.coverPicture.idpicture}&Thumb=albtype"
+                                                styleClass="media-object pull-left"
+                                                rendered="#{album.coverPicture != null}"/>
+                                        <h:graphicImage
+                                                value="../assets/img/albdefaut.png"
+                                                styleClass="media-object pull-left"
+                                                rendered="#{album.coverPicture == null}"/>
                                         <h3>${album.name}</h3>
                                         <p>${album.description}</p>
                                         <h:outputLink id="view-album" value="view-album.jsf">
-                                            <f:param name="UserId" value="#{sessionScope['userId']}" />
+                                            <f:param name="UserId" value="#{param.UserId}" />
                                             <f:param name="AlbumId" value="#{album.idalbum}" />
                                             <h:outputText value="Voir l'album"/>
                                         </h:outputLink>

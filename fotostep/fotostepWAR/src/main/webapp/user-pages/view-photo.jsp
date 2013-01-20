@@ -11,6 +11,8 @@
 <f:view>
     <!-- HEAD -->
     <t:outputText value="" rendered= "#{albumRequest.id == 0}" />
+    <t:outputText value="" rendered= "#{pictureRequest.idPic == 0}" />
+
     <head>
         <title>
 

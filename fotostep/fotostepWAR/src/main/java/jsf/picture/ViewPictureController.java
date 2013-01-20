@@ -1,9 +1,11 @@
 package jsf.picture;
 
 import business.model.database.*;
+import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.pictureManager.PictureManagerLocal;
+import business.model.databaseManager.userManager.UserManagerLocal;
 import jsf.album.ViewAlbumController;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Joan Racenet
@@ -34,11 +37,15 @@ import java.util.List;
     LikeManagerLocal lm;
     @EJB
     CommentManagerLocal cm;
+    @EJB
+    UserManagerLocal um;
+    @EJB
+    AlbumManagerLocal am;
 
     // Informations affichées
     private String path;
     private String description;
-    private List<String> tags = new ArrayList<String>();
+    private String[] tags;
     private int width;
     private int height;
     private double lat;
@@ -54,6 +61,9 @@ import java.util.List;
     private boolean likedByMe;
 
     private String commentText;
+
+    private Album myAlbum;
+    private Picture myPicture;
 
     public ViewPictureController() {
     }
@@ -76,12 +86,9 @@ import java.util.List;
     {
 
         Picture viewedPicture = pm.findPictureById(idPicture.intValue());
-        System.out.println("Load Picture");
 
-        if(viewedPicture == null) System.out.println("Merde");
         this.idPicture = idPicture.intValue();
         path = viewedPicture.getPath();
-        System.out.println(path);
         description = viewedPicture.getDescription();
         width = viewedPicture.getWidth();
         height = viewedPicture.getHeight();
@@ -92,9 +99,9 @@ import java.util.List;
         postDate = viewedPicture.getDate();
 
         comments = viewedPicture.getComments();
-        System.out.println("Load picture finish");
-        this.likers = viewedPicture.getLikers();
+        likers = viewedPicture.getLikers();
 
+        tags = viewedPicture.getTags().split(";");
 
         FacesContext ctx = FacesContext.getCurrentInstance();
         Application application = ctx.getApplication();
@@ -123,25 +130,109 @@ import java.util.List;
         User myUser = new User();
         myUser.setIduser(myId);
 
+        myAlbum = viewedPicture.getAlbum();
         likedByMe = likers.contains(myUser);
+        myPicture = viewedPicture;
     }
 
     public String like()
     {
-        return null;
+        // Récupération de l'utilisateur de la session
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = new User();
+        myUser.setIduser(myId);
+
+        Picture currentPicture = new Picture();
+        currentPicture.setIdpicture(this.idPicture);
+
+        // Like
+        System.out.println("Like");
+        // Màj de la vue
+        likers.add(myUser);
+
+        // Màj du modèle
+        lm.like(myUser,currentPicture);
+        likedByMe = true;
+
+        return "LIKE_OK";
     }
 
     public String unlike()
     {
-        return null;
+        // Récupération de l'utilisateur de la session
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = new User();
+        myUser.setIduser(myId);
+
+        Picture currentPicture = new Picture();
+        currentPicture.setIdpicture(this.idPicture);
+
+        // Like
+        System.out.println("Like");
+
+        // Màj de la vue
+        likers.remove(myUser);
+
+        // Màj du modèle
+        lm.dislike(myUser, currentPicture);
+        likedByMe = false;
+
+        return "UNLIKE_OK";
     }
 
     public String postComment()
     {
-        return null;
+        // Récupère l'utilisateur connecté
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+        User myUser = um.getUserById(myId);
+
+        // Récupère l'album
+        Picture toComment = pm.findPictureById(this.idPicture);
+
+        // Création du commentaire
+        Commentpicture comm = cm.addComment(toComment, myUser, this.getCommentText());
+
+        // Màj de la vue
+        comments.add(comm);
+        commentText = "";
+        return "COMMENT_OK" ;
     }
 
     public String chooseAsAvatar()
+    {
+        // Récupère l'utilisateur connecté
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest)context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer)httpSession.getAttribute("userId");
+
+        User myUser = new User();
+        myUser.setIduser(myId);
+        Picture newAv = new Picture();
+        newAv.setIdpicture(this.idPicture);
+        um.setAvatar(myUser,newAv);
+
+        return "SET_AV_OK";
+    }
+
+
+    public String chooseAsCoverImage()
+    {
+
+        am.setCoverImage(this.myAlbum, this.myPicture);
+        return "SET_COVER_IMAGE_OK";
+    }
+
+    public String moveInDefaultAlbum()
     {
         return null;
     }
@@ -170,11 +261,11 @@ import java.util.List;
         this.description = description;
     }
 
-    public List<String> getTags() {
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(List<String> tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 

@@ -29,4 +29,6 @@ public interface AlbumManagerLocal
     
     public Album getDefaultAlbum(User user);
 
+    public Album setCoverImage(Album alb, Picture pic);
+
 }

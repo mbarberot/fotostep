@@ -27,7 +27,7 @@ public class UserProfileDataController {
     private String mail  = "Non renseigné";
     private String idTwitter  = "Non renseigné";
     private String idFb = "Non renseigné";
-    private String avatarPath  = "../assets/img/avnormal.png";
+    private Picture avatar = null;
     private List<Album> albums = new ArrayList<Album>();
     private List<User> friends = new ArrayList<User>();
     private List<Album> localizedAlbums = new ArrayList<Album>();
@@ -69,6 +69,7 @@ public class UserProfileDataController {
         registerDate = viewedUser.getRegisterdate().toString();
         updateDate = viewedUser.getUpdatedate().toString();
         mail = viewedUser.getLogin();
+        avatar = viewedUser.getAvatar();
 
         String userTwitter = viewedUser.getTwitterid();
         if(userTwitter != null)
@@ -97,7 +98,7 @@ public class UserProfileDataController {
         for(Album alb : albums)
         {
             Picture cover = alb.getCoverPicture();
-            if(cover != null && cover.getCoord() != null)
+            if(cover != null && cover.getLat() != 0.0 && cover.getLgt() != 0.0)
             {
                 localizedAlbums.add(alb);
             }
@@ -216,12 +217,12 @@ public class UserProfileDataController {
         this.friends = friends;
     }
 
-    public String getAvatarPath() {
-        return avatarPath;
+    public Picture getAvatar() {
+        return avatar;
     }
 
-    public void setAvatarPath(String avatarPath) {
-        this.avatarPath = avatarPath;
+    public void setAvatarPath(Picture avatar) {
+        this.avatar = avatar;
     }
 
     public boolean getIsAFriend() {

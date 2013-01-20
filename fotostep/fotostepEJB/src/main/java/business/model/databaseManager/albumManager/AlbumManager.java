@@ -81,4 +81,12 @@ public class AlbumManager implements AlbumManagerLocal, Serializable
 		}
 	}
 
+    public Album setCoverImage(Album alb, Picture pic) {
+        Album toUpdate = em.find(Album.class, alb.getIdalbum());
+        Picture newCover = em.find(Picture.class, pic.getIdpicture());
+        toUpdate.setCoverPicture(newCover);
+
+        em.persist(toUpdate);
+        return toUpdate;  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

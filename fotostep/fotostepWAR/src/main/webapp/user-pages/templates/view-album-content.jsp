@@ -178,7 +178,7 @@
                                     </h4>
 
                                     <div class="media">
-                                        <h:outputText value="#{comm.body}"/>
+                                        <p><h:outputText value="#{comm.body}"/></p>
                                         <small>Le <h:outputText value="#{comm.date}"/></small>
                                     </div>
                                 </div>

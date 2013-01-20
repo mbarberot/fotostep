@@ -18,8 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
-import com.vividsolutions.jts.geom.Point;
-
 import business.model.database.Picture;
 
 /**
@@ -33,7 +31,8 @@ public class PictureManager implements PictureManagerLocal
     @PersistenceContext
     EntityManager em;
 
-    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags, int width, int height, FormatEnum format, Date date)
+    public Picture addImage(Buffer buffer, Album album, String path, String description, String tags,
+                            int width, int height, FormatEnum format, Date date)
     {
         Picture picture = new Picture();
 
@@ -53,18 +52,25 @@ public class PictureManager implements PictureManagerLocal
 
         // Miniature pour la visualisation de la photo dans la lightbox
         generateThumb(picture, 800, 600);
+
+        // Miniature pour la visualisation de la photo comme miniature d'avatar
+        generateThumb(picture, 64, 64);
+
+        // Avatar
+        generateThumb(picture, 100, 100);
         
         return picture;
 
     }
 
     public Picture addImage(Buffer buffer, Album album, String path, String description, String tags,
-    		int width, int height, FormatEnum format, Point point)
+    		int width, int height, FormatEnum format, double lgt, double lat)
     {
         Picture picture = new Picture();
 
         picture.setAlbum(album);
-        picture.setCoord(point);
+        picture.setLgt(lgt);
+        picture.setLat(lat);
         picture.setDescription(description);
         picture.setTags(tags);
         picture.setFormat(format);
@@ -79,14 +85,21 @@ public class PictureManager implements PictureManagerLocal
 
         // Miniature pour la visualisation de la photo dans la lightbox
         generateThumb(picture, 800, 600);
+
+        // Minitature pour la visualisation de la photo comme avatar
+        generateThumb(picture, 64, 64);
+
+        // Avatar
+        generateThumb(picture, 100, 100);
         
         return picture;
     }
 
-    public void editImage(Picture picture, Album album, String description, String tags, Point point)
+    public void editImage(Picture picture, Album album, String description, String tags, double lgt, double lat)
     {
         picture.setAlbum(album);
-        picture.setCoord(point);
+        picture.setLgt(lgt);
+        picture.setLat(lat);
         picture.setDescription(description);
         picture.setTags(tags);
     }    

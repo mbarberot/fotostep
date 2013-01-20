@@ -2,6 +2,7 @@ package business.model.databaseManager.likeManager;
 
 import business.model.database.*;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
+import business.model.databaseManager.pictureManager.PictureManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 
 import java.util.Date;
@@ -28,6 +29,8 @@ public class LikeManager implements LikeManagerLocal
     UserManagerLocal um;
     @EJB
     AlbumManagerLocal am;
+    @EJB
+    PictureManagerLocal pm;
 
     public void like(User user, Album album)
     {
@@ -48,14 +51,17 @@ public class LikeManager implements LikeManagerLocal
     public void like(User user, Picture picture)
     {
 
+        User userLiker = um.getUserById(user.getIduser());
+        Picture likedPicture = pm.findPictureById(picture.getIdpicture());
+
         Likepicture likepicture = new Likepicture();
         likepicture.setDate(new Date());
-        likepicture.setPicture(picture);
-        likepicture.setLiker(user);
+        likepicture.setPicture(likedPicture);
+        likepicture.setLiker(userLiker);
 
-        user.addLikedPicture(likepicture);
+        em.persist(likepicture);
 
-        em.persist(user);
+
     }
 
     public void dislike(User user, Album album)
@@ -83,15 +89,14 @@ public class LikeManager implements LikeManagerLocal
 
     public void dislike(User user, Picture picture)
     {
-        Query query = em.createQuery("SELECT lp FROM LikePicture lp WHERE lp.user = :user and lp.picture = :picture");
+        Query query = em.createQuery("SELECT lp FROM Likepicture lp WHERE lp.liker = :user and lp.picture = :picture");
         query.setParameter("user", user);
         query.setParameter("picture", picture);
 
         try
         {
             Likepicture likepicture = (Likepicture) query.getSingleResult();
-            user.removeLikedPicture(likepicture);
-            em.persist(user);
+            em.remove(likepicture);
         }
         catch (NoResultException ex)
         {

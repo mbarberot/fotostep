@@ -28,8 +28,10 @@ public class User implements Serializable
     
     @Enumerated(EnumType.STRING)
     private EnabledEnum enabled;
-    
-    private String avatar;
+
+    @ManyToOne
+    @JoinColumn(name = "avatar")
+    private Picture avatar;
     
     private String firstname;
     
@@ -194,12 +196,12 @@ public class User implements Serializable
         this.updatedate = updatedate;
     }
     
-    public String getAvatar()
+    public Picture getAvatar()
     {
         return avatar;
     }
 
-    public void setAvatar(String avatar)
+    public void setAvatar(Picture avatar)
     {
         this.avatar = avatar;
     }

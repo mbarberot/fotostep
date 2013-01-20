@@ -87,6 +87,13 @@ public class Download extends HttpServlet {
             }else if (thumb.equals("pictype"))
             {
                 picPath = Paths.get(picPath + "_800_600");
+            }else if (thumb.equals("profileMinType"))
+            {
+                picPath = Paths.get(picPath + "_64_64");
+            }
+            else if (thumb.equals("profileType"))
+            {
+                picPath = Paths.get(picPath + "_100_100");
             }
         }
 

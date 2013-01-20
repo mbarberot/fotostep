@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import business.model.database.*;
+import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
 
 @Stateless(mappedName = "UserManager")
@@ -180,5 +181,14 @@ public class UserManager implements UserManagerLocal
 
         user.getFriends().add(friend);
         em.persist(user);
+    }
+
+    public User setAvatar(User connected, Picture av) {
+        User toUpdate = em.find(User.class, connected.getIduser());
+        Picture newAv = em.find(Picture.class, av.getIdpicture());
+        toUpdate.setAvatar(newAv);
+        em.persist(toUpdate);
+
+        return toUpdate;
     }
 }

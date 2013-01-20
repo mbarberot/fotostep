@@ -48,7 +48,12 @@
                                 <h:outputLink value="view-album.jsf" styleClass="pull-left">
                                     <f:param name="UserId" value="#{sessionScope['userId']}" />
                                     <f:param name="AlbumId" value="#{alb.idalbum}" />
-                                    <h:graphicImage styleClass="media-object" value="holder.js/200x150"/>
+                                    <h:graphicImage styleClass="media-object"
+                                            value="/images?UserId=#{sessionScope['userId']}&PictureId=#{alb.coverPicture.idpicture}&Thumb=albtype"
+                                            rendered="#{alb.coverPicture != null}"/>
+                                    <h:graphicImage styleClass="media-object"
+                                                    value="../assets/img/albdefaut.png"
+                                                    rendered="#{alb.coverPicture == null}"/>
                                 </h:outputLink>
 
                                 <div class="media-body">

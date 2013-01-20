@@ -3,6 +3,7 @@ package business.model.databaseManager.userManager;
 import javax.ejb.Local;
 
 import business.model.database.Album;
+import business.model.database.Picture;
 import business.model.database.User;
 import business.util.exceptions.UserNotFoundException;
 import java.util.List;
@@ -15,4 +16,5 @@ public interface UserManagerLocal {
 	public User getUserByLogin(String mail);
     public User authenticate(String mail, String password) throws UserNotFoundException;
     public List<Album> getAuthorizedAlbums(User connected, User viewed);
+    public User setAvatar(User connected, Picture av);
 }
