@@ -2,6 +2,7 @@ package jsf.picture;
 
 import business.model.database.Picture;
 import jsf.album.ViewAlbumController;
+import org.ajax4jsf.model.KeepAlive;
 
 import javax.annotation.PostConstruct;
 import javax.el.ELContext;
@@ -9,8 +10,10 @@ import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
 import javax.faces.application.Application;
 import javax.faces.context.FacesContext;
+import java.io.Serializable;
 
-public class ViewPictureRequest {
+@KeepAlive
+public class ViewPictureRequest implements Serializable {
 
     private boolean authorized;
     private int idPic;
@@ -37,8 +40,10 @@ public class ViewPictureRequest {
             idAlbum = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
         }catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
 
-        // On reload l'album à laquelle appartient l'image
-        vac.reload(idUser, idAlbum);
+        if(idAlbum == null || idUser == null)
+        {
+            System.out.println("idAlbum ou idUser à null");
+        }
 
         // Récupération de l'id de l'image
         Integer idPicture = null;
@@ -52,7 +57,7 @@ public class ViewPictureRequest {
         if(idPicture == null)
         {
             authorized = false;
-            System.out.println("AlbumId à null");
+            System.out.println("PictureId à null");
             return;
         }
 
@@ -69,8 +74,8 @@ public class ViewPictureRequest {
         }
 
         authorized = true;
-        // On peut récupérer les données
 
+        // On peut récupérer les données
         expr = exf.createValueExpression(elc,"#{viewPicture}",ViewPictureController.class);
         ViewPictureController vpc = (ViewPictureController)expr.getValue(elc);
 
@@ -81,11 +86,20 @@ public class ViewPictureRequest {
         }
     }
 
+
     public boolean getAuthorized() {
         return authorized;
     }
 
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
+    }
+
+    public int getIdPic() {
+        return idPic;
+    }
+
+    public void setIdPic(int idPic) {
+        this.idPic = idPic;
     }
 }
