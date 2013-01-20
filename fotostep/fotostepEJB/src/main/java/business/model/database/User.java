@@ -81,12 +81,12 @@ public class User implements Serializable
     
     //uni-directional many-to-many association to User
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userfriendship", joinColumns =
+    @JoinTable(name = "friendship", joinColumns =
     {
-        @JoinColumn(name = "iduser2")
-    }, inverseJoinColumns =
+        @JoinColumn(name = "user")
+    }, inverseJoinColumns=
     {
-        @JoinColumn(name = "iduser1")
+        @JoinColumn(name="friend")
     })
     private List<User> friends;
 

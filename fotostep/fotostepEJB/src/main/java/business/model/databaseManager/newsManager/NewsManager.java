@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -88,13 +86,13 @@ public class NewsManager implements NewsManagerLocal
         query.setParameter("friends", user.getFriends());
         query.setMaxResults(10);
 
-        List<Userfriendship> list = query.getResultList();
+        List<Friendship> list = query.getResultList();
 
         if (list != null && !list.isEmpty())
         {
-            for (Userfriendship e : list)
+            for (Friendship e : list)
             {
-                news.add(new News(e.getUser1(), NewsEnum.NEWFRIEND, e.getDate(), e));
+                news.add(new News(e.getFriend(), NewsEnum.NEWFRIEND, e.getDate(), e));
             }
         }
     }

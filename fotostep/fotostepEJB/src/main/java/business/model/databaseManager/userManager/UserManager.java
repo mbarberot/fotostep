@@ -40,7 +40,7 @@ public class UserManager implements UserManagerLocal
         Date d = new Date();
         newUser.setRegisterdate(d);
         newUser.setUpdatedate(d);
-
+        newUser.setAvatar("holder.js/64x64");
         newUser.setEnabled(EnabledEnum.accepted);
         em.persist(newUser);
 
@@ -131,8 +131,38 @@ public class UserManager implements UserManagerLocal
 
         return res;
     }
+    
+    public void removeFriend(User u, User f)
+    {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
+        if (!user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
+        }
 
-    public void askFriend(User user, User friend)
+        user.getFriends().remove(friend);
+        em.persist(user);
+    }
+
+    public List<User> getFriendshipRequests(User u)
+    {
+        Query query = em.createQuery(
+                "SELECT uf.user1 "
+                + "FROM Userfriendship uf, User us "
+                + "WHERE us = uf.user2 "
+                + "AND us = :user ");
+        query.setParameter("user", u);
+        
+        List<User> friendshipsRequests = new ArrayList<User>();
+        friendshipsRequests.addAll(query.getResultList());
+        return friendshipsRequests;
+    }
+    
+    
+
+    public void requestFriendship(User user, User friend)
     {
         if (friend.getFriends().contains(user))
         {
@@ -153,21 +183,7 @@ public class UserManager implements UserManagerLocal
         }
     }
 
-    public void removeFriend(User u, User f)
-    {
-        User user = em.find(User.class, u.getIduser());
-        User friend = em.find(User.class, f.getIduser());
-        
-        if (!user.getFriends().contains(friend))
-        {
-            throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
-        }
-
-        user.getFriends().remove(friend);
-        em.persist(user);
-    }
-
-    public void acceptFriend(User user, User friend)
+    public void acceptFriendship(User user, User friend)
     {
         if (!friend.getFriends().contains(user))
         {
@@ -180,6 +196,22 @@ public class UserManager implements UserManagerLocal
         }
 
         user.getFriends().add(friend);
+        em.persist(user);
+    }
+    
+    public void rejectFriendship(User user, User friend)
+    {
+        if (!friend.getFriends().contains(user))
+        {
+            throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
+        }
+
+        if (user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Cet utilisateur est déjà ami avec cet utilisateur");
+        }
+
+        friend.getFriends().remove(friend);
         em.persist(user);
     }
 }
