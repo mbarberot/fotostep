@@ -1,18 +1,21 @@
 package business.model.databaseManager.userManager;
 
+import business.model.database.*;
+import business.util.exceptions.UserNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 import business.model.database.*;
 import business.util.exceptions.PictureNotFoundException;
 import business.util.exceptions.UserNotFoundException;
+
 
 @Stateless(mappedName = "UserManager")
 public class UserManager implements UserManagerLocal
@@ -43,7 +46,6 @@ public class UserManager implements UserManagerLocal
         Date d = new Date();
         newUser.setRegisterdate(d);
         newUser.setUpdatedate(d);
-        
         newUser.setEnabled(EnabledEnum.accepted);
         em.persist(newUser);
 
@@ -134,9 +136,50 @@ public class UserManager implements UserManagerLocal
 
         return res;
     }
-
-    public void askFriend(User user, User friend)
+    
+    /**
+     * Suppression d'un ami.
+     * 
+     * @param u Utilisateur supprimant
+     * @param f Utilisateur supprimé
+     */
+    public void removeFriend(User u, User f)
     {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
+        if (!user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
+        }
+
+        // On supprime la demande
+        Query query = em.createQuery("SELECT f FROM Friendship f WHERE f.friend = :friend AND f.user = :user ");
+        query.setParameter("user", user);
+        query.setParameter("friend", friend);
+
+        try
+        {
+            Friendship fs = (Friendship) query.getSingleResult();
+            em.remove(fs);
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Ajout d'une requête d'amitié
+     * 
+     * @param u Utilisateur demandant l'amitié
+     * @param f Utilisateur qui devra y répondre
+     */
+    public void requestFriendship(User u, User f)
+    {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
         if (friend.getFriends().contains(user))
         {
             throw new IllegalStateException("L'autre utilisateur vous a déjà fait une demande");
@@ -147,29 +190,23 @@ public class UserManager implements UserManagerLocal
             throw new IllegalStateException("Cet utilisateur a déjà lancé un demande");
         }
 
-        user.getFriends().add(friend);
-        em.persist(user);
-
-        if (friend.getFriends().remove(user))
-        {
-            em.persist(friend);
-        }
+        // Ajout de l'utilisateur dans les requête du futur ami
+        friend.getRequestingFriends().add(user);
+        em.persist(friend);
     }
 
-    public void removeFriend(User user, User friend)
+    /**
+     * Accepter une demande d'amitié
+     * 
+     * @param u Utilisateur qui accepte
+     * @param f Utilisateur qui demandait
+     */
+    public void acceptFriendship(User u, User f)
     {
-        if (!user.getFriends().contains(friend))
-        {
-            throw new IllegalStateException("Cet utilisateur n'a pas cet ami");
-        }
-
-        user.getFriends().remove(friend);
-        em.persist(user);
-    }
-
-    public void acceptFriend(User user, User friend)
-    {
-        if (!friend.getFriends().contains(user))
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
+        if (!user.getRequestingFriends().contains(friend))
         {
             throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
         }
@@ -179,8 +216,82 @@ public class UserManager implements UserManagerLocal
             throw new IllegalStateException("Cet utilisateur est déjà ami avec cet utilisateur");
         }
 
-        user.getFriends().add(friend);
-        em.persist(user);
+        // On supprime la demande
+        Query query = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :user AND p.user = :friend ");
+        query.setParameter("user", user);
+        query.setParameter("friend", friend);
+
+        try
+        {
+            Pendingfriendship pfs = (Pendingfriendship) query.getSingleResult();
+            em.remove(pfs);
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+        
+        // On ajoute les amitiés
+        Friendship fs1 = new Friendship();
+        fs1.setDate(new Date());
+        fs1.setFriend(friend);
+        fs1.setUser(user);
+        
+        em.persist(fs1);
+        
+        Friendship fs2 = new Friendship();
+        fs2.setDate(new Date());
+        fs2.setFriend(user);
+        fs2.setUser(friend);
+        
+        em.persist(fs2);
+        
+    }
+    
+    /**
+     * Refus de la requête d'amitié
+     * 
+     * @param u Utilisateur ayant refusé
+     * @param f Utilisateur qui avait fait une requête
+     */
+    public void rejectFriendship(User u, User f)
+    {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
+        
+        if (!user.getRequestingFriends().contains(friend))
+        {
+            throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
+        }
+
+        if (user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Cet utilisateur est déjà ami avec cet utilisateur");
+        }
+
+        // On supprime la demande
+        Query query = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :user AND p.user = :friend ");
+        query.setParameter("user", user);
+        query.setParameter("friend", friend);
+
+        try
+        {
+            Pendingfriendship pfs = (Pendingfriendship) query.getSingleResult();
+            em.remove(pfs);
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+        
+        /*
+        PendingfriendshipPK key = new PendingfriendshipPK();
+        key.setFriend(user);
+        key.setUser(friend);
+        
+        em.remove(em.find(Pendingfriendship.class,key));
+        */
     }
 
     public User setAvatar(User connected, Picture av) {

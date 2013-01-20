@@ -82,16 +82,28 @@ public class User implements Serializable
     private List<Likepicture> likedPictures;
     
     //uni-directional many-to-many association to User
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "userfriendship", joinColumns =
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "friendship", joinColumns =
     {
-        @JoinColumn(name = "iduser2")
-    }, inverseJoinColumns =
+        @JoinColumn(name = "user")
+    }, inverseJoinColumns=
     {
-        @JoinColumn(name = "iduser1")
+        @JoinColumn(name="friend")
     })
     private List<User> friends;
-
+    
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "pendingfriendship", joinColumns= 
+    {
+        @JoinColumn(name = "friend")
+    }, inverseJoinColumns=
+    {
+        @JoinColumn(name = "user")
+    })
+    private List<User> requestingFriends;
+    
     public User()
     {
     }
@@ -315,7 +327,17 @@ public class User implements Serializable
     {
         this.friends = friends;
     }
+    
+    public List<User> getRequestingFriends()
+    {
+        return requestingFriends;
+    }
 
+    public void setRequestingFriends(List<User> requestingFriends)
+    {
+        this.requestingFriends = requestingFriends;
+    }
+    
     @Override
     public boolean equals(Object object){
     	if(object instanceof User)

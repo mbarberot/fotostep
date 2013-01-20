@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -81,20 +79,20 @@ public class NewsManager implements NewsManagerLocal
         // In dev
         Query query = em.createQuery(
                 "SELECT f "
-                + "FROM Userfriendship f "
-                + "WHERE f.user1 IN(:friends) AND f.user1 IN (SELECT f2.user2 FROM Userfriendship f2 WHERE f2.user1 = f.user2) "
+                + "FROM Friendship f "
+                + "WHERE f.user IN(:friends) AND f.user IN (SELECT f2.friend FROM Friendship f2 WHERE f2.user = f.friend) "
                 + "ORDER BY f.date DESC");
 
         query.setParameter("friends", user.getFriends());
         query.setMaxResults(10);
 
-        List<Userfriendship> list = query.getResultList();
+        List<Friendship> list = query.getResultList();
 
         if (list != null && !list.isEmpty())
         {
-            for (Userfriendship e : list)
+            for (Friendship e : list)
             {
-                news.add(new News(e.getUser1(), NewsEnum.NEWFRIEND, e.getDate(), e));
+                news.add(new News(e.getFriend(), NewsEnum.NEWFRIEND, e.getDate(), e));
             }
         }
     }

@@ -3,37 +3,37 @@ package business.model.database;
 import java.io.Serializable;
 
 /**
- * Clé primaire composée de l'entité/table Userfriendship
+ * Clé primaire composée de l'entité/table Friendship
  *
  * @author Mathieu Barberot
  */
-public class UserfriendshipPK implements Serializable
+public class FriendshipPK implements Serializable
 {
-    private User user1;
-    private User user2;
+    private User user;
+    private User friend;
 
-    public UserfriendshipPK()
+    public FriendshipPK()
     {
     }
 
-    public User getUser1()
+    public User getFriend()
     {
-        return user1;
+        return friend;
     }
 
-    public void setUser1(User user1)
+    public void setFriend(User friend)
     {
-        this.user1 = user1;
+        this.friend = friend;
     }
 
-    public User getUser2()
+    public User getUser()
     {
-        return user2;
+        return user;
     }
 
-    public void setUser2(User user2)
+    public void setUser(User user)
     {
-        this.user2 = user2;
+        this.user = user;
     }
 
     @Override
@@ -47,16 +47,18 @@ public class UserfriendshipPK implements Serializable
         {
             return false;
         }
-        final UserfriendshipPK other = (UserfriendshipPK) obj;
+        final FriendshipPK other = (FriendshipPK) obj;
         return true;
     }
 
     @Override
     public int hashCode()
     {
-        int hash = 3;
+        int hash = 7;
         return hash;
     }
+
+   
     
     
     

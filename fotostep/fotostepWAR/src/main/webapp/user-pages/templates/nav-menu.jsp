@@ -21,8 +21,8 @@
                 <li><h:outputLink value="view-albums.jsf">Gérer mes albums</h:outputLink></li>
 
                     <li class="nav-header">Mes contacts</li>
-                    <li><h:outputLink value="#">Voir mes contacts</h:outputLink></li>
-                <li><h:outputLink value="#">Répondre aux demandes</h:outputLink></li>
+                    <li><h:outputLink value="view-friends.jsf">Voir mes contacts</h:outputLink></li>
+                <li><h:outputLink value="friends-request.jsf">Répondre aux demandes</h:outputLink></li>
                 <li><h:outputLink value="#">Chercher des contacts</h:outputLink></li>
 
                 </ul>
