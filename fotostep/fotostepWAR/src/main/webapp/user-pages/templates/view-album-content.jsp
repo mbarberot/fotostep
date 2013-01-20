@@ -121,19 +121,22 @@
                         <h3>Pas de photos dans l'album</h3>
                     </h:outputText>
 
-                    <%@include file="view-picture.jsp" %>
+
 
                     <ul class="thumbnails">
 
                         <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}"
                                     styleClass="thumbnails" value="#{viewAlbum.pictures}">
                             <li class="span3">
-                                <a href="#" class="thumbnail">
+                                <h:outputLink styleClass="thumbnail" value="view-photo.jsf">
+                                    <f:param name="UserId" value="#{sessionScope['userId']}"/>
+                                    <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                    <f:param name="PictureId" value="#{pic.idpicture}"/>
                                     <h:graphicImage
                                             value="/images?UserId=#{sessionScope['userId']}&PictureId=#{pic.idpicture}&Thumb=albtype"
-                                            onclick="openbox('Titre du formulaire', 0)">
+                                            >
                                     </h:graphicImage>
-                                </a>
+                                </h:outputLink>
                             </li>
                         </t:dataList>
                     </ul>
@@ -157,7 +160,7 @@
                 <div class="tab-pane fade" id="comments">
                     <a4j:outputPanel id="comments-list">
                         <h:outputText rendered="#{viewAlbum.numberOfComments eq 0}">
-                            <h3>Pas de commentaires sur l'album</h3>
+                            <h4>Pas de commentaires sur l'album</h4>
                         </h:outputText>
                         <t:dataList var="comm" rendered="#{viewAlbum.numberOfComments gt 0}"
                                     styleClass="thumbnails" value="#{viewAlbum.comments}">
@@ -176,23 +179,30 @@
 
                                     <div class="media">
                                         <h:outputText value="#{comm.body}"/>
-                                        <p>Le <h:outputText value="#{comm.date}"/></p>
+                                        <small>Le <h:outputText value="#{comm.date}"/></small>
                                     </div>
                                 </div>
                             </div>
                         </t:dataList>
-                        <h:form styleClass="from-horizontal">
-                            <div class="control-group">
-                                <div class="controls">
-                                    <h:inputTextarea value="#{viewAlbum.commentText}"
-                                                     style="width: 50%;" id="comment-text">
-                                    </h:inputTextarea>
-                                    <a4j:commandButton action="#{viewAlbum.postComment}"
-                                                       reRender="comments-list"
-                                                       styleClass="btn pull-right" value="Poster le commentaire"/>
+
+                            <h3>Poster un commentaire</h3>
+                            <h:form>
+
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <h:inputTextarea value="#{viewAlbum.commentText}"
+                                                         styleClass="span5" id="comment-text">
+                                        </h:inputTextarea>
+                                        <span class="help-block">Tapez votre commentaire plus cliquez sur "Valider"</span>
+                                        <a4j:commandButton action="#{viewAlbum.postComment}"
+                                                           reRender="comments-list"
+                                                           styleClass="btn" value="Poster le commentaire"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </h:form>
+                            </h:form>
+
+
+
                     </a4j:outputPanel>
                 </div>
             </div>

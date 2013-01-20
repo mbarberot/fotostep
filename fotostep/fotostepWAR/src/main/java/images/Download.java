@@ -79,9 +79,15 @@ public class Download extends HttpServlet {
 
         Picture pictureToView = pictureManagerLocal.findPictureById(Integer.parseInt(pictureId));
         Path picPath = Paths.get(System.getProperty("user.home") + pictureToView.getPath());
-        if(thumb!= null && thumb.equals("albtype"))
+        if(thumb!= null)
         {
-            picPath = Paths.get(picPath + "_250_200");
+            if(thumb.equals("albtype"))
+            {
+                picPath = Paths.get(picPath + "_250_200");
+            }else if (thumb.equals("pictype"))
+            {
+                picPath = Paths.get(picPath + "_800_600");
+            }
         }
 
         File filePicture = new File(picPath.toUri());

@@ -105,4 +105,14 @@
         <managed-bean-class>jsf.album.ViewAlbumRequest</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>pictureRequest</managed-bean-name>
+        <managed-bean-class>jsf.picture.ViewPictureRequest</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>viewPicture</managed-bean-name>
+        <managed-bean-class>jsf.picture.ViewPictureController</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 </faces-config>

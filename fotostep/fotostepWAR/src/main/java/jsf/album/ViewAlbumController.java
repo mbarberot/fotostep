@@ -6,9 +6,8 @@ import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
-import org.ajax4jsf.model.KeepAlive;
-import org.omg.CORBA.PUBLIC_MEMBER;
-import org.postgis.binary.ByteGetter;
+
+
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -47,7 +46,7 @@ public class ViewAlbumController{
 
     /* Infos à afficher */
     private String titre = "Album inacessible";
-    //private User owner;
+    private User owner;
     private String description = "Aucune description pour cet album";
     private String creationDate = "Non renseignée";
     private String authorization;
@@ -93,7 +92,7 @@ public class ViewAlbumController{
         System.out.println("My Id User = " + myUser.getIduser());
 
         // Récupération du propriétaire de l'album
-        User owner = um.getUserById(idUser);
+        this.owner = um.getUserById(idUser);
         if(owner == null)
         {
             isAuthorized = false;

@@ -11,7 +11,10 @@
     <div id="shadowing"></div>
     <div id="box">
         <span id="boxtitle"></span><span id="boxclose" onclick="closebox()"><i class = "icon-check"></i></span>
-        Pouet
+        <h:graphicImage
+                id="viewed-image"
+                value="none">
+        </h:graphicImage>
     </div>
 
 </f:subview>

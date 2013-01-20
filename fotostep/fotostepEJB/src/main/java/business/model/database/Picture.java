@@ -1,13 +1,13 @@
 package business.model.database;
 
-import com.vividsolutions.jts.geom.Point;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Type;
 
 /**
  * The persistent class for the picture database table.
@@ -22,9 +22,7 @@ public class Picture implements Serializable
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int idpicture;
-    @Type(type = "org.hibernate.spatial.dialect.mysql.MySQLGeometryTypeDescriptor")
-    @Column(columnDefinition = "Point")
-    private Point coord;
+
     @Lob
     private String description;
     @Lob
@@ -34,17 +32,29 @@ public class Picture implements Serializable
     private int height;
     private String path;
     private int width;
+
+    private double lgt;
+    private double lat;
+
     @Temporal(TemporalType.DATE)
     private Date date;
     
     //bi-directional many-to-one association to Commentpicture
     @OneToMany(mappedBy = "picture")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Commentpicture> comments;
     
     //bi-directional many-to-many association to User
-    @OneToMany(mappedBy = "picture")
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Likepicture> likepictures;
+    @JoinTable(name = "likepicture", joinColumns =
+            {
+                    @JoinColumn(name = "idpicture")
+            }, inverseJoinColumns =
+            {
+                    @JoinColumn(name = "iduser")
+            })
+    private List<User> likers;
     
     //bi-directional many-to-one association to Album
     @ManyToOne
@@ -65,15 +75,6 @@ public class Picture implements Serializable
         this.idpicture = idpicture;
     }
 
-    public Object getCoord()
-    {
-        return this.coord;
-    }
-
-    public void setCoord(Point coord)
-    {
-        this.coord = coord;
-    }
 
     public String getDescription()
     {
@@ -155,24 +156,24 @@ public class Picture implements Serializable
         this.comments = comments;
     }
 
-    public List<Likepicture> getLikers()
+    public List<User> getLikers()
     {
-        return this.likepictures;
+        return this.likers;
     }
 
-    public void setLikers(List<Likepicture> likers)
+    public void setLikers(List<User> likers)
     {
-        this.likepictures = likers;
+        this.likers = likers;
     }
 
-    public void addLiker(Likepicture user)
+    public void addLiker(User user)
     {
-        this.likepictures.add(user);
+        this.likers.add(user);
     }
 
-    public void removeLiker(Likepicture user)
+    public void removeLiker(User user)
     {
-        this.likepictures.remove(user);
+        this.likers.remove(user);
     }
 
     public Album getAlbum()
@@ -185,9 +186,25 @@ public class Picture implements Serializable
         this.album = album;
     }
 
+    public double getLgt() {
+        return lgt;
+    }
+
+    public void setLgt(double lgt) {
+        this.lgt = lgt;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
     @Override
     public boolean equals(Object object){
-    	if(object instanceof User)
+    	if(object instanceof Picture)
     		return ((Picture)object).idpicture == idpicture;
     	return false;
     }

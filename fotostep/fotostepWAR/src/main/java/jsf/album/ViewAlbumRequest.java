@@ -1,6 +1,5 @@
 package jsf.album;
 
-import jsf.UserSessionController;
 import org.ajax4jsf.model.KeepAlive;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +20,6 @@ public class ViewAlbumRequest implements Serializable {
     @PostConstruct
     public void refresh()
     {
-        System.out.println("Construct");
         FacesContext ctx = FacesContext.getCurrentInstance();
         Application application = ctx.getApplication();
 
@@ -38,7 +36,10 @@ public class ViewAlbumRequest implements Serializable {
             idAlbum = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
         }catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
 
+        // On reload l'album
         vac.reload(idUser, idAlbum);
+
+
 
     }
 
