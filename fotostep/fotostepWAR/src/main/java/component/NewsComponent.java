@@ -114,8 +114,8 @@ public class NewsComponent
                 break;
                 
             case NEWFRIEND :
-                Userfriendship uf = (Userfriendship) news.getData();
-                u = uf.getUser2();
+                Friendship uf = (Friendship) news.getData();
+                u = uf.getFriend();
                 title += "est ami avec "
                         + "<a href=\"view-profile.jsf?UserId=" + u.getIduser() + "\">"
                         + u.getFirstname() + " " + u.getLastname()

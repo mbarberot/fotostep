@@ -46,26 +46,7 @@ public class ViewFriendsController
         User user = userManager.getUserById(iduser);
         
         friends = user.getFriends();
-        //wannaMoreFriends(11);
-        
         hasFriend = !friends.isEmpty();
-    }
-    
-    
-    private void wannaMoreFriends(int howmany)
-    {
-        Date stamp = new Date();
-        Random r = new Random(stamp.getTime());
-        
-        for(int i = 0; i < howmany; i++)
-        {
-            User u = new User();
-            u.setIduser(r.nextInt(50));
-            u.setFirstname("Joan");
-            u.setLastname("Racenet");
-            u.setAvatar("holder.js/64x64");
-            friends.add(u);
-        }
     }
 
     public List<User> getFriends()

@@ -112,4 +112,9 @@
         <managed-bean-class>jsf.friends.ViewFriendsController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>requestFriends</managed-bean-name>
+        <managed-bean-class>jsf.friends.RequestFriendsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>

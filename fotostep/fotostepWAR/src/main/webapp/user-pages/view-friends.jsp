@@ -54,16 +54,18 @@
                                     rendered = "#{viewFriend.hasFriend}">
 
                                     <t:div id="friend-list" styleClass="media span2 well">
-                                        <a4j:form>
-                                            <a4j:commandLink id="btn-remove-friend"
-                                                             onclick="$(this).parents('.media').fadeOut();"
-                                                             action="#{viewFriends.removeFriend}" 
-                                                             styleClass="btn-small btn-info pull-right"
-                                                             reRender="view-friends">
-                                                <a4j:actionparam value="#{friend.iduser}" name="remove-user"/>
-                                                <t:htmlTag value="i" styleClass="icon-remove icon-white"/>
-                                            </a4j:commandLink>
-                                        </a4j:form>
+                                        <t:div styleClass="pull-right">
+                                            <a4j:form>
+                                                <a4j:commandLink id="btn-remove-friend"
+                                                                 onclick="$(this).parents('.media').fadeOut();"
+                                                                 action="#{viewFriends.removeFriend}" 
+                                                                 styleClass="btn btn-small btn-inverse"
+                                                                 reRender="view-friends">
+                                                    <a4j:actionparam value="#{friend.iduser}" name="remove-user"/>
+                                                    <t:htmlTag value="i" styleClass="icon-remove icon-white"/>
+                                                </a4j:commandLink>
+                                            </a4j:form>
+                                        </t:div>
                                         <h:outputLink styleClass="" value="view-profile.jsf?UserId=#{friend.iduser}">
                                             <h:graphicImage styleClass="media-object" value="#{friend.avatar}" width="64" height="64"/>
                                             <t:div styleClass="media-body">

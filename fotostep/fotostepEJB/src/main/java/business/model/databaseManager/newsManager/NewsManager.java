@@ -79,8 +79,8 @@ public class NewsManager implements NewsManagerLocal
         // In dev
         Query query = em.createQuery(
                 "SELECT f "
-                + "FROM Userfriendship f "
-                + "WHERE f.user1 IN(:friends) AND f.user1 IN (SELECT f2.user2 FROM Userfriendship f2 WHERE f2.user1 = f.user2) "
+                + "FROM Friendship f "
+                + "WHERE f.user IN(:friends) AND f.user IN (SELECT f2.friend FROM Friendship f2 WHERE f2.user = f.friend) "
                 + "ORDER BY f.date DESC");
 
         query.setParameter("friends", user.getFriends());

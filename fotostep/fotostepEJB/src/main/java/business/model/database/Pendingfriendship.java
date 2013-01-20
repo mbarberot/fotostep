@@ -5,14 +5,14 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * Entité des amitiés
- *
+ * Entités des amitiés en attente de validation.
+ * 
  * @author Mathieu Barberot
  */
 @Entity
-@IdClass(FriendshipPK.class)
-@Table(name = "friendship")
-public class Friendship implements Serializable
+@IdClass(PendingfriendshipPK.class)
+@Table(name = "pendingfriendship")
+public class Pendingfriendship implements Serializable
 {
     @Id
     @JoinColumn(name = "user", referencedColumnName = "iduser", insertable = false, updatable = false)
@@ -27,7 +27,7 @@ public class Friendship implements Serializable
     @Temporal(TemporalType.DATE)
     private Date date;
 
-    public Friendship()
+    public Pendingfriendship()
     {
     }
 
@@ -60,6 +60,5 @@ public class Friendship implements Serializable
     {
         this.user = user;
     }
-
     
 }

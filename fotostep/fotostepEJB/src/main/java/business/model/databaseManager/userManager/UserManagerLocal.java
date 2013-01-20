@@ -21,8 +21,6 @@ public interface UserManagerLocal
 
     public List<Album> getAuthorizedAlbums(User connected, User viewed);
     
-    public List<User> getFriendshipRequests(User user);
-    
     public void removeFriend(User user, User friend);
     
     public void acceptFriendship(User user, User friend);
