@@ -53,9 +53,10 @@
                                     layout = "unorderedList"
                                     rendered = "#{viewFriend.hasFriend}">
 
-                                    <t:div styleClass="media span2 well">
+                                    <t:div id="friend-list" styleClass="media span2 well">
                                         <a4j:form>
                                             <a4j:commandLink id="btn-remove-friend"
+                                                             onclick="$(this).parents('.media').fadeOut();"
                                                              action="#{viewFriends.removeFriend}" 
                                                              styleClass="btn-small btn-info pull-right"
                                                              reRender="view-friends">
