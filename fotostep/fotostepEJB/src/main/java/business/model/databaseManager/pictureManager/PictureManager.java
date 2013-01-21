@@ -12,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
@@ -30,6 +31,7 @@ public class PictureManager implements PictureManagerLocal
 {
     @PersistenceContext
     EntityManager em;
+
 
     public Picture addImage(Buffer buffer, Album album, String path, String description, String tags,
                             int width, int height, FormatEnum format, Date date)
@@ -97,11 +99,15 @@ public class PictureManager implements PictureManagerLocal
 
     public void editImage(Picture picture, Album album, String description, String tags, double lgt, double lat)
     {
-        picture.setAlbum(album);
-        picture.setLgt(lgt);
-        picture.setLat(lat);
-        picture.setDescription(description);
-        picture.setTags(tags);
+        Picture toUpdate = findPictureById(picture.getIdpicture());
+        Album alb = em.find(Album.class, album.getIdalbum());
+        toUpdate.setAlbum(alb);
+        toUpdate.setLgt(lgt);
+        toUpdate.setLat(lat);
+        toUpdate.setDescription(description);
+        toUpdate.setTags(tags);
+
+        em.persist(toUpdate);
     }    
     
     public Picture findPictureById(int id) {        

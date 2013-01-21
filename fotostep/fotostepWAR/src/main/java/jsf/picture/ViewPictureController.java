@@ -232,6 +232,14 @@ import java.util.Map;
         return "SET_COVER_IMAGE_OK";
     }
 
+    public String validateLoc()
+    {
+        System.out.println("Lgt = " + this.lgt + "Lat = " + this.lat);
+        pm.editImage(this.myPicture, this.myAlbum, this.description, this.myPicture.getDescription(),lgt, lat);
+
+        return null;
+    }
+
     public String moveInDefaultAlbum()
     {
         return null;

@@ -7,6 +7,7 @@
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich" %>
 
 <f:subview id="view-photo-content">
+<script>$(function(){('#pic-localization').hide();})</script>
     <div class = "span9">
         <div class = "page-header">
 
@@ -69,7 +70,7 @@
                 <ul class="pager">
                     <li class="previous">
                         <h:outputLink value="view-photo.jsf" rendered="#{viewPicture.prevPic!=null and viewPicture.prevPic.idpicture != viewPicture.idPicture}">
-                            <f:param name="UserId" value="#{sessionScope['userId']}"/>
+                            <f:param name="UserId" value="#{param.UserId}"/>
                             <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                             <f:param name="PictureId" value="#{viewPicture.prevPic.idpicture}"/>
                             &larr; Image pr&eacute;c&eacute;dente
@@ -84,7 +85,7 @@
                     </li>
                     <li class="next">
                         <h:outputLink value="view-photo.jsf" rendered="#{viewPicture.nextPic != null and viewPicture.nextPic.idpicture != viewPicture.idPicture}">
-                            <f:param name="UserId" value="#{sessionScope['userId']}"/>
+                            <f:param name="UserId" value="#{param.UserId}"/>
                             <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                             <f:param name="PictureId" value="#{viewPicture.nextPic.idpicture}"/>
                             Image suivante &rarr;
@@ -92,7 +93,7 @@
                     </li>
                 </ul>
 
-                <%@include file="view-picture.jsp" %>
+                <%@include file="view-picture-localization.jsp" %>
 
                 <h:graphicImage
                         value="/images?UserId=#{sessionScope['userId']}&PictureId=#{viewPicture.idPicture}&Thumb=pictype"
@@ -114,9 +115,62 @@
                         </dd>
                         <dt>Dimensions</dt>
                         <dd><h:outputText value="#{viewPicture.width}"/> x <h:outputText value="#{viewPicture.height}"/></dd>
-                        <dt>Localisation</dt>
-                        <dd><h:outputText value="#{viewPicture.lgt}"/>,<h:outputText value="#{viewPicture.lat}"/></dd>
+                        <a4j:outputPanel id = "refresh-loc">
+                            <dt>Localisation</dt>
+                            <dd><h:outputText value="#{viewPicture.lgt}"/>,<h:outputText value="#{viewPicture.lat}"/>
+                                <a href ="#pic-localization" onclick="$('#pic-localization').toggle();">
+                                    &nbsp;(Afficher sur une carte)
+                                </a>
+                        </a4j:outputPanel>
                     </dl>
+
+                </div>
+                <div class="row span10" id="pic-localization">
+                    <h3>Localisation</h3>
+                    <div id="map-pic" style="width: 800px; height: 400px"></div>
+                    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
+                    <script>
+                        var lgt = <h:outputText value = "#{viewPicture.lgt}"/>;
+                        var lat = <h:outputText value = "#{viewPicture.lat}"/>;
+                        var map = L.map('map-pic').setView([lgt, lat], 10);
+
+                        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+                            maxZoom: 18,
+                            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+                        }).addTo(map);
+
+
+                        var picMarker = L.marker([lgt, lat]).addTo(map);
+
+
+                        function onMapClick(e) {
+                            picMarker.setLatLng(e.latlng);
+                            $(".longitude").val(e.latlng.lng);
+                            $(".latitude").val(e.latlng.lat);
+
+                            popup
+                                    .setLatLng(e.latlng)
+                                    .setContent("La photo est localisée en : " + e.latlng.toString())
+                                    .openOn(map);
+                        }
+
+                        map.on('click', onMapClick);
+
+                    </script>
+
+                    <hr>
+                    <div class = "form-inline">
+                    <a4j:form id = "localize-form">
+                        <h:inputText id = "longitude"
+                                     value="#{viewPicture.lgt}" styleClass="longitude"/>
+                        <h:inputText id = "latitude"
+                                     value = "#{viewPicture.lat}" styleClass="latitude"/>
+                        <a4j:commandLink value="Valider"
+                                         styleClass="btn"
+                                         action="#{viewPicture.validateLoc}"
+                                reRender="refresh-loc"/>
+                    </a4j:form>
+                </div>
                 </div>
             </div>
 
@@ -134,7 +188,12 @@
                                 styleClass="thumbnails" value="#{viewPicture.comments}">
                         <div class="media">
                             <a class="pull-left" href="#">
-                                <img class="media-object" data-src="holder.js/64x64">
+                                <h:graphicImage
+                                        value="/images?UserId=#{comm.author.iduser}&PictureId=#{comm.author.avatar.idpicture}&Thumb=profileMinType"
+                                        rendered="#{comm.author.avatar != null}"/>
+                                <h:graphicImage
+                                        value="../assets/img/avsmall.png"
+                                        rendered="#{comm.author.avatar == null}"/>
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading">
