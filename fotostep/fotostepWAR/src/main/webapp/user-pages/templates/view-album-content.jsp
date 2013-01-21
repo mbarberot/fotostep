@@ -129,9 +129,30 @@
                                     <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                                     <f:param name="PictureId" value="#{pic.idpicture}"/>
                                     <h:graphicImage
-                                            value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype"
-                                            />
+                                            value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype" />
                                 </h:outputLink>
+                                <div class="dropdown">
+                                    <ul class="nav nav-pills">
+                                        <li class="dropdown">
+                                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+                                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                                <li>
+                                                    <h:outputLink value="move.jsf">Déplacer
+                                                        <f:param name="UserId" value="#{param.UserId}"/>
+                                                        <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                                        <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                                    </h:outputLink>
+                                                <li>
+                                                    <h:outputLink value="delete.jsf">Supprimer
+                                                        <f:param name="UserId" value="#{param.UserId}"/>
+                                                        <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                                        <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                                    </h:outputLink>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                         </t:dataList>
                     </ul>
