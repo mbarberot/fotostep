@@ -53,7 +53,7 @@ public class RequestFriendsController
             u.setIduser(r.nextInt(30));
             u.setFirstname("Joan");
             u.setLastname("Racenet");
-            u.setAvatar("holder.js/64x64");
+            //u.setAvatar("holder.js/64x64");
             requesting.add(u);
         }
     }
