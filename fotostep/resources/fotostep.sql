@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: localhost
--- Généré le: Dim 20 Janvier 2013 à 14:25
+-- Généré le: Lun 21 Janvier 2013 à 11:53
 -- Version du serveur: 5.5.24-log
 -- Version de PHP: 5.3.13
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `album` (
   PRIMARY KEY (`idalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_cover_image_idx` (`coverimage`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `commentalbum` (
   PRIMARY KEY (`idcommentalbum`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_album_idx` (`idalbum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,22 @@ CREATE TABLE IF NOT EXISTS `commentpicture` (
   PRIMARY KEY (`idcommentpicture`),
   KEY `fk_user_idx` (`iduser`),
   KEY `fk_picture_idx` (`idpicture`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `friendship`
+--
+
+DROP TABLE IF EXISTS `friendship`;
+CREATE TABLE IF NOT EXISTS `friendship` (
+  `user` int(11) NOT NULL,
+  `friend` int(11) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`user`,`friend`),
+  KEY `friend` (`friend`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -112,6 +127,21 @@ CREATE TABLE IF NOT EXISTS `likepicture` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `pendingfriendship`
+--
+
+DROP TABLE IF EXISTS `pendingfriendship`;
+CREATE TABLE IF NOT EXISTS `pendingfriendship` (
+  `user` int(11) NOT NULL,
+  `friend` int(11) NOT NULL,
+  `date` date NOT NULL,
+  PRIMARY KEY (`user`,`friend`),
+  KEY `friend` (`friend`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `picture`
 --
 
@@ -131,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `picture` (
   PRIMARY KEY (`idpicture`),
   UNIQUE KEY `path_UNIQUE` (`path`),
   KEY `fk_album_idx` (`idalbum`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -158,23 +188,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `login_UNIQUE` (`login`),
   KEY `avatar` (`avatar`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `userfriendship`
---
-
-DROP TABLE IF EXISTS `userfriendship`;
-CREATE TABLE IF NOT EXISTS `userfriendship` (
-  `iduser1` int(11) NOT NULL,
-  `iduser2` int(11) NOT NULL,
-  `date` date NOT NULL,
-  PRIMARY KEY (`iduser1`,`iduser2`),
-  KEY `fk_user1_idx` (`iduser1`),
-  KEY `fk_user2_idx` (`iduser2`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Contraintes pour les tables exportées
@@ -202,6 +216,13 @@ ALTER TABLE `commentpicture`
   ADD CONSTRAINT `fk_commentpicture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Contraintes pour la table `friendship`
+--
+ALTER TABLE `friendship`
+  ADD CONSTRAINT `friendship_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `friendship_ibfk_2` FOREIGN KEY (`friend`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `likealbum`
 --
 ALTER TABLE `likealbum`
@@ -216,6 +237,13 @@ ALTER TABLE `likepicture`
   ADD CONSTRAINT `fk_like_picture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
+-- Contraintes pour la table `pendingfriendship`
+--
+ALTER TABLE `pendingfriendship`
+  ADD CONSTRAINT `pendingfriendship_ibfk_1` FOREIGN KEY (`user`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `pendingfriendship_ibfk_2` FOREIGN KEY (`friend`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Contraintes pour la table `picture`
 --
 ALTER TABLE `picture`
@@ -226,13 +254,6 @@ ALTER TABLE `picture`
 --
 ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`avatar`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Contraintes pour la table `userfriendship`
---
-ALTER TABLE `userfriendship`
-  ADD CONSTRAINT `fk_friendships_user1` FOREIGN KEY (`iduser1`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_friendships_user2` FOREIGN KEY (`iduser2`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
