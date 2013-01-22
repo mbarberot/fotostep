@@ -20,6 +20,9 @@ body {
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script type="text/javascript" src="js/jquery.js"></script>
+<script language="Javascript" src="js/bootstrap.js"></script>
+<script language="Javascript" src="js/bootstrap-dropdown.js"></script>
 
 <!-- Fav and touch icons -->
 <link rel="shortcut icon" href="../assets/ico/favicon.ico">
@@ -52,10 +55,20 @@ body {
 </div>
 
 	<div class="container">
-
-	<div class="page-header">
-		<h1><img src="img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
-	</div>
+		<div class="page-header">
+			<h1><img src="img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
+		</div>		
+		<div class="dropdown">
+			<ul class="nav nav-pills">
+				  <li class="dropdown">
+					<a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+					<ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+						<li><a tabindex="-1" href="#">Deplacer</a></li>
+						<li><a tabindex="-1" href="#">Supprimer</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
 	</div> <!-- /container -->
 
 </body>

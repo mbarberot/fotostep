@@ -97,13 +97,10 @@ public class WebUploadController {
         Album album = null;
         try {
             albumId = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId");
+            album = albumManager.findAlbumById(Integer.parseInt(albumId));
         } catch (Exception e) {
             // Vous n'avez quand même pas cru que j'allais gérer les exceptions ? @Thomas
-        }
-        if (albumId == null) {
             album = albumManager.getDefaultAlbum(user);
-        } else {
-            album = albumManager.findAlbumById(Integer.parseInt(albumId));
         }
         return album.getName();
     }
@@ -131,19 +128,16 @@ public class WebUploadController {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         HttpSession httpSession = request.getSession(false);
         Integer myId = (Integer) httpSession.getAttribute("userId");
+        
+        User user = userManager.getUserById(myId);
+        Album album;
         try {
             albumId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
+            album = albumManager.findAlbumById(albumId);
         } catch (Exception e) {
             // Vous n'avez quand même pas cru que j'allais gérer les exceptions ? @Thomas
-        }
-        User user = userManager.getUserById(myId);
-
-        Album album;
-        if (albumId == 0) {
             album = albumManager.getDefaultAlbum(user);
-        } else {
-            album = albumManager.findAlbumById(albumId);
-        }
+        }        
 
         InputStream in = new ByteArrayInputStream(uploadedFile.getBytes());
         BufferedImage bimg = ImageIO.read(in);
