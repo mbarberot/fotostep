@@ -2,6 +2,8 @@ package jsf;
 
 import business.model.database.*;
 import business.model.databaseManager.userManager.UserManagerLocal;
+import business.utilities.JSONUtilityLocal;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @author Joan Racenet
  */
 public class UserProfileDataController {
-
+    private boolean visible = false;
     private String firstName = "Non renseigné";
     private String lastName  = "Non renseigné";
     private String birthDate  = "Non renseigné";
@@ -30,12 +32,15 @@ public class UserProfileDataController {
     private Picture avatar = null;
     private List<Album> albums = new ArrayList<Album>();
     private List<User> friends = new ArrayList<User>();
-    private List<Album> localizedAlbums = new ArrayList<Album>();
+    private List<Picture> localizedPicture = new ArrayList<Picture>();
+    private String jsonPictures;
     private boolean isAFriend;
     private boolean profileOfMine;
 
     @EJB
     private UserManagerLocal um;
+    @EJB
+    private JSONUtilityLocal jsonutil;
 
     public UserProfileDataController()
     {
@@ -48,7 +53,15 @@ public class UserProfileDataController {
     public void init()
     {
 
-        int idUser = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("UserId"));
+        Integer idUser = Integer.parseInt(FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap().get("UserId"));
+
+        visible = idUser==null;
+        if(idUser == null)
+        {
+            System.out.println("Iduser à null");
+            return;
+        }
         User viewedUser = um.getUserById(idUser);
         firstName = viewedUser.getFirstname();
         lastName = viewedUser.getLastname();
@@ -94,15 +107,7 @@ public class UserProfileDataController {
 
         friends = viewedUser.getFriends();
 
-        // Récupère les albums géolocalisés pour la map view
-        for(Album alb : albums)
-        {
-            Picture cover = alb.getCoverPicture();
-            if(cover != null && cover.getLat() != 0.0 && cover.getLgt() != 0.0)
-            {
-                localizedAlbums.add(alb);
-            }
-        }
+
 
         // Récupère les albums visibles
         if(myId == idUser)
@@ -124,6 +129,21 @@ public class UserProfileDataController {
             }
             albums = um.getAuthorizedAlbums(myUser, viewedUser);
         }
+
+        // Récupère les photos géolocalisés pour la map view
+        for(Album alb : albums)
+        {
+            for(Picture pic : alb.getPictures())
+            {
+
+                if(pic.getLat() != 0.0 && pic.getLgt() != 0.0)
+                {
+                    localizedPicture.add(pic);
+                }
+            }
+        }
+        this.jsonPictures = jsonutil.picturesToJSONString(localizedPicture);
+
     }
 
     /**
@@ -233,19 +253,35 @@ public class UserProfileDataController {
         isAFriend = AFriend;
     }
 
-    public List<Album> getLocalizedAlbums() {
-        return localizedAlbums;
+    public List<Picture> getLocalizedPicture() {
+        return localizedPicture;
     }
 
-    public void setLocalizedAlbums(List<Album> localizedAlbums) {
-        this.localizedAlbums = localizedAlbums;
+    public void setLocalizedPicture(List<Picture> localizedPicture) {
+        this.localizedPicture = localizedPicture;
     }
 
-    public boolean isProfileOfMine() {
+    public String getJsonPictures() {
+        return jsonPictures;
+    }
+
+    public void setJsonPictures(String jsonPictures) {
+        this.jsonPictures = jsonPictures;
+    }
+
+    public boolean getIsProfileOfMine() {
         return profileOfMine;
     }
 
     public void setProfileOfMine(boolean profileOfMine) {
         this.profileOfMine = profileOfMine;
+    }
+
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

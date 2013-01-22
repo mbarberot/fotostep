@@ -6,7 +6,7 @@ import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
-
+import business.utilities.JSONUtilityLocal;
 
 
 import javax.annotation.PostConstruct;
@@ -36,6 +36,8 @@ public class ViewAlbumController{
     LikeManagerLocal lm;
     @EJB
     CommentManagerLocal cm;
+    @EJB
+    JSONUtilityLocal jsonutil;
 
     /* Infos de controle */
     private boolean isAuthorized;
@@ -56,6 +58,8 @@ public class ViewAlbumController{
 
     /* Formulaire d'ajout d'un commentaire */
     private String commentText;
+
+    private String picsJson;
 
 
     public ViewAlbumController(){}
@@ -181,6 +185,7 @@ public class ViewAlbumController{
         }
         comments = viewedAlbum.getComments();
         isDefault = viewedAlbum.getIsdefault()== 1;
+        picsJson = jsonutil.picturesToJSONString(this.pictures);
     }
 
     public String unlike()
@@ -295,6 +300,13 @@ public class ViewAlbumController{
         return "COMMENT_OK" ;
     }
 
+    public String getPicsJson() {
+        return picsJson;
+    }
+
+    public void setPicsJson(String picsJson) {
+        this.picsJson = picsJson;
+    }
 
     public boolean getIsAuthorized() {
         return isAuthorized;

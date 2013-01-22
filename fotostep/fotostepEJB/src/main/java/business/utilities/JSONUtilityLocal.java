@@ -1,11 +1,11 @@
 package business.utilities;
 
-/**
- * Created with IntelliJ IDEA.
- * User: DjoLaptop
- * Date: 22/01/13
- * Time: 10:00
- * To change this template use File | Settings | File Templates.
- */
+import business.model.database.Picture;
+
+import javax.ejb.Local;
+import java.util.List;
+
+@Local
 public interface JSONUtilityLocal {
+    public String picturesToJSONString(List<Picture> pics);
 }

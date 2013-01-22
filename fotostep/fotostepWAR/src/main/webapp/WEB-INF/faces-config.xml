@@ -65,6 +65,7 @@
         <from-view-id>/user-pages/templates/header.jsp</from-view-id>
         <navigation-case>
             <from-action>doLogout</from-action>
+            <from-outcome><![CDATA[logout.sucess]]></from-outcome>
             <to-view-id>/index.jsp</to-view-id>
             <redirect/>
         </navigation-case>

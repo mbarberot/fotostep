@@ -55,61 +55,13 @@
 
                 <!-- Map view -->
                 <div class="tab-pane fade in active" id="mapView">
+                    <t:div rendered="#{userProfileData.jsonPictures != null}">
+                        <%@include file="view-profile-content-map.jsp"%>
+                    </t:div>
 
-                    <div id  = "map" style= "width: 99%; height: 400px"></div>
-                    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
-                    <script>
-
-                        var map = L.map('map').setView([51.505, -0.09], 13);
-
-                        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
-                            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-                        }).addTo(map);
-
-
-                        L.marker([51.5, -0.09]).addTo(map);
-
-
-                        var popup = L.popup();
-
-                        function onMapClick(e) {
-                            popup
-                                    .setLatLng(e.latlng)
-                                    .setContent("You clicked the map at " + e.latlng.toString())
-                                    .openOn(map);
-                        }
-
-                        map.on('click', onMapClick);
-
-                    </script>
-
-                    <c:choose>
-
-                        <c:when test="${fn:length(userProfileData.localizedAlbums) gt 0}">
-                            <ul class="pager">
-                                <li class="bordered"><a href="#" ><</a></li>
-                                <c:forEach items="#{userProfileData.localizedAlbums}" var="alb">
-                                    <li><a href="#">
-                                        <h:graphicImage
-                                                value="/images?UserId=#{param.UserId}&PictureId=#{alb.coverPicture.idpicture}&Thumb=albtype"
-                                                styleClass="media-object pull-left"
-                                                rendered="#{alb.coverPicture != null}"/>
-                                        <h:graphicImage
-                                                value="../assets/img/albdefaut.png"
-                                                styleClass="media-object pull-left"
-                                                rendered="#{alb.coverPicture == null}"/>
-                                    </a>
-                                    </li>
-                                 </c:forEach>
-                                <li class="bordered"><a href="#">></a></li>
-                            </ul>
-                        </c:when>
-                        <c:otherwise>
-                            <h3>Cette personne n'a pas d'albums localisés</h3>
-                        </c:otherwise>
-                    </c:choose>
-
+                    <h:outputText rendered="#{userProfileData.jsonPictures == null}">
+                        <h3>Cet utilisateur n'a pas de photos localisées</h3>
+                    </h:outputText>
                 </div>
 
                 <!-- Albums view -->

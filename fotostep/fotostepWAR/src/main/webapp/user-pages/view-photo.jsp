@@ -26,6 +26,7 @@
             </c:choose>
         </title>
         <%@include file="templates/pageheader.jsp" %>
+        <script src="../assets/js/jquery.js"></script>
     </head>
     <!-- /HEAD -->
 

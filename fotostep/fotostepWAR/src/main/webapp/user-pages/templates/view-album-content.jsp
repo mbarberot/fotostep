@@ -81,34 +81,13 @@
             <div id="myTabContent" class="tab-content">
                 <!-- Map view -->
                 <div class="tab-pane fade in active" id="mapView">
-                    <div id="map" style="width: 100%; height: 400px"></div>
-                    <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
-                    <script>
+                    <t:div rendered="#{viewAlbum.picsJson != null}">
+                        <%@include file="view-album-content-map.jsp"%>
+                    </t:div>
 
-                        var map = L.map('map').setView([51.505, -0.09], 13);
-
-                        L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
-                            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
-                        }).addTo(map);
-
-
-                        var markerPopup = L.popup({minWidth: 50});
-                        markerPopup.setContent("<p>Hello</p>");
-
-                        L.marker([51.5, -0.09]).addTo(map).bindPopup('<img src="img/avsmall.png"/>').openPopup();
-                        var popup = L.popup();
-
-                        function onMapClick(e) {
-                            popup
-                                    .setLatLng(e.latlng)
-                                    .setContent("You clicked the map at " + e.latlng.toString())
-                                    .openOn(map);
-                        }
-
-                        map.on('click', onMapClick);
-
-                    </script>
+                    <h:outputText rendered="#{viewAlbum.picsJson == null}">
+                        <h3>Pas de photos localisées dans cet album</h3>
+                    </h:outputText>
                 </div>
 
                 <!-- Gallery view -->

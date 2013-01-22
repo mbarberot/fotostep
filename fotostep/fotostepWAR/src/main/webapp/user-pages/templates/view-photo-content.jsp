@@ -7,7 +7,7 @@
 <%@ taglib uri="http://richfaces.org/rich" prefix="rich" %>
 
 <f:subview id="view-photo-content">
-<script>$(function(){('#pic-localization').hide();})</script>
+<script>$(document).ready(function(){$('#pic-localization').hide();});</script>
     <div class = "span9">
         <div class = "page-header">
 
@@ -93,8 +93,6 @@
                     </li>
                 </ul>
 
-                <%@include file="view-picture-localization.jsp" %>
-
                 <h:graphicImage
                         value="/images?UserId=#{sessionScope['userId']}&PictureId=#{viewPicture.idPicture}&Thumb=pictype"
                         onclick="openbox('Titre du formulaire',0,#{sessionScope['userId']},#{viewPicture.idPicture})"
@@ -117,8 +115,9 @@
                         <dd><h:outputText value="#{viewPicture.width}"/> x <h:outputText value="#{viewPicture.height}"/></dd>
                         <a4j:outputPanel id = "refresh-loc">
                             <dt>Localisation</dt>
-                            <dd><h:outputText value="#{viewPicture.lgt}"/>,<h:outputText value="#{viewPicture.lat}"/>
-                                <a href ="#pic-localization" onclick="$('#pic-localization').toggle();">
+                            <dd><h:outputText value="#{viewPicture.lat}"/>,<h:outputText value="#{viewPicture.lgt}"/>
+                                <a href ="#pic-localization" onclick=
+                                        "$('#pic-localization').toggle(); $(this).text('&nbsp;(Cacher la carte)')">
                                     &nbsp;(Afficher sur une carte)
                                 </a>
                         </a4j:outputPanel>
@@ -127,12 +126,25 @@
                 </div>
                 <div class="row span10" id="pic-localization">
                     <h3>Localisation</h3>
+                    <p class="alert alert-success" id = "local-success" style="display : none;">
+                        La localisation a bien été ajoutée sur votre photo
+                    </p>
                     <div id="map-pic" style="width: 800px; height: 400px"></div>
                     <script src="http://cdn.leafletjs.com/leaflet-0.4/leaflet.js"></script>
                     <script>
+
                         var lgt = <h:outputText value = "#{viewPicture.lgt}"/>;
                         var lat = <h:outputText value = "#{viewPicture.lat}"/>;
-                        var map = L.map('map-pic').setView([lgt, lat], 10);
+
+                        console.log("Latitude = " + lat);
+                        console.log("Longitude = " + lgt);
+
+                        if(lat==0.0 && lgt ==0.0)
+                        {
+                            lgt = 48.86336; lat = 2.352448;
+                        }
+
+                        var map = L.map('map-pic').setView([lat, lgt], 5);
 
                         L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
                             maxZoom: 18,
@@ -140,18 +152,16 @@
                         }).addTo(map);
 
 
-                        var picMarker = L.marker([lgt, lat]).addTo(map);
+                        var picMarker = L.marker([lat, lgt]).addTo(map);
 
 
                         function onMapClick(e) {
                             picMarker.setLatLng(e.latlng);
-                            $(".longitude").val(e.latlng.lng);
-                            $(".latitude").val(e.latlng.lat);
+                            $("#view-photo-content\\:localize-form\\:longview").val(e.latlng.lng);
+                            $("#view-photo-content\\:localize-form\\:latview").val(e.latlng.lat);
 
-                            popup
-                                    .setLatLng(e.latlng)
-                                    .setContent("La photo est localisée en : " + e.latlng.toString())
-                                    .openOn(map);
+                            $("#view-photo-content\\:localize-form\\:longitude").val(e.latlng.lng);
+                            $("#view-photo-content\\:localize-form\\:latitude").val(e.latlng.lat);
                         }
 
                         map.on('click', onMapClick);
@@ -161,14 +171,34 @@
                     <hr>
                     <div class = "form-inline">
                     <a4j:form id = "localize-form">
-                        <h:inputText id = "longitude"
-                                     value="#{viewPicture.lgt}" styleClass="longitude"/>
-                        <h:inputText id = "latitude"
-                                     value = "#{viewPicture.lat}" styleClass="latitude"/>
-                        <a4j:commandLink value="Valider"
-                                         styleClass="btn"
-                                         action="#{viewPicture.validateLoc}"
-                                reRender="refresh-loc"/>
+                        <div class="control-group">
+                            <label class="control-label" for="latview">Lat</label>
+                            <div class="controls">
+                                <h:inputText id= "latview" readonly="true" value = "#{viewPicture.lat}"/>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="latview">Lat</label>
+                            <div class="controls">
+                                <h:inputText id = "longview" readonly="true" value="#{viewPicture.lgt}"/>
+                            </div>
+                        </div>
+
+                        <h:inputHidden id = "latitude"
+                                       value = "#{viewPicture.lat}"/>
+                        <h:inputHidden id = "longitude"
+                                     value="#{viewPicture.lgt}"/>
+
+                        <div class="control-group">
+                            <div class="controls">
+                                <a4j:commandLink value="Valider"
+                                                 styleClass="btn"
+                                                 action="#{viewPicture.validateLoc}"
+                                                 reRender="refresh-loc"
+                                                 oncomplete="$('#local-success').fadeIn(400, function(){$('#local-success')
+                                                 .delay(2000).fadeOut();});"/>
+                            </div>
+                        </div>
                     </a4j:form>
                 </div>
                 </div>
