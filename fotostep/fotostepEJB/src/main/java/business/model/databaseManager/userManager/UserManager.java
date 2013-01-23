@@ -180,19 +180,27 @@ public class UserManager implements UserManagerLocal
         User user = em.find(User.class, u.getIduser());
         User friend = em.find(User.class, f.getIduser());
         
-        if (friend.getFriends().contains(user))
+        if (user.getRequestingFrom().contains(friend))
         {
             throw new IllegalStateException("L'autre utilisateur vous a déjà fait une demande");
         }
 
-        if (user.getFriends().contains(friend))
+        if (user.getRequestingTo().contains(friend))
         {
-            throw new IllegalStateException("Cet utilisateur a déjà lancé un demande");
+            throw new IllegalStateException("Voous avez déjà effectué une demande à cet utilisateur");
         }
-
-        // Ajout de l'utilisateur dans les requête du futur ami
-        friend.getRequestingFriends().add(user);
-        em.persist(friend);
+        
+        if(user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Cet utilisateur est déjà votre ami");
+        }
+        
+        Pendingfriendship pf = new Pendingfriendship();
+        pf.setDate(new Date());
+        pf.setFriend(friend);
+        pf.setUser(user);
+        
+        em.persist(pf);
     }
 
     /**
@@ -206,7 +214,7 @@ public class UserManager implements UserManagerLocal
         User user = em.find(User.class, u.getIduser());
         User friend = em.find(User.class, f.getIduser());
         
-        if (!user.getRequestingFriends().contains(friend))
+        if (!user.getRequestingFrom().contains(friend))
         {
             throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
         }
@@ -260,7 +268,7 @@ public class UserManager implements UserManagerLocal
         User friend = em.find(User.class, f.getIduser());
         
         
-        if (!user.getRequestingFriends().contains(friend))
+        if (!user.getRequestingFrom().contains(friend))
         {
             throw new IllegalStateException("L'autre utilisateur n'a pas fait de demande");
         }
@@ -284,15 +292,8 @@ public class UserManager implements UserManagerLocal
         {
             ex.printStackTrace();
         }
-        
-        /*
-        PendingfriendshipPK key = new PendingfriendshipPK();
-        key.setFriend(user);
-        key.setUser(friend);
-        
-        em.remove(em.find(Pendingfriendship.class,key));
-        */
     }
+
 
     public User setAvatar(User connected, Picture av) {
         User toUpdate = em.find(User.class, connected.getIduser());
@@ -302,4 +303,56 @@ public class UserManager implements UserManagerLocal
 
         return toUpdate;
     }
+
+    
+    public void cancelFriendship(User u, User f)
+    {
+        User user = em.find(User.class, u.getIduser());
+        User friend = em.find(User.class, f.getIduser());
+        
+        
+        if (!user.getRequestingTo().contains(friend))
+        {
+            throw new IllegalStateException("Vous n'avez pas de demande pour cet utilisateur.");
+        }
+        
+        if (user.getFriends().contains(friend))
+        {
+            throw new IllegalStateException("Vous êtes déjà ami avec cet utilisateur");
+        }
+
+        // On supprime la demande
+        Query query = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :friend AND p.user = :user ");
+        query.setParameter("user", user);
+        query.setParameter("friend", friend);
+
+        try
+        {
+            Pendingfriendship pfs = (Pendingfriendship) query.getSingleResult();
+            em.remove(pfs);
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public List<User> searchUser(String keyword)
+    {
+        List<User> result = new ArrayList<User>();
+        
+        String[] keywords = keyword.split(" ");
+        
+        Query query;
+        for(String k : keywords)
+        {
+            query = em.createQuery("SELECT u FROM User u WHERE u.firstname LIKE :firstname OR u.lastname LIKE :lastname");
+            query.setParameter("firstname", "%" + k + "%");
+            query.setParameter("lastname", "%" + k + "%");
+            result.addAll(query.getResultList());
+        }
+        
+        return result;
+    }
+
 }
