@@ -4,6 +4,7 @@ import business.model.database.*;
 import business.model.databaseManager.albumManager.AlbumManagerLocal;
 import business.model.databaseManager.commentManager.CommentManagerLocal;
 import business.model.databaseManager.likeManager.LikeManagerLocal;
+import business.model.databaseManager.pictureManager.PictureManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
 import business.utilities.JSONUtilityLocal;
@@ -38,6 +39,8 @@ public class ViewAlbumController{
     CommentManagerLocal cm;
     @EJB
     JSONUtilityLocal jsonutil;
+    @EJB
+    PictureManagerLocal pm;
 
     /* Infos de controle */
     private boolean isAuthorized;
@@ -58,9 +61,7 @@ public class ViewAlbumController{
 
     /* Formulaire d'ajout d'un commentaire */
     private String commentText;
-
-    private String picsJson;
-
+    private String picsJson;    
 
     public ViewAlbumController(){}
 
@@ -299,6 +300,22 @@ public class ViewAlbumController{
         commentText = "";
         return "COMMENT_OK" ;
     }
+    
+    public String deletePicture() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer) httpSession.getAttribute("UserId");
+        Integer albumId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
+        Integer pictureId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("PictureId"));
+
+        System.out.println("Suppression de l'image " + pictureId + " de l'album " + albumId + " sur le compte " + myId);
+        Picture pic = pm.findPictureById(pictureId);
+        pm.removeImage(pic);
+
+        return "DELETE_OK";
+    }
+    
 
     public String getPicsJson() {
         return picsJson;
