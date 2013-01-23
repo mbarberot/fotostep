@@ -56,7 +56,6 @@
                         <i class=" icon-thumbs-up icon-white"></i>
                     </a4j:commandLink>
                 </a4j:form>
-
             </div>
 
 
@@ -121,6 +120,16 @@
                                                             <f:param name="PictureId" value="#{pic.idpicture}"/>
                                                         </h:commandLink>
                                                     </h:form>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">More options</a>
+                                                    <ul class="dropdown-menu">
+                                                        <t:dataList var="alb" value="#{viewAlbums.albums}">
+                                                            <li>
+                                                                <h:outputText value="#{alb.name}"/>
+                                                            </li>
+                                                        </t:dataList>
+                                                    </ul>                                                    
                                                 </li>
                                             </ul>
                                         </li>
