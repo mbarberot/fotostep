@@ -18,8 +18,12 @@ public class RequestFriendsController
     @EJB
     private UserManagerLocal userManager;
     
-    private List<User> requesting = new ArrayList<User>();
-    private boolean hasRequest = false;
+    private List<User> requestingFrom = new ArrayList<User>();
+    private List<User> requestingTo = new ArrayList<User>();
+    private boolean hasRequestFrom = false;
+    private boolean hasRequestTo = false;
+    private String sizeFrom = "";
+    private String sizeTo = "";
     
     public RequestFriendsController()
     {
@@ -37,48 +41,117 @@ public class RequestFriendsController
         // Récupération de l'utilisateur
         User user = userManager.getUserById(iduser);
         
-        requesting = user.getRequestingFriends();
-        hasRequest = (!requesting.isEmpty());
+        requestingFrom = user.getRequestingFrom();
+        hasRequestFrom = (!requestingFrom.isEmpty());
+        sizeFrom = ""+requestingFrom.size();
+        
+        requestingTo = user.getRequestingTo();
+        hasRequestTo = (!requestingTo.isEmpty());
+        sizeTo = ""+requestingTo.size();
     }
     
-    private void wannaMoreFriends(int howmany)
+    private void loadFrom()
     {
-        // TODO remove
-        Date stamp = new Date();
-        Random r = new Random(stamp.getTime());
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer iduser = (Integer) session.getAttribute("userId");
         
-        for(int i = 0; i < howmany; i++)
-        {
-            User u = new User();
-            u.setIduser(r.nextInt(30));
-            u.setFirstname("Joan");
-            u.setLastname("Racenet");
-            u.setAvatar("holder.js/64x64");
-            requesting.add(u);
-        }
+        // Récupération de l'utilisateur
+        User user = userManager.getUserById(iduser);
+        
+        requestingFrom = user.getRequestingFrom();
+        hasRequestFrom = (!requestingFrom.isEmpty());
+        sizeFrom = ""+requestingFrom.size();
+    }
+    
+    private void loadTo()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer iduser = (Integer) session.getAttribute("userId");
+        
+        // Récupération de l'utilisateur
+        User user = userManager.getUserById(iduser);
+        
+        requestingTo = user.getRequestingTo();
+        hasRequestTo = (!requestingTo.isEmpty());
+        sizeTo = ""+requestingTo.size();
     }
 
-    public List<User> getRequesting()
+    public boolean isHasRequestFrom()
     {
-        init();
-        return requesting;
+        loadFrom();
+        return hasRequestFrom;
     }
 
-    public void setRequesting(List<User> requesting)
+    public void setHasRequestFrom(boolean hasRequestFrom)
     {
-        this.requesting = requesting;
+        this.hasRequestFrom = hasRequestFrom;
     }
 
-    public boolean isHasRequest()
+    public boolean isHasRequestTo()
     {
-        init();
-        return hasRequest;
+        loadTo();
+        return hasRequestTo;
     }
 
-    public void setHasRequest(boolean hasRequest)
+    public void setHasRequestTo(boolean hasRequestTo)
     {
-        this.hasRequest = hasRequest;
+        this.hasRequestTo = hasRequestTo;
     }
+
+    public List<User> getRequestingFrom()
+    {
+        loadFrom();
+        return requestingFrom;
+    }
+
+    public void setRequestingFrom(List<User> requestingFrom)
+    {
+        this.requestingFrom = requestingFrom;
+    }
+
+    public List<User> getRequestingTo()
+    {
+        loadTo();
+        return requestingTo;
+    }
+
+    public void setRequestingTo(List<User> requestingTo)
+    {
+        this.requestingTo = requestingTo;
+    }
+
+    public String getSizeFrom()
+    {
+        loadFrom();
+        return sizeFrom;
+    }
+
+    public void setSizeFrom(String sizeFrom)
+    {
+        this.sizeFrom = sizeFrom;
+    }
+
+    public String getSizeTo()
+    {
+        loadTo();
+        return sizeTo;
+    }
+
+    public void setSizeTo(String sizeTo)
+    {
+        this.sizeTo = sizeTo;
+    }
+    
+    
+    
+    
+    
     
     public String acceptRequest()
     {
@@ -130,8 +203,29 @@ public class RequestFriendsController
         
         return "REJECT_FRIEND_OK";
     }
+    
+    public String cancelRequest()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer iduser = (Integer) session.getAttribute("userId");
 
-    
-    
+        // Récupération de l'idfriend placé dans la requete Ajax
+        ctx = FacesContext.getCurrentInstance();
+        Map<String,String> requestMap = ctx.getExternalContext().getRequestParameterMap();
+        String value = requestMap.get("cancel-request");
+        Integer idFriend = new Integer(value);
+        
+        // Récupération des utilisateurs
+        User user = userManager.getUserById(iduser);
+        User friend = userManager.getUserById(idFriend);
+        
+        // Suppression de l'amitié
+        userManager.cancelFriendship(user, friend);
+        
+        return "CANCEL_FRIEND_OK";
+    }
     
 }

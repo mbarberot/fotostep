@@ -1,0 +1,74 @@
+package jsf.friends;
+
+import business.model.database.User;
+import business.model.databaseManager.userManager.UserManagerLocal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Controlleur pour la recherche d'utilisateur
+ * 
+ * @author Mathieu Barberot
+ */
+public class SearchFriendsController
+{
+    @EJB
+    UserManagerLocal userManager;
+    
+    private List<User> searchResult = new ArrayList<User>();
+    private boolean hasResult = false;
+    private String keywords;
+    
+    public SearchFriendsController()
+    {
+    }
+    
+    public void reload()
+    {
+        hasResult = (!searchResult.isEmpty());
+    }
+
+    public List<User> getSearchResult()
+    {
+        return searchResult;
+    }
+
+    public void setSearchResult(List<User> searchResult)
+    {
+        this.searchResult = searchResult;
+    }
+
+    public boolean isHasResult()
+    {
+        return hasResult;
+    }
+
+    public void setHasResult(boolean hasResult)
+    {
+        this.hasResult = hasResult;
+    }
+
+    public String getKeywords()
+    {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords)
+    {
+        this.keywords = keywords;
+    }
+    
+    public String search()
+    {
+        searchResult = userManager.searchUser(keywords);
+        hasResult = (!searchResult.isEmpty());
+        
+        return "FRIEND_SEARCH_OK";
+    }
+   
+}
