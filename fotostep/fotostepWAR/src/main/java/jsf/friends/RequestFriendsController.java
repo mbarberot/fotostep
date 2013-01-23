@@ -2,7 +2,9 @@ package jsf.friends;
 
 import business.model.database.User;
 import business.model.databaseManager.userManager.UserManagerLocal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
