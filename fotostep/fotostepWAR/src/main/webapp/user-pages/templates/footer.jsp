@@ -13,6 +13,10 @@
         e.preventDefault();
         $(this).tab('show');
     })
+    $('#requestTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
 </script>
 
 </div>

@@ -8,21 +8,14 @@ import business.model.databaseManager.pictureManager.PictureManagerLocal;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
 import business.utilities.JSONUtilityLocal;
-
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Joan Racenet
@@ -60,6 +53,7 @@ public class ViewAlbumController{
     private List<Picture> pictures = new ArrayList<Picture>();
     private List<User> likers = new ArrayList<User>();
     private List<Commentalbum> comments = new ArrayList<Commentalbum>();
+    private List<Album> albums = new ArrayList<Album>();
 
     /* Formulaire d'ajout d'un commentaire */
     private String commentText;
@@ -76,10 +70,11 @@ public class ViewAlbumController{
         {
             idUser = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("UserId"));
             idAlbum = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
-        }catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
+        } catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
 
         reload(idUser, idAlbum);
     }
+    
     public void reload(Integer idUser, Integer idAlbum)
     {
         System.out.println("Voir l'album id=" + idAlbum + " de id=" + idUser);
@@ -96,7 +91,6 @@ public class ViewAlbumController{
         Integer myId = (Integer)httpSession.getAttribute("userId");
 
         User myUser = um.getUserById(myId);
-        System.out.println("My Id User = " + myUser.getIduser());
 
         // Récupération du propriétaire de l'album
         this.owner = um.getUserById(idUser);
@@ -175,9 +169,7 @@ public class ViewAlbumController{
         // L'album existe bien et l'utilisateur connecté peut le consulter
         albId = viewedAlbum.getIdalbum();
         titre = viewedAlbum.getName();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        creationDate = sdf.format(viewedAlbum.getDate());
+        creationDate = viewedAlbum.getDate().toString();
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
         this.isLikedByMe = false;
@@ -191,6 +183,9 @@ public class ViewAlbumController{
         comments = viewedAlbum.getComments();
         isDefault = viewedAlbum.getIsdefault()== 1;
         picsJson = jsonutil.picturesToJSONString(this.pictures);
+        
+        albums = myUser.getAlbums();
+        albums.remove(am.findAlbumById(albId));
     }
 
     public String unlike()
@@ -230,6 +225,7 @@ public class ViewAlbumController{
         return "UNLIKE_OK";
 
     }
+    
     public String like()
     {
         // Récupération de l'utilisateur de la session
@@ -312,12 +308,27 @@ public class ViewAlbumController{
         Integer myId = (Integer) httpSession.getAttribute("UserId");
         Integer albumId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
         Integer pictureId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("PictureId"));
-
-        System.out.println("Suppression de l'image " + pictureId + " de l'album " + albumId + " sur le compte " + myId);
         Picture pic = pm.findPictureById(pictureId);
         pm.removeImage(pic);
-
-        return "DELETE_OK";
+        
+        pictures.remove(pic);
+        return null;
+    }
+    
+    public String removePicture() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+        HttpSession httpSession = request.getSession(false);
+        Integer myId = (Integer) httpSession.getAttribute("UserId");
+        Integer albumId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
+        Integer pictureId = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("PictureId"));
+        Album album = am.findAlbumById(albumId);
+        Picture pic = pm.findPictureById(pictureId);
+        am.findAlbumById(albumId);
+        pm.changeAlbum(pic, album);
+        
+        this.pictures.remove(pic);
+        return "REMOVE_OK";
     }
     
 
@@ -458,5 +469,13 @@ public class ViewAlbumController{
     public int getNumberOfComments()
     {
         return this.comments.size();
+    }
+    
+    public List<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
 }

@@ -134,4 +134,9 @@
         <managed-bean-class>jsf.friends.RequestFriendsController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>searchFriends</managed-bean-name>
+        <managed-bean-class>jsf.friends.SearchFriendsController</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 </faces-config>
