@@ -12,7 +12,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
@@ -123,29 +122,42 @@ public class PictureManager implements PictureManagerLocal
     {
         em.remove(em.find(Picture.class, picture.getIdpicture()));
     }
-    
+
     public void generateThumb(Picture picture, int width, int height)
     {
 
-        // TODO : à voir les ratios hauteur/largeur
-        Path picPath = Paths.get(System.getProperty("user.home") + picture.getPath());
-        File file = new File(picPath.toString());
-    	
+    	Path picPath = Paths.get(System.getProperty("user.home") + picture.getPath());
+    	File file = new File(picPath.toString());
+
     	if(!file.exists() || !file.isFile())
     		throw new IllegalStateException("The file " + picPath.toString() + " don't exist");
-    	
+
     	try {
     		BufferedImage original = ImageIO.read(file);
-    		
-    		BufferedImage resizedImage = new BufferedImage(width, height, original.getType());
-    		Graphics2D g = resizedImage.createGraphics();
-    		g.drawImage(original, 0, 0, width, height, null);
-    		g.dispose();
+    		BufferedImage resizedImage = null;
 
-            Path resizedPicPath = Paths.get(System.getProperty("user.home") + picture.getPath() + "_" + width + "_" + height);
+    		if(original.getWidth() < width && original.getHeight() < height){
+    			resizedImage = original;
+    		}else{
+    			int w = width;
+    			int h = height;
+    			if(original.getHeight() > original.getWidth()){
+    				h = (int)((float)original.getHeight() / original.getWidth() * width);
+    			}else{
+    				w = (int)((float)original.getWidth() / original.getHeight() * height);
+    			}
+
+    			resizedImage = new BufferedImage(w, h, original.getType());
+    			Graphics2D g = resizedImage.createGraphics();
+    			g.drawImage(original, 0, 0, w, h, null);
+    			g.dispose();
+    		}
+
+    		Path resizedPicPath = Paths.get(System.getProperty("user.home") + picture.getPath() + "_" + width + "_" + height);
     		File newFile = new File(resizedPicPath.toUri());
     		newFile.createNewFile();
-    		ImageIO.write(resizedImage, picture.getFormat().name(), newFile);
+			ImageIO.write(resizedImage, picture.getFormat().name(), newFile);
+			
     	} catch (IOException e) {
     		e.printStackTrace();
     	}
