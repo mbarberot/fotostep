@@ -26,9 +26,8 @@
                     </li>
                     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mes contacts<b class="caret"></b> </a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Gérer ma liste de contacts</a></li>
-                            <li><a href="#">Dernières photos</a></li>
-                            <li><a href="#">Répondre aux demandes</a></li>
+                            <li><a href="view-friends.jsf">Mes contacts</a></li>
+                            <li><a href="friends-request.jsf">Répondre aux demandes</a></li>
                         </ul>
                     </li>
                 </ul>
