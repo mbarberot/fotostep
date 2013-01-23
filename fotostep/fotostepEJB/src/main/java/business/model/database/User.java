@@ -100,7 +100,18 @@ public class User implements Serializable
     {
         @JoinColumn(name = "user")
     })
-    private List<User> requestingFriends;
+    private List<User> requestingFrom;
+    
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "pendingfriendship", joinColumns= 
+    {
+        @JoinColumn(name = "user")
+    }, inverseJoinColumns=
+    {
+        @JoinColumn(name = "friend")
+    })
+    private List<User> requestingTo;
     
     public User()
     {
@@ -325,16 +336,27 @@ public class User implements Serializable
     {
         this.friends = friends;
     }
-    
-    public List<User> getRequestingFriends()
+
+    public List<User> getRequestingFrom()
     {
-        return requestingFriends;
+        return requestingFrom;
     }
 
-    public void setRequestingFriends(List<User> requestingFriends)
+    public void setRequestingFrom(List<User> requestingFrom)
     {
-        this.requestingFriends = requestingFriends;
+        this.requestingFrom = requestingFrom;
     }
+
+    public List<User> getRequestingTo()
+    {
+        return requestingTo;
+    }
+
+    public void setRequestingTo(List<User> requestingTo)
+    {
+        this.requestingTo = requestingTo;
+    }
+    
     
     @Override
     public boolean equals(Object object){

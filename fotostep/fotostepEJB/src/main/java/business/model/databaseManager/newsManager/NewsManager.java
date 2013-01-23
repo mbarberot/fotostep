@@ -39,9 +39,24 @@ public class NewsManager implements NewsManagerLocal
             addNewPhotoNews(user, news);
             addCreateAlbumNews(user, news);
             addNewFriendNews(user, news);
+            addUpdateInfoNews(user, news);
 
+            // Trier
+            Collections.sort(news);
+            // Récupérer les 10 dernières news
+            int limit = (news.size() < 10 ? news.size() : 10);
 
-            Query query = em.createQuery(
+            return news.subList(0, limit);
+        }
+        else
+        {
+            return news;
+        }
+    }
+    
+    private void addUpdateInfoNews(User user, List<News> news)
+    {
+        Query query = em.createQuery(
                     "SELECT u "
                     + "FROM User u "
                     + "WHERE u IN(:friends) AND u.updatedate > u.registerdate "
@@ -59,19 +74,6 @@ public class NewsManager implements NewsManagerLocal
                     news.add(new News(e, NewsEnum.UPDATEINFO, e.getUpdatedate(), e));
                 }
             }
-
-
-            // Trier
-            Collections.sort(news);
-            // Récupérer les 10 dernières news
-            int limit = (news.size() < 10 ? news.size() : 10);
-
-            return news.subList(0, limit);
-        }
-        else
-        {
-            return news;
-        }
     }
 
     private void addNewFriendNews(User user, List<News> news)
@@ -92,7 +94,7 @@ public class NewsManager implements NewsManagerLocal
         {
             for (Friendship e : list)
             {
-                news.add(new News(e.getFriend(), NewsEnum.NEWFRIEND, e.getDate(), e));
+                news.add(new News(e.getUser(), NewsEnum.NEWFRIEND, e.getDate(), e));
             }
         }
     }

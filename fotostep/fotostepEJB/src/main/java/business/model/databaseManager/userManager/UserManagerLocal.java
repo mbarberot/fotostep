@@ -28,4 +28,8 @@ public interface UserManagerLocal
     public void rejectFriendship(User user, User friend);
 
     public void requestFriendship(User user, User friend);
+    
+    public void cancelFriendship(User user, User friend);
+    
+    public List<User> searchUser(String keyword);
 }
