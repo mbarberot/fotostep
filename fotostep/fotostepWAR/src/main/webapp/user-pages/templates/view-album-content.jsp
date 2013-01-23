@@ -56,7 +56,6 @@
                         <i class=" icon-thumbs-up icon-white"></i>
                     </a4j:commandLink>
                 </a4j:form>
-
             </div>
 
 
@@ -96,19 +95,18 @@
                         <h3>Pas de photos dans l'album</h3>
                     </h:outputText>
 
-
-
                     <ul class="thumbnails">
-
-                        <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}"
-                                    styleClass="thumbnails" value="#{viewAlbum.pictures}">
+                        <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}" styleClass="thumbnails" value="#{viewAlbum.pictures}">
+                            <f:selectItem itemLabel="mon texte" itemValue="aha"/>
                             <li class="span3">
+                                <f:selectItem itemValue="test" itemLabel="Photo" />
+                                <f:selectItem itemValue="test" itemLabel="Photo" />
                                 <h:outputLink styleClass="thumbnail" value="view-photo.jsf">
                                     <f:param name="UserId" value="#{param.UserId}"/>
                                     <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                                     <f:param name="PictureId" value="#{pic.idpicture}"/>
                                     <h:graphicImage
-                                            value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype" />
+                                        value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype" />
                                 </h:outputLink>
                                 <div class="dropdown">
                                     <ul class="nav nav-pills">
@@ -116,17 +114,22 @@
                                             <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
                                             <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
                                                 <li>
-                                                    <h:outputLink value="move.jsf">Déplacer
-                                                        <f:param name="UserId" value="#{param.UserId}"/>
-                                                        <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
-                                                        <f:param name="PictureId" value="#{pic.idpicture}"/>
-                                                    </h:outputLink>
-                                                <li>
-                                                    <h:outputLink value="delete.jsf">Supprimer
-                                                        <f:param name="UserId" value="#{param.UserId}"/>
-                                                        <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
-                                                        <f:param name="PictureId" value="#{pic.idpicture}"/>
-                                                    </h:outputLink>
+                                                    <h:form>
+                                                        <h:commandLink value="Supprimer" action="#{viewAlbum.deletePicture}">
+                                                            <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                                            <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </li>
+                                                <li class="dropdown-submenu">
+                                                    <a href="#">More options</a>
+                                                    <ul class="dropdown-menu">
+                                                        <t:dataList var="alb" value="#{viewAlbums.albums}">
+                                                            <li>
+                                                                <h:outputText value="#{alb.name}"/>
+                                                            </li>
+                                                        </t:dataList>
+                                                    </ul>                                                    
                                                 </li>
                                             </ul>
                                         </li>
@@ -135,7 +138,6 @@
                             </li>
                         </t:dataList>
                     </ul>
-
                 </div>
 
                 <!-- Infos view -->
