@@ -51,14 +51,22 @@ public class WebUploadController {
     public void validateUploadedFile(FacesContext context, UIComponent component,
             Object value) throws ValidatorException {
         UploadedFile file = (UploadedFile) value;
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        FacesMessage error = new FacesMessage();
+        error.setSeverity(FacesMessage.SEVERITY_ERROR);
 
         if (!(file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png"))) {
-            throw new ValidatorException(new FacesMessage("Le fichier n'est pas au bon format (JPEG ou PNG)"));
+            error.setDetail("Le fichier n'a pas une extension valide (jpg ou png)");
+            ctx.addMessage("msgs", error);
         } else if (file.getSize() > 2097152) {
-            throw new ValidatorException(new FacesMessage("Le fichier est trop volumineux (supérieur à 2 Mo)"));
+            error.setDetail("Le fichier est trop volumineux (supérieur à 2 Mo)");
+            ctx.addMessage("msgs", error);
         } else if (file.getSize() == 0) {
-            throw new ValidatorException(new FacesMessage("Le fichier est vide"));
+            error.setDetail("Le fichier est vide");
+            ctx.addMessage("msgs", error);
         }
+
+
     }
 
     // Getters + Setters
@@ -112,6 +120,15 @@ public class WebUploadController {
     // Méthode pour enregistrer une picture
     public void submit() throws ValidatorException, IOException {
 
+        if(uploadedFile == null)
+        {
+            FacesMessage err = new FacesMessage();
+            err.setSummary("Vous n'avez pas choisi de fichier");
+            err.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("uploadForm", err);
+            return;
+        }
         Buffer buffer = ByteBuffer.wrap(uploadedFile.getBytes());
         FormatEnum format = null;
         int albumId = 0;
@@ -176,6 +193,10 @@ public class WebUploadController {
         Path dbPicPath = Paths.get(userDirPath.toString() + "/" + prefix + "_" + serverTimeStamp);
         imageImporter.addImage(buffer, album, dbPicPath.toString(), description, tags, bimg.getWidth(), bimg.getHeight(), format, date);
 
+        // Affichage message de succes
+        FacesMessage msg = new FacesMessage("La photo a bien été uploadée");
+        msg.setSeverity(FacesMessage.SEVERITY_INFO);
+        context.addMessage("msgs", msg);
     }
 
 }

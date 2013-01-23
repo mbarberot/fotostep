@@ -4,6 +4,7 @@ import business.model.database.*;
 import business.model.databaseManager.userManager.UserManagerLocal;
 import business.utilities.JSONUtilityLocal;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,7 +54,6 @@ public class UserProfileDataController {
     public void init()
     {
 
-        System.out.println("Go Init");
         Integer idUser = null;
         try
         {
@@ -64,11 +64,9 @@ public class UserProfileDataController {
             return;
         }
 
-        System.out.println("GET idUser : " + idUser);
         if(idUser == null)
         {
             visible = false;
-            System.out.println("Iduser à null");
             return;
         }
         User viewedUser = um.getUserById(idUser);
@@ -80,10 +78,11 @@ public class UserProfileDataController {
         firstName = viewedUser.getFirstname();
         lastName = viewedUser.getLastname();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date uBirthdate = viewedUser.getBirthdate();
         if(uBirthdate != null)
         {
-          birthDate = uBirthdate.toString();
+          birthDate = sdf.format(uBirthdate);
         }
 
         String place = viewedUser.getPlace();
@@ -93,8 +92,8 @@ public class UserProfileDataController {
         }
 
         gender = (viewedUser.getGender().equals(GenderEnum.m))? "Homme" : "Femme";
-        registerDate = viewedUser.getRegisterdate().toString();
-        updateDate = viewedUser.getUpdatedate().toString();
+        registerDate = sdf.format(viewedUser.getRegisterdate());
+        updateDate = sdf.format(viewedUser.getUpdatedate());
         mail = viewedUser.getLogin();
         avatar = viewedUser.getAvatar();
 

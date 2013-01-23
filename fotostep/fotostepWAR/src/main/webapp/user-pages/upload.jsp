@@ -36,7 +36,7 @@
                     </div>
 
                     <div class="span9" >
-                        <p>Votre photo sera ajoutée dans l'album 
+                        <p>Votre photo sera ajoutée dans l'album
                         <strong>
                             <h:outputFormat value="#{webUpload.albumName}">
                                 <f:param name="AlbumId" value="#{param.AlbumId}" />
@@ -44,12 +44,16 @@
                         </strong>.
                         </p>
                         <h:form styleClass="form-horizontal" id="uploadForm" enctype="multipart/form-data">
-                            <h:messages styleClass="alert alert-error"/>
+                            <h:messages
+                                    errorClass="alert alert-error"
+                                    infoClass="alert alert-success"
+                                    id = "msgs"
+                                    style="list-style: none;"/>
 
                             <div class="control-group">
                                 <label class="control-label">Sélectionnez la photo</label>
                                 <div class="controls">
-                                    <t:inputFileUpload id="fileField" required="true" 
+                                    <t:inputFileUpload id="fileField"
                                                        value="#{webUpload.uploadedFile}"
                                                        validator="#{webUpload.validateUploadedFile}"/>
                                 </div>
@@ -69,7 +73,8 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <h:commandLink styleClass="btn" value="Enregistrer" action="#{webUpload.submit}">
+                                <h:commandLink styleClass="btn" value="Enregistrer"
+                                               action="#{webUpload.submit}">
                                     <f:param name="AlbumId" value="#{param.AlbumId}" />
                                 </h:commandLink>
                             </div>                                

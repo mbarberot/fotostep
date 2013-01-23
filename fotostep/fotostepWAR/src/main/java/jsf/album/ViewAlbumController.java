@@ -17,7 +17,9 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -172,7 +174,9 @@ public class ViewAlbumController{
         // L'album existe bien et l'utilisateur connecté peut le consulter
         albId = viewedAlbum.getIdalbum();
         titre = viewedAlbum.getName();
-        creationDate = viewedAlbum.getDate().toString();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        creationDate = sdf.format(viewedAlbum.getDate());
         pictures = viewedAlbum.getPictures();
         likers = viewedAlbum.getLikers();
         this.isLikedByMe = false;

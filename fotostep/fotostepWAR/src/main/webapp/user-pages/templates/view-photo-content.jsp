@@ -141,7 +141,7 @@
 
                         if(lat==0.0 && lgt ==0.0)
                         {
-                            lgt = 48.86336; lat = 2.352448;
+                            lat = 48.86336; lgt = 2.352448;
                         }
 
                         var map = L.map('map-pic').setView([lat, lgt], 5);
