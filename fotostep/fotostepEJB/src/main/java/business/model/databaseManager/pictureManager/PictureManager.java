@@ -83,6 +83,16 @@ public class PictureManager implements PictureManagerLocal
         return picture;
     }
 
+    public void changeAlbum(Picture picture, Album album)
+    {
+        Picture toUpdate = findPictureById(picture.getIdpicture());
+        Album alb = em.find(Album.class, album.getIdalbum());
+        toUpdate.setAlbum(alb);
+
+        em.persist(toUpdate);
+    }    
+    
+    
     public void editImage(Picture picture, Album album, String description, String tags, double lgt, double lat)
     {
         Picture toUpdate = findPictureById(picture.getIdpicture());
