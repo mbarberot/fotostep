@@ -45,12 +45,7 @@
             <version>2.2</version>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>com.nhncorp.ntaf</groupId>
-            <artifactId>ntaf-fitnesse</artifactId>
-            <version>20101108</version>
-            <type>jar</type>
-        </dependency>
+
         <dependency>
             <groupId>javaee</groupId>
             <artifactId>javaee-api</artifactId>
@@ -77,12 +72,6 @@
             <artifactId>jsf-impl</artifactId>
             <version>1.2_04</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-el_1.0_spec</artifactId>
-            <version>1.0-M1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.myfaces.tomahawk</groupId>

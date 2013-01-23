@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
  * @author Joan Racenet
  */
 public class UserProfileDataController {
-    private boolean visible = false;
+    private boolean visible = true;
     private String firstName = "Non renseigné";
     private String lastName  = "Non renseigné";
     private String birthDate  = "Non renseigné";
@@ -53,16 +53,30 @@ public class UserProfileDataController {
     public void init()
     {
 
-        Integer idUser = Integer.parseInt(FacesContext.getCurrentInstance().
+        System.out.println("Go Init");
+        Integer idUser = null;
+        try
+        {
+             idUser = Integer.parseInt(FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap().get("UserId"));
+        }
+        catch(Exception e) {
+            return;
+        }
 
-        visible = idUser==null;
+        System.out.println("GET idUser : " + idUser);
         if(idUser == null)
         {
+            visible = false;
             System.out.println("Iduser à null");
             return;
         }
         User viewedUser = um.getUserById(idUser);
+        if(viewedUser == null)
+        {
+            visible = false;
+            return;
+        }
         firstName = viewedUser.getFirstname();
         lastName = viewedUser.getLastname();
 
@@ -110,23 +124,16 @@ public class UserProfileDataController {
 
 
         // Récupère les albums visibles
-        if(myId == idUser)
+        if(myId.equals(idUser))
         {
             isAFriend = false;
             albums = viewedUser.getAlbums();
+            System.out.println("Is Profile of mine = Ok");
             profileOfMine = true;
         }
         else
         {
-            isAFriend = false;
-            for(User u : friends)
-            {
-                if(u.getIduser() == myId)
-                {
-                    isAFriend = true;
-                    break;
-                }
-            }
+            isAFriend = friends.contains(myUser);
             albums = um.getAuthorizedAlbums(myUser, viewedUser);
         }
 
@@ -269,7 +276,7 @@ public class UserProfileDataController {
         this.jsonPictures = jsonPictures;
     }
 
-    public boolean getIsProfileOfMine() {
+    public boolean getProfileOfMine() {
         return profileOfMine;
     }
 
