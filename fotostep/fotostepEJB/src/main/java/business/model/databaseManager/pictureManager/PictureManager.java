@@ -142,9 +142,9 @@ public class PictureManager implements PictureManagerLocal
     			int w = width;
     			int h = height;
     			if(original.getHeight() > original.getWidth()){
-    				h = (int)((float)original.getHeight() / original.getWidth() * width);
-    			}else{
     				w = (int)((float)original.getWidth() / original.getHeight() * height);
+    			}else{
+    				h = (int)((float)original.getHeight() / original.getWidth() * width);
     			}
 
     			resizedImage = new BufferedImage(w, h, original.getType());
