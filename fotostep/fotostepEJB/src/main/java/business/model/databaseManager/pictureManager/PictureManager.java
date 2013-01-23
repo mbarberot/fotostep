@@ -4,6 +4,7 @@ import business.model.database.Album;
 import business.model.database.FormatEnum;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +32,9 @@ public class PictureManager implements PictureManagerLocal
     @PersistenceContext
     EntityManager em;
 
-
+    private static Point []thumbsFormat = new Point[]{new Point(64,64),new Point(100, 100),new Point(250, 200),new Point(800,600)};
+    
+    
     public Picture addImage(Buffer buffer, Album album, String path, String description, String tags,
                             int width, int height, FormatEnum format, Date date)
     {
@@ -48,17 +51,9 @@ public class PictureManager implements PictureManagerLocal
 
         em.persist(picture);
 
-        // Miniature pour les albums
-        generateThumb(picture, 250, 200);
-
-        // Miniature pour la visualisation de la photo dans la lightbox
-        generateThumb(picture, 800, 600);
-
-        // Miniature pour la visualisation de la photo comme miniature d'avatar
-        generateThumb(picture, 64, 64);
-
-        // Avatar
-        generateThumb(picture, 100, 100);
+        for(Point f : thumbsFormat){
+            generateThumb(picture, f.x, f.y);
+        }
         
         return picture;
 
@@ -81,17 +76,9 @@ public class PictureManager implements PictureManagerLocal
 
         em.persist(picture);
 
-        // Miniature pour les albums
-        generateThumb(picture, 250, 200);
-
-        // Miniature pour la visualisation de la photo dans la lightbox
-        generateThumb(picture, 800, 600);
-
-        // Minitature pour la visualisation de la photo comme avatar
-        generateThumb(picture, 64, 64);
-
-        // Avatar
-        generateThumb(picture, 100, 100);
+        for(Point f : thumbsFormat){
+            generateThumb(picture, f.x, f.y);
+        }
         
         return picture;
     }
@@ -121,6 +108,21 @@ public class PictureManager implements PictureManagerLocal
     public void removeImage(Picture picture)
     {
         em.remove(em.find(Picture.class, picture.getIdpicture()));
+        
+        Path path = Paths.get(System.getProperty("user.home") + picture.getPath());
+        File file = new File(path.toUri());
+        if(file.exists()){
+        	file.delete();
+        }
+
+        for(Point f : thumbsFormat){
+        	path = Paths.get(System.getProperty("user.home") + picture.getPath() + "_" + f.x + "_" + f.y);
+        	file = new File(path.toUri());
+        	if(file.exists()){
+        		file.delete();
+        	}
+
+        }
     }
 
     public void generateThumb(Picture picture, int width, int height)
