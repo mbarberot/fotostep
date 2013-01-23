@@ -1,28 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<title>Bootstrap, from Twitter</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
+	<meta charset="utf-8">
+	<title>Bootstrap, from Twitter</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
 
-<!-- Le styles -->
-<link href="css/bootstrap.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	<!-- Le styles -->
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+	body {
+		padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+	}
+
+	.carousel-caption h1,
+    .carousel-caption .lead {
+      margin: 0;
+      line-height: 1.25;
+      color: black;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    }
+
+.carousel-caption .btn{
+	margin-top : 15px;
 }
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
+    .carousel-caption {
+    	background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+    }
+	</style>
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
 
-<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
 <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script type="text/javascript" src="js/jquery.js"></script>
 <script language="Javascript" src="js/bootstrap.js"></script>
 <script language="Javascript" src="js/bootstrap-dropdown.js"></script>
+<script language = "Javascript" src = "js/bootstrap-carousel.js"></script>
 
 <!-- Fav and touch icons -->
 <link rel="shortcut icon" href="../assets/ico/favicon.ico">
@@ -34,41 +56,83 @@ body {
 
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-	<div class="navbar-inner">
-		<div class="container">
-			<a class="brand" href="index.html"> <img src="img/logo.png"></a>
-			<div class="nav-collapse collapse">
-				<ul class="nav">
-					<li class="active"><a href="#">Accueil</a></li>
-					<li><a href="#about">Rechercher des photos</a></li>
-					<li><a href="#contact">Inscription</a></li>
-				</ul>
-				<form class="form-inline pull-right" style="display: inline; margin-bottom: 0; margin-left: 15px" method="post">
-					<input type="text" placeholder="Email" class="input-small" name = "login">
-					<input type="password" placeholder="Mot de passe" class="input-small" name = "passwd">
-					<button class="btn" type="submit" style="margin: 5px">S'identifier</button>
-				</form>
-			</div><!--/.nav-collapse -->
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="index.html"> <img src="img/logo.png"></a>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="active"><a href="#">Accueil</a></li>
+						<li><a href="#about">Rechercher des photos</a></li>
+						<li><a href="#contact">Inscription</a></li>
+					</ul>
+					<form class="form-inline pull-right" style="display: inline; margin-bottom: 0; margin-left: 15px" method="post">
+						<input type="text" placeholder="Email" class="input-small" name = "login">
+						<input type="password" placeholder="Mot de passe" class="input-small" name = "passwd">
+						<button class="btn" type="submit" style="margin: 5px">S'identifier</button>
+					</form>
+				</div><!--/.nav-collapse -->
+			</div>
 		</div>
 	</div>
-</div>
 
 	<div class="container">
-		<div class="page-header">
-			<h1><img src="img/header-logo.png"/></br><small>Partagez votre vision du monde (ou autre slogan alakon)</small></h1>
-		</div>		
-		<div class="dropdown">
-			<ul class="nav nav-pills">
-				  <li class="dropdown">
-					<a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
-					<ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-						<li><a tabindex="-1" href="#">Deplacer</a></li>
-						<li><a tabindex="-1" href="#">Supprimer</a></li>
-					</ul>
-				</li>
-			</ul>
+		<div id="myCarousel" class="carousel slide">
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<div class="active item">
+					<img src="img/rock.jpg" alt="">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Bienvenue sur Fotostep</h1>
+							<p class="lead">Venez partager votre vision du monde</p>
+							<a class="btn btn-large btn-primary" href="#">Inscrivez vous !</a>
+						</div>
+					</div>	
+				</div>
+				<div class="item">
+					<img src="img/church.jpg" alt="">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Partagez vos photos...</h1>
+							<p class="lead">... et indiquez où elles ont été prises grâce à notre outil de géolocalisation</p>
+							<a class="btn btn-large btn-primary" href="#">Inscrivez vous !</a>
+						</div>
+					</div>	
+				</div>
+				<div class="item">
+					<img src="img/alatna.jpg" alt="">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Retrouvez vos amis !</h1>
+							<p class="lead">Parce qu'il est plus plaisant de partager avec nos proches, entrez en contact avec eux sur Fotostep et partagez vos plus beaux clichés !</p>
+							<a class="btn btn-large btn-primary" href="#">Inscrivez vous !</a>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 		</div>
+
+		<div class="row">
+			
+        <div class="span4">
+          <h2>Inscrivez-vous</h2>
+          <p>Cliquez sur le bouton Inscription, remplissez le formulaire en quelques minutes et rejoignez-nous !</p>
+        </div><!-- /.span4 -->
+        <div class="span4">
+          <h2>Retrouvez vos amis</h2>
+          <p>Retrouvez vos connaissances sur Fotostep ou faites en de nouvelles et partagez vos photos avec eux.</p>
+        </div><!-- /.span4 -->
+        <div class="span4">
+          <h2>Partagez vos photos</h2>
+          <p>Créez vos albums, décidez avec qui les partager puis ajoutez-y vos photos et localisez les pour les diffuser de manière originale</p>
+        </div><!-- /.span4 -->
+      </div><!-- /.row -->
+      <hr/>
+      <center><img src = "img/header-logo.png"></center>
 	</div> <!-- /container -->
 
 </body>
