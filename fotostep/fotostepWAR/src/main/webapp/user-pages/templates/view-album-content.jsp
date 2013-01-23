@@ -95,49 +95,50 @@
                         <h3>Pas de photos dans l'album</h3>
                     </h:outputText>
 
-                    <ul class="thumbnails">
-                        <t:dataList var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}" styleClass="thumbnails" value="#{viewAlbum.pictures}">
-                            <f:selectItem itemLabel="mon texte" itemValue="aha"/>
-                            <li class="span3">
-                                <f:selectItem itemValue="test" itemLabel="Photo" />
-                                <f:selectItem itemValue="test" itemLabel="Photo" />
-                                <h:outputLink styleClass="thumbnail" value="view-photo.jsf">
-                                    <f:param name="UserId" value="#{param.UserId}"/>
-                                    <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
-                                    <f:param name="PictureId" value="#{pic.idpicture}"/>
-                                    <h:graphicImage
-                                        value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype" />
-                                </h:outputLink>
-                                <div class="dropdown">
-                                    <ul class="nav nav-pills">
-                                        <li class="dropdown">
-                                            <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
-                                            <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-                                                <li>
-                                                    <h:form>
-                                                        <h:commandLink value="Supprimer" action="#{viewAlbum.deletePicture}">
-                                                            <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
-                                                            <f:param name="PictureId" value="#{pic.idpicture}"/>
-                                                        </h:commandLink>
-                                                    </h:form>
-                                                </li>
-                                                <li class="dropdown-submenu">
-                                                    <a href="#">More options</a>
-                                                    <ul class="dropdown-menu">
-                                                        <t:dataList var="alb" value="#{viewAlbums.albums}">
-                                                            <li>
-                                                                <h:outputText value="#{alb.name}"/>
-                                                            </li>
-                                                        </t:dataList>
-                                                    </ul>                                                    
+                    <a4j:outputPanel id="picture-panel">
+                        <ul class="thumbnails">
+                            <t:dataList id="picture-list" var="pic" rendered="#{viewAlbum.numberOfPictures gt 0}" styleClass="thumbnails" value="#{viewAlbum.pictures}">
+                                <li class="span3">
+                                    <h:outputLink styleClass="thumbnail" value="view-photo.jsf">
+                                        <f:param name="UserId" value="#{param.UserId}"/>
+                                        <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                        <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                        <h:graphicImage value="/images?UserId=#{param.UserId}&PictureId=#{pic.idpicture}&Thumb=albtype" />
+                                    </h:outputLink>
+                                    <div class="dropdown">
+                                        <a4j:form>
+                                            <ul class="nav nav-pills">
+                                                <li class="dropdown">
+                                                    <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#"><b class="caret"></b></a>
+                                                    <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+                                                        <li>
+                                                            <a4j:commandLink action="#{viewAlbum.deletePicture}" reRender="picture-panel" value="Supprimer">
+                                                                <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
+                                                                <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                                            </a4j:commandLink>
+                                                        </li>
+                                                        <li class="dropdown-submenu">
+                                                            <a href="#">Déplacer dans</a>
+                                                            <ul class="dropdown-menu">
+                                                                <t:dataList var="alb" value="#{viewAlbum.albums}">
+                                                                    <li>
+                                                                        <a4j:commandLink action="#{viewAlbum.removePicture}" reRender="picture-panel" value="#{alb.name}">
+                                                                            <f:param name="AlbumId" value="#{alb.idalbum}"/>
+                                                                            <f:param name="PictureId" value="#{pic.idpicture}"/>
+                                                                        </a4j:commandLink>
+                                                                    </li>
+                                                                </t:dataList>
+                                                            </ul>                                                    
+                                                        </li>
+                                                    </ul>
                                                 </li>
                                             </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </t:dataList>
-                    </ul>
+                                        </a4j:form>
+                                    </div>
+                                </li>
+                            </t:dataList>
+                        </ul>
+                    </a4j:outputPanel>
                 </div>
 
                 <!-- Infos view -->
