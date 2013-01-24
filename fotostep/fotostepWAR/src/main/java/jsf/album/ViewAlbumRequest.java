@@ -35,6 +35,7 @@ public class ViewAlbumRequest implements Serializable {
             idUser = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("UserId"));
             idAlbum = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("AlbumId"));
         }catch(Exception e) {System.out.println("Recupere GET : \n"); e.printStackTrace();}
+        this.id = idAlbum;
 
         // On reload l'album
         vac.reload(idUser, idAlbum);

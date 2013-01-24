@@ -17,6 +17,7 @@ public class ViewPictureRequest implements Serializable {
 
     private boolean authorized;
     private int idPic;
+    private int idAlb;
 
     public ViewPictureRequest() {
     }
@@ -66,6 +67,7 @@ public class ViewPictureRequest implements Serializable {
         viewedPic.setIdpicture(idPicture);
 
         this.idPic = idPicture;
+        this.idAlb = idAlbum;
         if(!vac.getPictures().contains(viewedPic))
         {
             authorized = false;
@@ -101,5 +103,13 @@ public class ViewPictureRequest implements Serializable {
 
     public void setIdPic(int idPic) {
         this.idPic = idPic;
+    }
+
+    public int getIdAlb() {
+        return idAlb;
+    }
+
+    public void setIdAlb(int idAlb) {
+        this.idAlb = idAlb;
     }
 }

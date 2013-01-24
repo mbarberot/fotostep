@@ -69,7 +69,10 @@
             <div class = "row">
                 <ul class="pager">
                     <li class="previous">
-                        <h:outputLink value="view-photo.jsf" rendered="#{viewPicture.prevPic!=null and viewPicture.prevPic.idpicture != viewPicture.idPicture}">
+                        <h:outputLink value="view-photo.jsf"
+                                      rendered="#{viewPicture.prevPic!=null
+                                      and viewPicture.prevPic.idpicture != viewPicture.idPicture
+                                      and viewPicture.prevPic.album.idalbum == param.AlbumId}">
                             <f:param name="UserId" value="#{param.UserId}"/>
                             <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                             <f:param name="PictureId" value="#{viewPicture.prevPic.idpicture}"/>
@@ -84,7 +87,9 @@
                         </h:outputLink>
                     </li>
                     <li class="next">
-                        <h:outputLink value="view-photo.jsf" rendered="#{viewPicture.nextPic != null and viewPicture.nextPic.idpicture != viewPicture.idPicture}">
+                        <h:outputLink value="view-photo.jsf" rendered="#{viewPicture.nextPic != null
+                        and viewPicture.nextPic.idpicture != viewPicture.idPicture
+                        and viewPicture.nextPic.album.idalbum == param.AlbumId}">
                             <f:param name="UserId" value="#{param.UserId}"/>
                             <f:param name="AlbumId" value="#{viewAlbum.albId}"/>
                             <f:param name="PictureId" value="#{viewPicture.nextPic.idpicture}"/>

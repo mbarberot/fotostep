@@ -21,23 +21,28 @@
         console.log("Min Lat : " + getMinElement(picsList, 'lat'));
         console.log("Max lgt : " + getMaxOfElement(picsList, 'lgt'));
 
-        var southWest = new L.LatLng(getMinElement(picsList, 'lat'), getMaxOfElement(picsList, 'lgt')),
-                northEast = new L.LatLng(getMaxOfElement(picsList, 'lat'), getMinElement(picsList, 'lgt')),
-                zoombounds = new L.LatLngBounds(southWest, northEast);
+        var southWest = null , northEast = null;
+        if(picsList.length > 1 )
+        {
+            southWest = new L.LatLng(getMinElement(picsList, 'lat'), getMaxOfElement(picsList, 'lgt'));
+            northEast = new L.LatLng(getMaxOfElement(picsList, 'lat'), getMinElement(picsList, 'lgt'));
+        }
 
+        var picMarker;
         $.each(picsList, function() {
             console.log(this["id"]);
             var lgt = this["lgt"];
             var lat = this["lat"];
             var picId = this["id"];
             var albId = this["idalb"];
+
             if(lgt != 0.0 && lat != 0.0 && picId !=null)
             {
                 size++;
-                moyLat += lgt;
+                moyLgt += lgt;
                 moyLat += lat;
                 var viewaddr = "view-photo.jsf?UserId=" + params['UserId'] + "&AlbumId=" + albId +"&PictureId=" +picId;
-                var picMarker = L.marker([lat, lgt])
+                picMarker = L.marker([lat, lgt])
                         .addTo(map)
                         .bindPopup('<a href="'+viewaddr+'"><img src="/fotostep/images?UserId='+params['UserId']+'&PictureId='+picId+'&Thumb=profileMinType"/></a>');
             }
@@ -50,9 +55,22 @@
         }
 
         // Création de la map + initialisation
-        map.setView([moyLat, moyLgt], 2);
-        map.fitBounds(zoombounds);
-        map.zoomOut(1);
+        map.setView([moyLat, moyLgt], 5);
+
+        if(southWest != null && northEast != null)
+        {
+            zoombounds = new L.LatLngBounds(southWest, northEast);
+            map.fitBounds(zoombounds);
+            map.zoomOut(3);
+        }
+        else
+        {
+            if(picsList.length == 0)
+            {
+                map.fitWorld();
+            }
+
+        }
 
         L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
             maxZoom: 18,
@@ -96,6 +114,7 @@
 
             return min;
         }
+
 
     </script>
 </f:subview>

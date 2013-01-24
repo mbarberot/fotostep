@@ -10,7 +10,7 @@
 <html> <!-- HTML -->
 <f:view>
     <!-- HEAD -->
-    <t:outputText value="" rendered= "#{albumRequest.id == 0}" />
+    <t:outputText value="" rendered= "#{albumRequest.id != param.AlbumId}" />
     <head>
         <title>
 
