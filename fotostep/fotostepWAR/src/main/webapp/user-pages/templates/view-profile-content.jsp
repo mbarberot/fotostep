@@ -3,36 +3,48 @@
 <%@taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@taglib uri="http://myfaces.apache.org/tomahawk" prefix="t" %>
 
 <f:subview id="view-profile-content">
     <div class = "span9">
         <div class="page-header">
             <div class="media">
                 <h:graphicImage
-                        value="/images?UserId=#{param.UserId}&PictureId=#{userProfileData.avatar.idpicture}&Thumb=profileType"
-                        styleClass="media-object pull-left"
-                        rendered="#{userProfileData.avatar != null}"/>
+                    value="/images?UserId=#{param.UserId}&PictureId=#{userProfileData.avatar.idpicture}&Thumb=profileType"
+                    styleClass="media-object pull-left"
+                    rendered="#{userProfileData.avatar != null}"/>
                 <h:graphicImage
-                        value="../assets/img/avnormal.png"
-                        styleClass="media-object pull-left"
-                        rendered="#{userProfileData.avatar == null}"/>
-                <div class="media-body">
-                    <h2><h:outputFormat value="{0} {1}">
-                        <f:param value="#{userProfileData.firstName}" />
-                        <f:param value="#{userProfileData.lastName}" />
-                    </h:outputFormat></h2>
+                    value="../assets/img/avnormal.png"
+                    styleClass="media-object pull-left"
+                    rendered="#{userProfileData.avatar == null}"/>
+                <t:div styleClass="media-body" id="contact-button">
+                    <t:htmlTag value="h2">
+                        <h:outputFormat value="{0} {1}">
+                            <f:param value="#{userProfileData.firstName}" />
+                            <f:param value="#{userProfileData.lastName}" />
+                        </h:outputFormat>
+                    </t:htmlTag>
+                    <a4j:form>
 
-                    <c:choose>
-                        <c:when test="${userProfileData.isAFriend}">
-                            <a href="#" class = "btn btn-success">Déjà dans vos contacts</a>
-                        </c:when>
-                        <c:when test="${userProfileData.isAFriend and !userProfileData.profileOfMine}">
-                            <a href="#" class = "btn btn-primary"><i class="icon-user icon-white"></i>  Ajouter aux contacts </a>
-                        </c:when>
-                        <c:otherwise/>
-                    </c:choose>
+                        <a4j:commandLink id="btn-add-friend"
+                                         styleClass="btn btn-success" 
+                                         onclick="$(this).fadeOut();"
+                                         rendered="#{userProfileData.canAskFriend}"
+                                         action="#{userProfileData.addFriend}"
+                                         reRender="contact-button">
+                            <t:htmlTag value="i" styleClass="icon-plus icon-white"/>
+                            <t:outputText value=" Devenir ami" />
+                        </a4j:commandLink>
+                        <a4j:commandLink id="btn-rem-friend"
+                                         styleClass="btn btn-inverse"
+                                         rendered="#{!userProfileData.canAskFriend}"
+                                         reRender="contact-button">
+                            <t:outputText value=" #{userProfileData.askFriend}"/>
+                        </a4j:commandLink>
 
-                </div>
+                    </a4j:form>
+                </t:div>
             </div>
         </div>
         <div class = "span9">
@@ -68,29 +80,29 @@
                 <div class="tab-pane fade" id="albums">
                     <c:choose>
                         <c:when test="${fn:length(userProfileData.albums) gt 0}">
-                        <ul class="thumbnails">
-                            <c:forEach items="#{userProfileData.albums}" var="album">
-                                <li class="span3">
-                                    <div class = "thumbnail">
-                                        <h:graphicImage
+                            <ul class="thumbnails">
+                                <c:forEach items="#{userProfileData.albums}" var="album">
+                                    <li class="span3">
+                                        <div class = "thumbnail">
+                                            <h:graphicImage
                                                 value="/images?UserId=#{param.UserId}&PictureId=#{album.coverPicture.idpicture}&Thumb=albtype"
                                                 styleClass="media-object pull-left"
                                                 rendered="#{album.coverPicture != null}"/>
-                                        <h:graphicImage
+                                            <h:graphicImage
                                                 value="../assets/img/albdefaut.png"
                                                 styleClass="media-object pull-left"
                                                 rendered="#{album.coverPicture == null}"/>
-                                        <h3>${album.name}</h3>
-                                        <p>${album.description}</p>
-                                        <h:outputLink id="view-album" value="view-album.jsf">
-                                            <f:param name="UserId" value="#{param.UserId}" />
-                                            <f:param name="AlbumId" value="#{album.idalbum}" />
-                                            <h:outputText value="Voir l'album"/>
-                                        </h:outputLink>
-                                    </div>
-                                </li>
-                            </c:forEach>
-                        </ul>
+                                            <h3>${album.name}</h3>
+                                            <p>${album.description}</p>
+                                            <h:outputLink id="view-album" value="view-album.jsf">
+                                                <f:param name="UserId" value="#{param.UserId}" />
+                                                <f:param name="AlbumId" value="#{album.idalbum}" />
+                                                <h:outputText value="Voir l'album"/>
+                                            </h:outputLink>
+                                        </div>
+                                    </li>
+                                </c:forEach>
+                            </ul>
                         </c:when>
                         <c:otherwise><h3>Cette personne n'a pas d'albums visibles</h3></c:otherwise>
                     </c:choose>
@@ -136,11 +148,11 @@
                                     <h:outputLink styleClass="pull-left" id="view-profile" value="view-profile.jsf">
                                         <f:param name="UserId" value="#{friend.iduser}" />
                                         <h:graphicImage
-                                                value="/images?UserId=#{friend.iduser}&PictureId=#{friend.avatar.idpicture}&Thumb=profileMinType"
-                                                rendered="#{friend.avatar != null}"/>
+                                            value="/images?UserId=#{friend.iduser}&PictureId=#{friend.avatar.idpicture}&Thumb=profileMinType"
+                                            rendered="#{friend.avatar != null}"/>
                                         <h:graphicImage
-                                                value="../assets/img/avsmall.png"
-                                                rendered="#{friend.avatar == null}"/>
+                                            value="../assets/img/avsmall.png"
+                                            rendered="#{friend.avatar == null}"/>
                                     </h:outputLink>
                                     <div class="media-body">
                                         <h4>${friend.firstname} ${friend.lastname}</h4>
@@ -150,18 +162,9 @@
                         </c:when>
                         <c:otherwise><h3>Cette personne n'a pas d'amis :'(</h3></c:otherwise>
                     </c:choose>
-
                 </div>
-
             </div>
             </form>
         </div>
-
-
-
-
     </div>
-
-
-
 </f:subview>

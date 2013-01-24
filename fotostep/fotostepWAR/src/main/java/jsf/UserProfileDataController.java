@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.FacesContext;
@@ -53,7 +54,6 @@ public class UserProfileDataController {
     @PostConstruct
     public void init()
     {
-
         Integer idUser = null;
         try
         {
@@ -66,9 +66,29 @@ public class UserProfileDataController {
 
         if(idUser == null)
         {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+            HttpSession session = req.getSession(false);
+            idUser = (Integer) session.getAttribute("userId");
+        }
+        
+        if(idUser == null)
+        {
             visible = false;
             return;
         }
+        
+        // <<< idUser != null
+        
+        // Création de la session HTTP
+        // Elle devrait être mise à jour à chaque nouvelle consultation de profil
+        // It's dirty isn't it ?
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest)ctx.getExternalContext().getRequest();
+        HttpSession session=req.getSession();
+        session.setAttribute("idProfile", idUser);
+        
+        
         User viewedUser = um.getUserById(idUser);
         if(viewedUser == null)
         {
@@ -289,5 +309,71 @@ public class UserProfileDataController {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+  
+    public boolean isCanAskFriend()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer idVisitor = (Integer) session.getAttribute("userId");
+        Integer idUser = (Integer) session.getAttribute("idProfile");
+        
+        User visitor = this.um.getUserById(idVisitor);
+        User user = this.um.getUserById(idUser);
+        
+        boolean b = !(visitor.getFriends().contains(user) ||
+            visitor.getRequestingFrom().contains(user) ||
+            visitor.getRequestingTo().contains(user));
+        
+        return b;
+    }
+    
+    public String getAskFriend()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer idVisitor = (Integer) session.getAttribute("userId");
+        Integer idFriend = (Integer) session.getAttribute("idProfile");
+        
+        User visitor = this.um.getUserById(idVisitor);
+        User user = this.um.getUserById(idFriend);
+        
+        String txt = "";
+        
+        if(visitor.getFriends().contains(user))
+        {
+            txt = "Déjà dans vos amis";
+        }
+        else if(visitor.getRequestingFrom().contains(user))
+        {
+            txt = "Demande en attente de cet utilisateur";
+        }
+        else if(visitor.getRequestingTo().contains(user))
+        {
+            txt = "En attente d'une réponse de cet utilisateur";
+        }
+        
+        return txt;
+        
+    }
+    
+    public void addFriend()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer idVisitor = (Integer) session.getAttribute("userId");
+        Integer idFriend = (Integer) session.getAttribute("idProfile");
+        
+        User visitor = this.um.getUserById(idVisitor);
+        User user = this.um.getUserById(idFriend);
+        
+        um.requestFriendship(visitor, user);
+        
     }
 }
