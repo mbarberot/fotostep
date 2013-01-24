@@ -340,6 +340,8 @@ public class UserManager implements UserManagerLocal
     public List<User> searchUser(String keyword)
     {
         List<User> result = new ArrayList<User>();
+        List<User> temp = new ArrayList<User>();
+        
         
         String[] keywords = keyword.split(" ");
         
@@ -349,7 +351,14 @@ public class UserManager implements UserManagerLocal
             query = em.createQuery("SELECT u FROM User u WHERE u.firstname LIKE :firstname OR u.lastname LIKE :lastname");
             query.setParameter("firstname", "%" + k + "%");
             query.setParameter("lastname", "%" + k + "%");
-            result.addAll(query.getResultList());
+            temp = query.getResultList();
+            for(User t : temp)
+            {
+                if(!result.contains(t))
+                {
+                    result.add(t);
+                }
+            }
         }
         
         return result;
