@@ -66,12 +66,15 @@
                                                 </a4j:commandLink>
                                             </a4j:form>
                                         </t:div>
-                                        <h:outputLink styleClass="" value="view-profile.jsf?UserId=#{friend.iduser}">
-                                            <h:graphicImage styleClass="media-object" value="#{friend.avatar}" width="64" height="64"/>
-                                            <t:div styleClass="media-body">
-                                                <t:htmlTag value="h5">
-                                                    <t:outputText styleClass="media-heading" value = "#{friend.firstname} #{friend.lastname}" />
-                                                </t:htmlTag>
+                                        <h:outputLink value="view-profile.jsf?UserId=#{friend.iduser}">
+                                            <t:div>
+                                                <h:graphicImage styleClass="media-object" value="/images?UserId=#{friend.iduser}&PictureId=#{friend.avatar.idpicture}&Thumb=profileType" rendered="#{friend.hasAvatar}" />
+                                                <h:graphicImage styleClass="media-object" value="../assets/img/avsmall.png" rendered="#{!friend.hasAvatar}" />
+                                                <t:div styleClass="media-body">
+                                                    <t:htmlTag value="h5">
+                                                        <t:outputText styleClass="media-heading" value = "#{friend.firstname} #{friend.lastname}" />
+                                                    </t:htmlTag>
+                                                </t:div>
                                             </t:div>
                                         </h:outputLink>
                                     </t:div>
