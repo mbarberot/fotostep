@@ -141,7 +141,7 @@ public class NewsComponent
         }
         else
         {
-           avatar = "/images?UserId=" + user.getIduser() + "&PictureId="+ user.getAvatar().getIdpicture()
+           avatar = "/fotostep/images?UserId=" + user.getIduser() + "&PictureId="+ user.getAvatar().getIdpicture()
             + "&Thumb=profileMinType";
         }
     }

@@ -5,7 +5,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
-<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
+<%@taglib uri="http://richfaces.org/rich" prefix="rich"%>
+
+
 
 
 <!DOCTYPE html>
@@ -42,7 +44,7 @@
                         </div>
 
                         <div class="search-form">
-                            <a4j:form ajaxSubmit="true">
+                            <a4j:form>
                                 <div class="input-append">
                                     <h:inputText id="search-keywords" 
                                                  required="true"
@@ -56,11 +58,6 @@
                                     </a4j:commandLink>
                                 </div>
                             </a4j:form>
-
-                            <rich:hotKey key="return"
-                                         handler="#{rich:element('btn-search-friend')}.click()"
-                                         selector="#search-keywords"/>
-
                         </div>
                         <hr/>
                         <t:div id="search-result">
@@ -73,18 +70,17 @@
                                 <t:dataList
                                     id="list-result"
                                     value="#{searchFriends.searchResult}" var="friend"
-                                    styleClass="media-list" itemStyleClass=""
+                                    styleClass="media-list"
                                     layout="unorderedList"
                                     rendered="#{searchFriends.hasResult}">
 
                                     <t:div id="element-result" styleClass="media span2 well">
-                                        <h:outputLink styleClass="" value="view-profile.jsf?UserId=#{friend.iduser}">
-                                            <h:graphicImage styleClass="media-object" value="#{friend.avatar}" width="64" height="64"/>
-                                            <t:div styleClass="media-body">
-                                                <t:htmlTag value="h5">
-                                                    <t:outputText styleClass="media-heading" value = "#{friend.firstname} #{friend.lastname}" />
-                                                </t:htmlTag>
-                                            </t:div>
+                                        <h:outputLink value="view-profile.jsf?UserId=#{friend.iduser}">
+                                            <h:graphicImage styleClass="media-object" value="/images?UserId=#{friend.iduser}&PictureId=#{friend.avatar.idpicture}&Thumb=profileType" rendered="#{friend.hasAvatar}" />
+                                            <h:graphicImage styleClass="media-object" value="../assets/img/avsmall.png" rendered="#{!friend.hasAvatar}" />
+                                            <t:htmlTag value="h5" styleClass="media-body">
+                                                <h:outputText styleClass="media-heading" value = "#{friend.firstname} #{friend.lastname}" />
+                                            </t:htmlTag>
                                         </h:outputLink>
                                     </t:div>
                                 </t:dataList>

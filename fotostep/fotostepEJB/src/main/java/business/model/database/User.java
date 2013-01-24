@@ -359,6 +359,12 @@ public class User implements Serializable
         this.requestingTo = requestingTo;
     }
     
+    public boolean isHasAvatar()
+    {
+        return !(avatar == null);
+    }
+
+    
     
     @Override
     public boolean equals(Object object){

@@ -18,7 +18,7 @@ public class SearchFriendsController
     
     private List<User> searchResult = new ArrayList<User>();
     private boolean hasResult = false;
-    private String keywords;
+    private String keywords = "";
     
     public SearchFriendsController()
     {
@@ -61,7 +61,15 @@ public class SearchFriendsController
     
     public String search()
     {
-        searchResult = userManager.searchUser(keywords);
+        if(keywords.length() > 0)
+        {
+            searchResult = userManager.searchUser(keywords);
+        }
+        else
+        {
+            searchResult = new ArrayList<User>();
+        }
+        
         hasResult = (!searchResult.isEmpty());
         
         return "FRIEND_SEARCH_OK";
