@@ -323,9 +323,12 @@ public class UserProfileDataController {
         User visitor = this.um.getUserById(idVisitor);
         User user = this.um.getUserById(idUser);
         
-        boolean b = !(visitor.getFriends().contains(user) ||
+        boolean b = !(
+            visitor.equals(user) ||
+            visitor.getFriends().contains(user) ||
             visitor.getRequestingFrom().contains(user) ||
-            visitor.getRequestingTo().contains(user));
+            visitor.getRequestingTo().contains(user)
+            );
         
         return b;
     }
