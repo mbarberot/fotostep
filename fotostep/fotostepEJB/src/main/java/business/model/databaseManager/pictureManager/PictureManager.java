@@ -1,7 +1,6 @@
 package business.model.databaseManager.pictureManager;
 
-import business.model.database.Album;
-import business.model.database.FormatEnum;
+import business.model.database.*;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -11,6 +10,7 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.ejb.Stateless;
@@ -18,8 +18,6 @@ import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-
-import business.model.database.Picture;
 
 /**
  * Bean de manipulation de l'entité Image dans la base de données.
@@ -117,8 +115,19 @@ public class PictureManager implements PictureManagerLocal
 
     public void removeImage(Picture picture)
     {
-        em.remove(em.find(Picture.class, picture.getIdpicture()));
-        
+
+        Picture todel = em.find(Picture.class, picture.getIdpicture());
+        todel.getLikers().clear();
+        em.persist(todel);
+        em.flush();
+
+        em.clear();
+
+        Picture toRedel = em.find(Picture.class, todel.getIdpicture());
+
+        em.remove(toRedel);
+
+
         Path path = Paths.get(System.getProperty("user.home") + picture.getPath());
         File file = new File(path.toUri());
         if(file.exists()){

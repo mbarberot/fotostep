@@ -44,7 +44,7 @@
                 var viewaddr = "view-photo.jsf?UserId=" + params['UserId'] + "&AlbumId=" + albId +"&PictureId=" +picId;
                 picMarker = L.marker([lat, lgt])
                         .addTo(map)
-                        .bindPopup('<a href="'+viewaddr+'"><img src="/fotostep/images?UserId='+params['UserId']+'&PictureId='+picId+'&Thumb=profileMinType"/></a>');
+                        .bindPopup('<a href="'+viewaddr+'"><img style= "margin:5px;" src="/fotostep/images?UserId='+params['UserId']+'&PictureId='+picId+'&Thumb=profileMinType"/></a>');
             }
         });
 

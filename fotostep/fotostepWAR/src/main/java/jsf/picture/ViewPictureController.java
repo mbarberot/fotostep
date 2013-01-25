@@ -66,6 +66,7 @@ import java.util.Map;
     private Album myAlbum;
     private Picture myPicture;
 
+    private boolean isMine;
     public ViewPictureController() {
     }
 

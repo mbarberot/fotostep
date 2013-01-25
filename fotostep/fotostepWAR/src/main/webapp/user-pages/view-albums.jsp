@@ -58,16 +58,6 @@
 
                                 <div class="media-body">
 
-                                    <c:if test="${alb.isdefault == 0}">
-
-                                            <h:form styleClass="form-inline">
-                                                <div class="btn-group pull-right">
-
-                                                <button class="btn btn-info" id = "btn-edit"><i class="icon-edit icon-white"></i></button>
-                                                </div>
-                                            </h:form>
-                                    </c:if>
-
                                     <h3 class = "media-heading">${alb.name}</h3>
                                     <p>${alb.description}</p>
                                     <p><b>Nombre de photos :</b> ${fn:length(alb.pictures)}</p>
