@@ -16,12 +16,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 public class Likepicture implements Serializable 
 {
     @Id
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "iduser")
     private User liker;
 
     @Id
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "idpicture")
     private Picture picture;
     

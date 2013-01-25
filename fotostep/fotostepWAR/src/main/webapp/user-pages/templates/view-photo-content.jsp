@@ -78,8 +78,8 @@
                     </li>
                     <li>
                         <h:outputLink value="view-album.jsf">
-                            <f:param name="UserId" value="#{param.UserId}" />
-                            <f:param name="AlbumId" value="#{param.AlbumId}" />
+                            <f:param name="UserId" value="#{viewPicture.myAlbum.user.iduser}" />
+                            <f:param name="AlbumId" value="#{viewPicture.myAlbum.idalbum}" />
                             Revenir à l'album
                         </h:outputLink>
                     </li>
