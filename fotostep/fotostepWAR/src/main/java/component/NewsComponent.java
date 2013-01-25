@@ -48,7 +48,7 @@ public class NewsComponent
                 p = (Picture) news.getData();
                 a = p.getAlbum();
                 title += "a ajouté une "
-                        + "<a href=\"" + p.getPath() + "\">image</a> "
+                        + "<a href=view-photo.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "&PictureId=" + p.getIdpicture() + "\">image</a> "
                         + "à son album "
                         + "<a href=\"view-album.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "\">"
                         + "&quot;" + a.getName() + "&quot;"
@@ -70,7 +70,7 @@ public class NewsComponent
                 p = cp.getPicture();
                 a = p.getAlbum();
                 title += "a commenté une "
-                        + "<a href=\"" + p.getPath() + "\">"
+                        + "<a href=view-photo.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "&PictureId=" + p.getIdpicture() + "\">image</a> "
                         + "image"
                         + "</a> "
                         + "de l'album "
@@ -95,7 +95,7 @@ public class NewsComponent
                 p = lp.getPicture();
                 a = p.getAlbum();
                 title += "aime l'"
-                        + "<a href=\"" + p.getPath() + "\">"
+                        + "<a href=view-photo.jsf?UserId=" + a.getUser().getIduser() + "&AlbumId=" + a.getIdalbum() + "&PictureId=" + p.getIdpicture() + "\">image</a> "
                         + "image"
                         + "</a> "
                         + "de l'album "

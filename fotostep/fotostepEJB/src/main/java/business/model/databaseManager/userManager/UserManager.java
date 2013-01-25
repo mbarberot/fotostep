@@ -12,11 +12,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 
-import business.model.database.*;
-import business.util.exceptions.PictureNotFoundException;
-import business.util.exceptions.UserNotFoundException;
-
-
 @Stateless(mappedName = "UserManager")
 public class UserManager implements UserManagerLocal
 {
@@ -279,14 +274,29 @@ public class UserManager implements UserManagerLocal
         }
 
         // On supprime la demande
-        Query query = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :user AND p.user = :friend ");
-        query.setParameter("user", user);
-        query.setParameter("friend", friend);
+        Query query1 = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :user AND p.user = :friend ");
+        query1.setParameter("user", user);
+        query1.setParameter("friend", friend);
 
         try
         {
-            Pendingfriendship pfs = (Pendingfriendship) query.getSingleResult();
-            em.remove(pfs);
+            Pendingfriendship pfs1 = (Pendingfriendship) query1.getSingleResult();
+            em.remove(pfs1);
+        }
+        catch(NoResultException ex)
+        {
+            ex.printStackTrace();
+        }
+        
+        // On supprime la demande
+        Query query2 = em.createQuery("SELECT p FROM Pendingfriendship p WHERE p.friend = :user AND p.user = :friend ");
+        query2.setParameter("user", user);
+        query2.setParameter("friend", friend);
+
+        try
+        {
+            Pendingfriendship pfs2 = (Pendingfriendship) query2.getSingleResult();
+            em.remove(pfs2);
         }
         catch(NoResultException ex)
         {
