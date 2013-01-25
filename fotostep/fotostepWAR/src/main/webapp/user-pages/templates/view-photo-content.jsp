@@ -31,9 +31,6 @@
                                                     'pour cet album ?')) return false">
                                     </h:commandLink>
                                 </li>
-                                <li>
-                                    <h:commandLink value="Localiser la photo"></h:commandLink>
-                                </li>
                         </h:form>
                     </ul>
                 </div>
@@ -175,7 +172,7 @@
 
                     <hr>
                     <div class = "form-inline">
-                    <a4j:form id = "localize-form">
+                    <a4j:form id = "localize-form" rendered="#{viewAlbum.isMine}">
                         <div class="control-group">
                             <label class="control-label" for="latview">Lat</label>
                             <div class="controls">

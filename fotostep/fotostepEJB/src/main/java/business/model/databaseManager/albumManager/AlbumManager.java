@@ -56,7 +56,17 @@ public class AlbumManager implements AlbumManagerLocal, Serializable
 	}
 
 	public void deleteAlbum(Album album) throws AlbumNotFoundException {
-		em.remove(em.find(Album.class, album.getIdalbum()));
+
+        Album todel = em.find(Album.class, album.getIdalbum());
+        todel.getLikers().clear();
+        em.persist(todel);
+        em.flush();
+
+        em.clear();
+
+        Album toRedel = em.find(Album.class, todel.getIdalbum());
+        em.remove(toRedel);
+
 	}
 
 	public void updateAlbum(Album album, String name, String description, AuthorizationEnum authorization, Picture picture) throws AlbumNotFoundException, PictureNotFoundException{

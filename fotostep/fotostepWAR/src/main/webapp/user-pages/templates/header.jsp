@@ -12,7 +12,6 @@
 
                 <ul class="nav">
                     <li> <a href="news.jsf">Accueil</a> </li>
-                    <li> <a href="#">Explorer</a> </li>
                     <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" href="#">Mon profil<b class="caret"></b> </a>
                         <ul class="dropdown-menu">
                             <li><h:outputLink id="view-my-profile" value="view-profile.jsf">
@@ -20,7 +19,6 @@
                                 <h:outputText value="Voir mon profil" />
                             </h:outputLink></li>
                             <li class="divider"></li>
-                            <li><a href="#">Modifier mes informations</a></li>
                             <li><a href="view-albums.jsf">Gérer mes photos</a></li>
                         </ul>
                     </li>
@@ -36,11 +34,6 @@
                 <h:form styleClass="form-inline pull-right"
                         style="display: inline; margin-bottom: 0; margin-left: 15px">
                         <h:commandButton id="logout-btn" value="Se déconnecter" action="#{loginController.doLogout}" styleClass="btn-inverse" style="margin:5px" />
-                </h:form>
-
-                <!-- Formulaire de recherche -->
-                <h:form styleClass="navbar-search pull-right">
-                    <h:inputText styleClass="search-query" />
                 </h:form>
 
                 </div>
