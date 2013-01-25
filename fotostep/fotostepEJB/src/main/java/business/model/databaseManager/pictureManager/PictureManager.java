@@ -127,7 +127,6 @@ public class PictureManager implements PictureManagerLocal
 
         em.remove(toRedel);
 
-
         Path path = Paths.get(System.getProperty("user.home") + picture.getPath());
         File file = new File(path.toUri());
         if(file.exists()){

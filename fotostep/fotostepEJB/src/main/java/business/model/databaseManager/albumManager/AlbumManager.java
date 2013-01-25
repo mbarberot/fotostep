@@ -4,11 +4,13 @@ import business.model.database.Album;
 import business.model.database.AuthorizationEnum;
 import business.model.database.Picture;
 import business.model.database.User;
+import business.model.databaseManager.pictureManager.PictureManagerLocal;
 import business.util.exceptions.AlbumNotFoundException;
 import business.util.exceptions.PictureNotFoundException;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -26,6 +28,8 @@ public class AlbumManager implements AlbumManagerLocal, Serializable
 	@PersistenceContext
 	EntityManager em;
 
+    @EJB
+    PictureManagerLocal pm;
 	public Album createAlbum(User user, String name, String description, AuthorizationEnum authorization){
 		Album album = new Album();
 
@@ -59,6 +63,11 @@ public class AlbumManager implements AlbumManagerLocal, Serializable
 
         Album todel = em.find(Album.class, album.getIdalbum());
         todel.getLikers().clear();
+        /*for(Picture pic : todel.getPictures())
+        {
+            pm.removeImage(pic);
+        }      */
+        todel.getPictures().clear();
         em.persist(todel);
         em.flush();
 
