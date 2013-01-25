@@ -382,4 +382,12 @@ import java.util.Map;
         return this.comments.size();
     }
 
+
+    public Album getMyAlbum() {
+        return myAlbum;
+    }
+
+    public void setMyAlbum(Album myAlbum) {
+        this.myAlbum = myAlbum;
+    }
 }
