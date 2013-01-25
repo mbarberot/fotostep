@@ -25,7 +25,7 @@
                             <f:param value="#{userProfileData.lastName}" />
                         </h:outputFormat>
                     </t:htmlTag>
-                    <a4j:form>
+                    <a4j:form rendered="#{!userProfileData.isMyProfile}">
 
                         <a4j:commandLink id="btn-add-friend"
                                          styleClass="btn btn-success" 

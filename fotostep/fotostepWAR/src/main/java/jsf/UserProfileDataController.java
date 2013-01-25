@@ -324,7 +324,6 @@ public class UserProfileDataController {
         User user = this.um.getUserById(idUser);
         
         boolean b = !(
-            visitor.equals(user) ||
             visitor.getFriends().contains(user) ||
             visitor.getRequestingFrom().contains(user) ||
             visitor.getRequestingTo().contains(user)
@@ -379,4 +378,21 @@ public class UserProfileDataController {
         um.requestFriendship(visitor, user);
         
     }
+    
+    public boolean isIsMyProfile()
+    {
+        // Récupération de l'iduser placé dans la session http
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest) ctx.getExternalContext().getRequest();
+        HttpSession session = req.getSession(false);
+        Integer idVisitor = (Integer) session.getAttribute("userId");
+        Integer idFriend = (Integer) session.getAttribute("idProfile");
+        
+        User visitor = this.um.getUserById(idVisitor);
+        User user = this.um.getUserById(idFriend);
+        
+        return user.equals(visitor);
+        
+    }
+    
 }
