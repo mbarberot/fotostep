@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 3.5.2.2
 -- http://www.phpmyadmin.net
 --
--- Client: localhost
--- Généré le: Lun 21 Janvier 2013 à 11:53
--- Version du serveur: 5.5.24-log
--- Version de PHP: 5.3.13
+-- Client: 127.0.0.1
+-- Généré le: Ven 25 Janvier 2013 à 23:53
+-- Version du serveur: 5.5.27
+-- Version de PHP: 5.4.7
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Structure de la table `album`
 --
 
-DROP TABLE IF EXISTS `album`;
 CREATE TABLE IF NOT EXISTS `album` (
   `idalbum` int(11) NOT NULL AUTO_INCREMENT,
   `iduser` int(11) NOT NULL,
@@ -47,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `album` (
 -- Structure de la table `commentalbum`
 --
 
-DROP TABLE IF EXISTS `commentalbum`;
 CREATE TABLE IF NOT EXISTS `commentalbum` (
   `idcommentalbum` int(11) NOT NULL AUTO_INCREMENT,
   `idalbum` int(11) NOT NULL,
@@ -65,7 +63,6 @@ CREATE TABLE IF NOT EXISTS `commentalbum` (
 -- Structure de la table `commentpicture`
 --
 
-DROP TABLE IF EXISTS `commentpicture`;
 CREATE TABLE IF NOT EXISTS `commentpicture` (
   `idcommentpicture` int(11) NOT NULL AUTO_INCREMENT,
   `idpicture` int(11) NOT NULL,
@@ -83,7 +80,6 @@ CREATE TABLE IF NOT EXISTS `commentpicture` (
 -- Structure de la table `friendship`
 --
 
-DROP TABLE IF EXISTS `friendship`;
 CREATE TABLE IF NOT EXISTS `friendship` (
   `user` int(11) NOT NULL,
   `friend` int(11) NOT NULL,
@@ -98,7 +94,6 @@ CREATE TABLE IF NOT EXISTS `friendship` (
 -- Structure de la table `likealbum`
 --
 
-DROP TABLE IF EXISTS `likealbum`;
 CREATE TABLE IF NOT EXISTS `likealbum` (
   `iduser` int(11) NOT NULL,
   `idalbum` int(11) NOT NULL,
@@ -114,7 +109,6 @@ CREATE TABLE IF NOT EXISTS `likealbum` (
 -- Structure de la table `likepicture`
 --
 
-DROP TABLE IF EXISTS `likepicture`;
 CREATE TABLE IF NOT EXISTS `likepicture` (
   `iduser` int(11) NOT NULL,
   `idpicture` int(11) NOT NULL,
@@ -130,7 +124,6 @@ CREATE TABLE IF NOT EXISTS `likepicture` (
 -- Structure de la table `pendingfriendship`
 --
 
-DROP TABLE IF EXISTS `pendingfriendship`;
 CREATE TABLE IF NOT EXISTS `pendingfriendship` (
   `user` int(11) NOT NULL,
   `friend` int(11) NOT NULL,
@@ -145,7 +138,6 @@ CREATE TABLE IF NOT EXISTS `pendingfriendship` (
 -- Structure de la table `picture`
 --
 
-DROP TABLE IF EXISTS `picture`;
 CREATE TABLE IF NOT EXISTS `picture` (
   `idpicture` int(11) NOT NULL AUTO_INCREMENT,
   `idalbum` int(11) NOT NULL,
@@ -169,7 +161,6 @@ CREATE TABLE IF NOT EXISTS `picture` (
 -- Structure de la table `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `iduser` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(45) NOT NULL,
@@ -198,22 +189,22 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Contraintes pour la table `album`
 --
 ALTER TABLE `album`
-  ADD CONSTRAINT `fk_album_cover_picture` FOREIGN KEY (`coverimage`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_album_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `album_ibfk_2` FOREIGN KEY (`coverimage`) REFERENCES `picture` (`idpicture`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `album_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `commentalbum`
 --
 ALTER TABLE `commentalbum`
-  ADD CONSTRAINT `fk_commentalbum_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_commentalbum_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `commentalbum_ibfk_2` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentalbum_ibfk_1` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `commentpicture`
 --
 ALTER TABLE `commentpicture`
-  ADD CONSTRAINT `fk_commentpicture_picture` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_commentpicture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `commentpicture_ibfk_2` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentpicture_ibfk_1` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `friendship`
@@ -226,15 +217,15 @@ ALTER TABLE `friendship`
 -- Contraintes pour la table `likealbum`
 --
 ALTER TABLE `likealbum`
-  ADD CONSTRAINT `fk_likealbum_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_likealbum_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `likealbum_ibfk_2` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `likealbum_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `likepicture`
 --
 ALTER TABLE `likepicture`
-  ADD CONSTRAINT `fk_like_picture_picture` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_like_picture_user` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `likepicture_ibfk_2` FOREIGN KEY (`idpicture`) REFERENCES `picture` (`idpicture`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `likepicture_ibfk_1` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `pendingfriendship`
@@ -247,7 +238,7 @@ ALTER TABLE `pendingfriendship`
 -- Contraintes pour la table `picture`
 --
 ALTER TABLE `picture`
-  ADD CONSTRAINT `fk_picture_album` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `picture_ibfk_1` FOREIGN KEY (`idalbum`) REFERENCES `album` (`idalbum`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `user`
